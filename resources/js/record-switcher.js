@@ -5,6 +5,8 @@ export default function selectChangerComponent({
     hasDynamicSearchResults,
     label,
     loadingMessage,
+    errorMessage,
+    unavailableMessage,
     noSearchResultsMessage,
     optionsLimit,
     placeholder,
@@ -22,10 +24,13 @@ export default function selectChangerComponent({
         state,
         _handlers: {},
         _loadingTimer: null,
+        destroyed: false,
+        suppressRefresh: false,
 
         async init() {
             this.select = new Choices(this.$refs.input, {
-                allowHTML: true,
+                allowHTML: false,
+                searchChoices: false,
                 duplicateItemsAllowed: false,
                 itemSelectText: '',
                 loadingText: loadingMessage,
@@ -55,18 +60,39 @@ export default function selectChangerComponent({
             this.refreshPlaceholder()
 
             this._handlers.showDropdown = async () => {
+                if (this.suppressRefresh) {
+                    this.suppressRefresh = false
+                    return
+                }
                 await this.refreshChoices()
             }
             this._handlers.change = async () => {
-                this.refreshPlaceholder()
-
                 const selectedValue = this.select.getValue(true) ?? null
-
                 this.setChoices([{ label, value: state, selected: true }])
-
-                await updateSelected(selectedValue)
+                if (!selectedValue) return
+                const request = ++this.searchRequest
+                try {
+                    const value = await updateSelected(selectedValue)
+                    if (this.destroyed || request !== this.searchRequest) return
+                    const url = value
+                        ? new URL(value, window.location.href)
+                        : null
+                    if (
+                        !url ||
+                        !['http:', 'https:'].includes(url.protocol) ||
+                        url.origin !== window.location.origin
+                    ) {
+                        this.showMessage(unavailableMessage)
+                        return
+                    }
+                    window.location.assign(url.href)
+                } catch {
+                    if (!this.destroyed && request === this.searchRequest)
+                        this.showMessage(errorMessage)
+                }
             }
             this._handlers.search = async () => {
+                ++this.searchRequest
                 this.isSearching = true
             }
 
@@ -86,13 +112,13 @@ export default function selectChangerComponent({
                       this.isSearching = false
                   }
             this._handlers.keydown = (event) => {
-                if (
-                    event.key === 'Tab' &&
-                    this.select?.dropdown?.isActive &&
-                    this.acceptHighlightedChoice()
-                ) {
+                if (event.key === 'Escape' && this.select?.dropdown?.isActive) {
                     event.preventDefault()
                     event.stopPropagation()
+                    this.select.hideDropdown()
+                    this.select.containerOuter.element.focus()
+                } else if (event.key === 'Tab') {
+                    this.select.hideDropdown()
                 }
             }
 
@@ -108,10 +134,10 @@ export default function selectChangerComponent({
             )
             this.$el.addEventListener('keydown', this._handlers.keydown)
 
-            this._handlers.wireRefresh = (event) => {
+            this._handlers.wireRefresh = () => {
                 this.select.clearChoices()
                 this.select.setChoices([
-                    { label: event.label, value: state, selected: true },
+                    { label, value: state, selected: true },
                 ])
             }
 
@@ -124,6 +150,8 @@ export default function selectChangerComponent({
         },
 
         destroy() {
+            this.destroyed = true
+            ++this.searchRequest
             window.clearTimeout(this._loadingTimer)
 
             if (this.select) {
@@ -163,6 +191,7 @@ export default function selectChangerComponent({
         },
 
         async refreshChoices(options = {}) {
+            if (this.destroyed) return
             let choices
             const request = ++this.searchRequest
 
@@ -171,23 +200,34 @@ export default function selectChangerComponent({
             try {
                 choices = await this.getChoices(options)
             } catch {
-                choices = []
+                choices = [{ label: errorMessage, value: '', disabled: true }]
             }
 
-            if (request !== this.searchRequest) {
+            if (this.destroyed || request !== this.searchRequest) {
                 return
             }
 
             window.clearTimeout(this._loadingTimer)
             this.refreshPlaceholder()
-            this.setChoices(choices)
+            this.setChoices(
+                choices.length
+                    ? choices
+                    : [
+                          {
+                              label: noSearchResultsMessage,
+                              value: '',
+                              disabled: true,
+                          },
+                      ],
+            )
+            this.isSearching = false
             this.highlightSelectedChoice()
         },
 
         scheduleLoadingChoice(search) {
             window.clearTimeout(this._loadingTimer)
             this._loadingTimer = window.setTimeout(() => {
-                if (this.hasVisibleChoices()) {
+                if (this.destroyed || this.hasVisibleChoices()) {
                     return
                 }
 
@@ -224,25 +264,6 @@ export default function selectChangerComponent({
             )
         },
 
-        acceptHighlightedChoice() {
-            const highlightedChoice =
-                this.select.dropdown.element.querySelector(
-                    '.choices__item.is-highlighted[data-choice-selectable], .choices__item[data-choice-selectable]',
-                )
-
-            if (!highlightedChoice?.dataset?.value) {
-                return false
-            }
-
-            this.select.setChoiceByValue(highlightedChoice.dataset.value)
-            this.select.hideDropdown()
-            this.$refs.input.dispatchEvent(
-                new Event('change', { bubbles: true }),
-            )
-
-            return true
-        },
-
         hasVisibleChoices() {
             return (
                 this.select.dropdown.element.querySelector(
@@ -255,14 +276,29 @@ export default function selectChangerComponent({
             this.select.setChoices(choices, 'value', 'label', true)
         },
 
-        async getChoices({ search }) {
-            let choices
-
-            try {
-                choices = await getResultsUsing(search)
-            } catch {
-                choices = []
+        showMessage(message) {
+            this.setChoices([{ label: message, value: '', disabled: true }])
+            if (!this.select.dropdown.isActive) {
+                this.suppressRefresh = true
+                this.select.showDropdown()
             }
+        },
+
+        async getChoices({ search }) {
+            const results = await getResultsUsing(search)
+            const choices = results.map((choice) => ({
+                ...choice,
+                value: choice.recordKey,
+                label: [
+                    choice.label,
+                    [choice.site, ...(choice.ancestors ?? [])]
+                        .filter(Boolean)
+                        .join(' › '),
+                    choice.path,
+                ]
+                    .filter(Boolean)
+                    .join('\n'),
+            }))
 
             const groups = {}
 
@@ -297,7 +333,7 @@ export default function selectChangerComponent({
             )
 
             if (selectedItems) {
-                selectedItems.innerHTML = `<div class="choices__placeholder choices__item">${placeholder ?? ''}</div>`
+                selectedItems.textContent = label ?? placeholder ?? ''
             }
         },
     }

@@ -142,9 +142,10 @@ final class RecordSwitcherHealthCheck implements ChecksExtensionHealth
             return false;
         }
 
-        $finder = app('livewire.finder');
+        $finder = resolve('livewire.finder');
 
-        if (! method_exists($finder, 'getClassNamespace')) {
+        if (! is_object($finder) || ! method_exists($finder, 'getClassNamespace')
+            || ! method_exists($finder, 'resolveClassComponentClassName')) {
             return false;
         }
 

@@ -11,15 +11,20 @@
     );
 @endphp
 
-<div
-    x-ignore
-    x-load-css="[@js($recordSwitcherStyleHref)]"
-    x-load
-    x-load-src="{{ $recordSwitcherScriptSrc }}"
-    x-data="selectChangerComponent({
+<div>
+    <span>{{ $label }}</span>
+    @if ($hasAlternatives)
+        <div
+            x-ignore
+            x-load-css="[@js($recordSwitcherStyleHref)]"
+            x-load
+            x-load-src="{{ $recordSwitcherScriptSrc }}"
+            x-data="selectChangerComponent({
                 getResultsUsing: async (search) => await $wire.getOptions(search),
                 hasDynamicSearchResults: true,
-                label: @js($label),
+                label: @js(__('capell-record-switcher::switcher.switch_record')),
+                errorMessage: @js(__('capell-record-switcher::switcher.error')),
+                unavailableMessage: @js(__('capell-record-switcher::switcher.unavailable')),
                 loadingMessage:
                     '{{ __('filament-forms::components.select.loading_message') }}',
                 noSearchResultsMessage:
@@ -30,25 +35,31 @@
                     '{{ __('filament-forms::components.select.search_prompt') }}',
                 searchingMessage:
                     '{{ __('filament-forms::components.select.searching_message') }}',
-                state: @js($value),
-                updateSelected: (value) => (window.location.href = value),
+                state: '',
+                updateSelected: async (key) => await $wire.getEditUrl(key),
             })"
-    wire:ignore
-    x-on:keydown.esc="select.dropdown.isActive && $event.stopPropagation()"
-    class="filament-record-switcher"
->
-    @if (! empty($icon))
-        <x-dynamic-component
-            :component="$icon"
-            :x-tooltip.raw="$icon_name ?? ''"
-            class="inline-block h-6 w-6 stroke-current text-gray-500 dark:text-gray-300"
-        />
-    @endif
+            wire:ignore
+            x-on:keydown.esc="select.dropdown.isActive && $event.stopPropagation()"
+            class="filament-record-switcher"
+        >
+            @if (! empty($icon))
+                <x-dynamic-component
+                    :component="$icon"
+                    :x-tooltip.raw="$icon_name ?? ''"
+                    class="inline-block h-6 w-6 stroke-current text-gray-500 dark:text-gray-300"
+                />
+            @endif
 
-    <select
-        x-ref="input"
-        class="pointer-events-none appearance-none border-none bg-transparent !bg-none p-0 text-2xl font-bold text-gray-950 sm:text-3xl dark:text-white"
-    >
-        <option value="{{ $value }}">{{ $label }}</option>
-    </select>
+            <select
+                x-ref="input"
+                aria-label="{{ __('capell-record-switcher::switcher.switch_record') }}"
+                class="pointer-events-none appearance-none border-none bg-transparent !bg-none p-0 text-2xl font-bold text-gray-950 sm:text-3xl dark:text-white"
+            >
+                <option value="">
+                    {{ __('capell-record-switcher::switcher.switch_record') }}
+                </option>
+            </select>
+        </div>
+
+    @endif
 </div>

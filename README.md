@@ -44,14 +44,39 @@ Screenshot contract: `docs/screenshots.json`.
 
 ## Technical Shape
 
-- Service providers: `Capell\RecordSwitcher\Providers\RecordSwitcherServiceProvider`.
-- Filament classes: `RecordSwitcherHeadingExtender`.
-- Livewire components: `RecordSwitcher`.
-- Actions: `BuildRecordSwitcherOptionsAction`.
-- Data objects: `RecordSwitcherOptionData`.
-- Manifest contributions: `asset: Capell\RecordSwitcher\Manifest\RecordSwitcherAssetsContribution`, `health-check: Capell\RecordSwitcher\Manifest\RecordSwitcherHealthContribution`.
-- Health checks: `Capell\RecordSwitcher\Health\RecordSwitcherHealthCheck`.
-- Blade views: `packages/record-switcher/resources/views/components/record-switcher.blade.php`.
+### Service providers
+
+- `Capell\RecordSwitcher\Providers\RecordSwitcherServiceProvider`
+
+### Filament classes
+
+- `RecordSwitcherHeadingExtender`
+
+### Livewire components
+
+- `RecordSwitcher`
+
+### Actions
+
+- `BuildRecordSwitcherOptionsAction`
+
+### Data objects
+
+- `RecordSwitcherOptionData`
+
+### Manifest contributions
+
+- `asset: Capell\RecordSwitcher\Manifest\RecordSwitcherAssetsContribution`
+- `health-check: Capell\RecordSwitcher\Manifest\RecordSwitcherHealthContribution`
+
+### Health checks
+
+- `Capell\RecordSwitcher\Health\RecordSwitcherHealthCheck`
+
+### Blade views
+
+- `packages/record-switcher/resources/views/components/record-switcher.blade.php`
+
 
 ## Data Model
 
@@ -62,7 +87,7 @@ This package has no schema impact. It extends Capell through `asset` contributio
 - Required packages: `capell-app/admin`, `capell-app/core`.
 - Admin navigation: no admin page or resource contribution is declared.
 - Admin/editor extensions: none declared.
-- Permissions: none declared in `capell.json`.
+- Permissions: no package permission declarations or Shield gates detected; host access rules still apply.
 - Public routes: none declared.
 - Database changes: no package migrations declared.
 - Config: no package config files.
@@ -84,8 +109,7 @@ This package has no schema impact. It extends Capell through `asset` contributio
 ## Quick Start
 
 1. Install the package: `composer require capell-app/record-switcher`.
-2. No package-specific setup command or migrations are declared.
-3. Open the package admin surface at `/pages/{first-record}/edit` and confirm Record Switcher is available.
+2. Open the package admin surface at `/pages/{first-record}/edit` and confirm Record Switcher is available.
 
 ## Next Steps
 

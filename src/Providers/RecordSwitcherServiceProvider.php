@@ -23,7 +23,8 @@ final class RecordSwitcherServiceProvider extends AbstractPackageServiceProvider
     {
         $package
             ->name(self::$name)
-            ->hasViews();
+            ->hasViews()
+            ->hasTranslations();
     }
 
     public function packageBooted(): void

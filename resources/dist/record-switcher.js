@@ -15,7 +15,7 @@
       de(i, e)
     )
   }
-function qe(i, e) {
+function Ye(i, e) {
   if (typeof e != 'function' && e !== null)
     throw new TypeError(
       'Class extends value ' + String(e) + ' is not a constructor or null',
@@ -262,7 +262,7 @@ var E = {
           .join('')
       : '.'.concat(i)
   },
-  _ = function (i, e) {
+  y = function (i, e) {
     var t
     ;(t = i.classList).add.apply(t, oe(e))
   },
@@ -281,7 +281,7 @@ var E = {
   },
   Et = function (i, e, t) {
     var s = i.itemEl
-    s && (D(s, t), _(s, e))
+    s && (D(s, t), y(s, e))
   },
   Ct = (function () {
     function i(e) {
@@ -296,7 +296,7 @@ var E = {
     return (
       (i.prototype.show = function () {
         return (
-          _(this.element, this.classNames.activeState),
+          y(this.element, this.classNames.activeState),
           this.element.setAttribute('aria-expanded', 'true'),
           (this.isActive = !0),
           this
@@ -348,11 +348,11 @@ var E = {
         this.element.removeAttribute('aria-activedescendant')
       }),
       (i.prototype.open = function (e, t) {
-        ;(_(this.element, this.classNames.openState),
+        ;(y(this.element, this.classNames.openState),
           this.element.setAttribute('aria-expanded', 'true'),
           (this.isOpen = !0),
           this.shouldFlip(e, t) &&
-            (_(this.element, this.classNames.flippedState),
+            (y(this.element, this.classNames.flippedState),
             (this.isFlipped = !0)))
       }),
       (i.prototype.close = function () {
@@ -365,13 +365,13 @@ var E = {
             (this.isFlipped = !1)))
       }),
       (i.prototype.addFocusState = function () {
-        _(this.element, this.classNames.focusState)
+        y(this.element, this.classNames.focusState)
       }),
       (i.prototype.removeFocusState = function () {
         D(this.element, this.classNames.focusState)
       }),
       (i.prototype.addInvalidState = function () {
-        _(this.element, this.classNames.invalidState)
+        y(this.element, this.classNames.invalidState)
       }),
       (i.prototype.removeInvalidState = function () {
         D(this.element, this.classNames.invalidState)
@@ -384,7 +384,7 @@ var E = {
           (this.isDisabled = !1))
       }),
       (i.prototype.disable = function () {
-        ;(_(this.element, this.classNames.disabledState),
+        ;(y(this.element, this.classNames.disabledState),
           this.element.setAttribute('aria-disabled', 'true'),
           this.type === j.SelectOne &&
             this.element.setAttribute('tabindex', '-1'),
@@ -403,7 +403,7 @@ var E = {
         s && (s.insertBefore(e, t), s.removeChild(t))
       }),
       (i.prototype.addLoadingState = function () {
-        ;(_(this.element, this.classNames.loadingState),
+        ;(y(this.element, this.classNames.loadingState),
           this.element.setAttribute('aria-busy', 'true'),
           (this.isLoading = !0))
       }),
@@ -500,7 +500,7 @@ var E = {
             (o.style.height = 'auto'),
             (o.style.width = 'auto'),
             (o.style.minWidth = '1ch'),
-            _(o, Array.from(e.classList)),
+            y(o, Array.from(e.classList)),
             e.after(o))
           var a = parseFloat(getComputedStyle(o).width)
           ;(Number.isNaN(a)
@@ -625,7 +625,7 @@ var E = {
       }),
       (i.prototype.conceal = function () {
         var e = this.element
-        ;(_(e, this.classNames.input), (e.hidden = !0), (e.tabIndex = -1))
+        ;(y(e, this.classNames.input), (e.hidden = !0), (e.tabIndex = -1))
         var t = e.getAttribute('style')
         ;(t && e.setAttribute('data-choice-orig-style', t),
           e.setAttribute('data-choice', 'active'))
@@ -659,7 +659,7 @@ var E = {
     )
   })(),
   It = (function (i) {
-    qe(e, i)
+    Ye(e, i)
     function e() {
       return (i !== null && i.apply(this, arguments)) || this
     }
@@ -689,20 +689,20 @@ var E = {
     if ('choices' in o) {
       if (!e) throw new TypeError('optGroup is not allowed')
       var a = o,
-        l = a.choices.map(function (d) {
-          return M(d, !1)
+        l = a.choices.map(function (p) {
+          return M(p, !1)
         }),
-        u = {
+        h = {
           id: 0,
           label: N(a.label) || a.value,
           active: !!l.length,
           disabled: !!a.disabled,
           choices: l,
         }
-      return u
+      return h
     }
     var c = o,
-      h = {
+      u = {
         id: 0,
         group: null,
         score: 0,
@@ -718,7 +718,7 @@ var E = {
         labelDescription: c.labelDescription,
         customProperties: c.customProperties,
       }
-    return h
+    return u
   },
   At = function (i) {
     return i.tagName === 'INPUT'
@@ -733,7 +733,7 @@ var E = {
     return i.tagName === 'OPTGROUP'
   },
   Lt = (function (i) {
-    qe(e, i)
+    Ye(e, i)
     function e(t) {
       var s = t.element,
         n = t.classNames,
@@ -863,7 +863,7 @@ var E = {
     noResults: ['has-no-results'],
     noChoices: ['has-no-choices'],
   },
-  He = {
+  Ke = {
     items: [],
     choices: [],
     silent: !1,
@@ -932,7 +932,7 @@ var E = {
     classNames: Dt,
     appendGroupInSearch: !1,
   },
-  Ke = function (i) {
+  He = function (i) {
     var e = i.itemEl
     e && (e.remove(), (i.itemEl = void 0))
   }
@@ -955,23 +955,23 @@ function xt(i, e, t) {
         var o = r.parentElement
         o && Qe(o) && o.type === j.SelectOne && (o.value = '')
       }
-      ;(Ke(e.item),
+      ;(He(e.item),
         (s = s.filter(function (c) {
           return c.id !== e.item.id
         })))
       break
     }
     case E.REMOVE_CHOICE: {
-      ;(Ke(e.choice),
-        (s = s.filter(function (u) {
-          return u.id !== e.choice.id
+      ;(He(e.choice),
+        (s = s.filter(function (h) {
+          return h.id !== e.choice.id
         })))
       break
     }
     case E.HIGHLIGHT_ITEM: {
       var a = e.highlighted,
-        l = s.find(function (u) {
-          return u.id === e.item.id
+        l = s.find(function (h) {
+          return h.id === e.item.id
         })
       l &&
         l.highlighted !== a &&
@@ -1277,13 +1277,13 @@ function Ft(i) {
 function F(i) {
   return Array.isArray ? Array.isArray(i) : tt(i) === '[object Array]'
 }
-function Ht(i) {
+function Kt(i) {
   if (typeof i == 'string') return i
   let e = i + ''
   return e == '0' && 1 / i == -1 / 0 ? '-0' : e
 }
-function Kt(i) {
-  return i == null ? '' : Ht(i)
+function Ht(i) {
+  return i == null ? '' : Kt(i)
 }
 function P(i) {
   return typeof i == 'string'
@@ -1363,7 +1363,7 @@ function Be(i) {
 function pe(i) {
   return F(i) ? i.join('.') : i
 }
-function Yt(i, e) {
+function qt(i, e) {
   let t = [],
     s = !1,
     n = (r, o, a) => {
@@ -1371,18 +1371,18 @@ function Yt(i, e) {
         if (!o[a]) t.push(r)
         else {
           let l = o[a],
-            u = r[l]
-          if (!O(u)) return
-          if (a === o.length - 1 && (P(u) || Ze(u) || jt(u))) t.push(Kt(u))
-          else if (F(u)) {
+            h = r[l]
+          if (!O(h)) return
+          if (a === o.length - 1 && (P(h) || Ze(h) || jt(h))) t.push(Ht(h))
+          else if (F(h)) {
             s = !0
-            for (let c = 0, h = u.length; c < h; c += 1) n(u[c], o, a + 1)
-          } else o.length && n(u, o, a + 1)
+            for (let c = 0, u = h.length; c < u; c += 1) n(h[c], o, a + 1)
+          } else o.length && n(h, o, a + 1)
         }
     }
   return (n(i, P(e) ? e.split('.') : e, 0), s ? t : t[0])
 }
-var qt = { includeMatches: !1, findAllMatches: !1, minMatchCharLength: 1 },
+var Yt = { includeMatches: !1, findAllMatches: !1, minMatchCharLength: 1 },
   zt = {
     isCaseSensitive: !1,
     includeScore: !1,
@@ -1400,12 +1400,12 @@ var qt = { includeMatches: !1, findAllMatches: !1, minMatchCharLength: 1 },
   Xt = { location: 0, threshold: 0.6, distance: 100 },
   Jt = {
     useExtendedSearch: !1,
-    getFn: Yt,
+    getFn: qt,
     ignoreLocation: !1,
     ignoreFieldNorm: !1,
     fieldNormWeight: 1,
   },
-  v = U(U(U(U({}, zt), qt), Xt), Jt),
+  g = U(U(U(U({}, zt), Yt), Xt), Jt),
   Qt = /[^ ]+/g
 function Zt(i = 1, e = 3) {
   let t = new Map(),
@@ -1425,8 +1425,8 @@ function Zt(i = 1, e = 3) {
 }
 var J = class {
   constructor({
-    getFn: e = v.getFn,
-    fieldNormWeight: t = v.fieldNormWeight,
+    getFn: e = g.getFn,
+    fieldNormWeight: t = g.fieldNormWeight,
   } = {}) {
     ;((this.norm = Zt(t, 3)),
       (this.getFn = e),
@@ -1487,15 +1487,15 @@ var J = class {
           let a = [],
             l = [{ nestedArrIndex: -1, value: o }]
           for (; l.length;) {
-            let { nestedArrIndex: u, value: c } = l.pop()
+            let { nestedArrIndex: h, value: c } = l.pop()
             if (O(c))
               if (P(c) && !ce(c)) {
-                let h = { v: c, i: u, n: this.norm.get(c) }
-                a.push(h)
+                let u = { v: c, i: h, n: this.norm.get(c) }
+                a.push(u)
               } else
                 F(c) &&
-                  c.forEach((h, d) => {
-                    l.push({ nestedArrIndex: d, value: h })
+                  c.forEach((u, p) => {
+                    l.push({ nestedArrIndex: p, value: u })
                   })
           }
           s.$[r] = a
@@ -1514,14 +1514,14 @@ var J = class {
 function st(
   i,
   e,
-  { getFn: t = v.getFn, fieldNormWeight: s = v.fieldNormWeight } = {},
+  { getFn: t = g.getFn, fieldNormWeight: s = g.fieldNormWeight } = {},
 ) {
   let n = new J({ getFn: t, fieldNormWeight: s })
   return (n.setKeys(i.map(it)), n.setSources(e), n.create(), n)
 }
 function ei(
   i,
-  { getFn: e = v.getFn, fieldNormWeight: t = v.fieldNormWeight } = {},
+  { getFn: e = g.getFn, fieldNormWeight: t = g.fieldNormWeight } = {},
 ) {
   let { keys: s, records: n } = i,
     r = new J({ getFn: e, fieldNormWeight: t })
@@ -1533,8 +1533,8 @@ function te(
     errors: e = 0,
     currentLocation: t = 0,
     expectedLocation: s = 0,
-    distance: n = v.distance,
-    ignoreLocation: r = v.ignoreLocation,
+    distance: n = g.distance,
+    ignoreLocation: r = g.ignoreLocation,
   } = {},
 ) {
   let o = e / i.length
@@ -1542,7 +1542,7 @@ function te(
   let a = Math.abs(s - t)
   return n ? o + a / n : a ? 1 : o
 }
-function ti(i = [], e = v.minMatchCharLength) {
+function ti(i = [], e = g.minMatchCharLength) {
   let t = [],
     s = -1,
     n = -1,
@@ -1563,96 +1563,96 @@ function ii(
   e,
   t,
   {
-    location: s = v.location,
-    distance: n = v.distance,
-    threshold: r = v.threshold,
-    findAllMatches: o = v.findAllMatches,
-    minMatchCharLength: a = v.minMatchCharLength,
-    includeMatches: l = v.includeMatches,
-    ignoreLocation: u = v.ignoreLocation,
+    location: s = g.location,
+    distance: n = g.distance,
+    threshold: r = g.threshold,
+    findAllMatches: o = g.findAllMatches,
+    minMatchCharLength: a = g.minMatchCharLength,
+    includeMatches: l = g.includeMatches,
+    ignoreLocation: h = g.ignoreLocation,
   } = {},
 ) {
   if (e.length > $) throw new Error(Gt($))
   let c = e.length,
-    h = i.length,
-    d = Math.max(0, Math.min(s, h)),
-    p = r,
-    f = d,
+    u = i.length,
+    p = Math.max(0, Math.min(s, u)),
+    f = r,
+    d = p,
     m = a > 1 || l,
-    g = m ? Array(h) : [],
-    y
-  for (; (y = i.indexOf(e, f)) > -1;) {
+    _ = m ? Array(u) : [],
+    v
+  for (; (v = i.indexOf(e, d)) > -1;) {
     let T = te(e, {
-      currentLocation: y,
-      expectedLocation: d,
+      currentLocation: v,
+      expectedLocation: p,
       distance: n,
-      ignoreLocation: u,
+      ignoreLocation: h,
     })
-    if (((p = Math.min(T, p)), (f = y + c), m)) {
-      let H = 0
-      for (; H < c;) ((g[y + H] = 1), (H += 1))
+    if (((f = Math.min(T, f)), (d = v + c), m)) {
+      let K = 0
+      for (; K < c;) ((_[v + K] = 1), (K += 1))
     }
   }
-  f = -1
+  d = -1
   let b = [],
     C = 1,
-    B = c + h,
-    Y = 1 << (c - 1)
+    B = c + u,
+    q = 1 << (c - 1)
   for (let T = 0; T < c; T += 1) {
-    let H = 0,
-      K = B
-    for (; H < K;)
+    let K = 0,
+      H = B
+    for (; K < H;)
       (te(e, {
         errors: T,
-        currentLocation: d + K,
-        expectedLocation: d,
+        currentLocation: p + H,
+        expectedLocation: p,
         distance: n,
-        ignoreLocation: u,
-      }) <= p
-        ? (H = K)
-        : (B = K),
-        (K = Math.floor((B - H) / 2 + H)))
-    B = K
-    let Te = Math.max(1, d - K + 1),
-      le = o ? h : Math.min(d + K, h) + c,
+        ignoreLocation: h,
+      }) <= f
+        ? (K = H)
+        : (B = H),
+        (H = Math.floor((B - K) / 2 + K)))
+    B = H
+    let Te = Math.max(1, p - H + 1),
+      le = o ? u : Math.min(p + H, u) + c,
       G = Array(le + 2)
     G[le + 1] = (1 << T) - 1
     for (let L = le; L >= Te; L -= 1) {
       let Z = L - 1,
         Le = t[i.charAt(Z)]
       if (
-        (m && (g[Z] = +!!Le),
+        (m && (_[Z] = +!!Le),
         (G[L] = ((G[L + 1] << 1) | 1) & Le),
         T && (G[L] |= ((b[L + 1] | b[L]) << 1) | 1 | b[L + 1]),
-        G[L] & Y &&
+        G[L] & q &&
           ((C = te(e, {
             errors: T,
             currentLocation: Z,
-            expectedLocation: d,
+            expectedLocation: p,
             distance: n,
-            ignoreLocation: u,
+            ignoreLocation: h,
           })),
-          C <= p))
+          C <= f))
       ) {
-        if (((p = C), (f = Z), f <= d)) break
-        Te = Math.max(1, 2 * d - f)
+        if (((f = C), (d = Z), d <= p)) break
+        Te = Math.max(1, 2 * p - d)
       }
     }
     if (
       te(e, {
         errors: T + 1,
-        currentLocation: d,
-        expectedLocation: d,
+        currentLocation: p,
+        expectedLocation: p,
         distance: n,
-        ignoreLocation: u,
-      }) > p
+        ignoreLocation: h,
+      }) > f
     )
       break
     b = G
   }
-  let ae = { isMatch: f >= 0, score: Math.max(0.001, C) }
+  let ae = { isMatch: d >= 0, score: Math.max(0.001, C) }
   if (m) {
-    let T = ti(g, a)
+    let T = ti(_, a)
     T.length ? l && (ae.indices = T) : (ae.isMatch = !1)
   }
   return ae
@@ -1669,14 +1669,14 @@ var ie = class {
     constructor(
       e,
       {
-        location: t = v.location,
-        threshold: s = v.threshold,
-        distance: n = v.distance,
-        includeMatches: r = v.includeMatches,
-        findAllMatches: o = v.findAllMatches,
-        minMatchCharLength: a = v.minMatchCharLength,
-        isCaseSensitive: l = v.isCaseSensitive,
-        ignoreLocation: u = v.ignoreLocation,
+        location: t = g.location,
+        threshold: s = g.threshold,
+        distance: n = g.distance,
+        includeMatches: r = g.includeMatches,
+        findAllMatches: o = g.findAllMatches,
+        minMatchCharLength: a = g.minMatchCharLength,
+        isCaseSensitive: l = g.isCaseSensitive,
+        ignoreLocation: h = g.ignoreLocation,
       } = {},
     ) {
       if (
@@ -1688,24 +1688,24 @@ var ie = class {
           findAllMatches: o,
           minMatchCharLength: a,
           isCaseSensitive: l,
-          ignoreLocation: u,
+          ignoreLocation: h,
         }),
         (this.pattern = l ? e : e.toLowerCase()),
         (this.chunks = []),
         !this.pattern.length)
       )
         return
-      let c = (d, p) => {
-          this.chunks.push({ pattern: d, alphabet: si(d), startIndex: p })
+      let c = (p, f) => {
+          this.chunks.push({ pattern: p, alphabet: si(p), startIndex: f })
         },
-        h = this.pattern.length
-      if (h > $) {
-        let d = 0,
-          p = h % $,
-          f = h - p
-        for (; d < f;) (c(this.pattern.substr(d, $), d), (d += $))
-        if (p) {
-          let m = h - $
+        u = this.pattern.length
+      if (u > $) {
+        let p = 0,
+          f = u % $,
+          d = u - f
+        for (; p < d;) (c(this.pattern.substr(p, $), p), (p += $))
+        if (f) {
+          let m = u - $
           c(this.pattern.substr(m), m)
         }
       } else c(this.pattern, 0)
@@ -1713,8 +1713,8 @@ var ie = class {
     searchIn(e) {
       let { isCaseSensitive: t, includeMatches: s } = this.options
       if ((t || (e = e.toLowerCase()), this.pattern === e)) {
-        let f = { isMatch: !0, score: 0 }
-        return (s && (f.indices = [[0, e.length - 1]]), f)
+        let d = { isMatch: !0, score: 0 }
+        return (s && (d.indices = [[0, e.length - 1]]), d)
       }
       let {
           location: n,
@@ -1722,29 +1722,29 @@ var ie = class {
           threshold: o,
           findAllMatches: a,
           minMatchCharLength: l,
-          ignoreLocation: u,
+          ignoreLocation: h,
         } = this.options,
         c = [],
-        h = 0,
-        d = !1
-      this.chunks.forEach(({ pattern: f, alphabet: m, startIndex: g }) => {
+        u = 0,
+        p = !1
+      this.chunks.forEach(({ pattern: d, alphabet: m, startIndex: _ }) => {
         let {
-          isMatch: y,
+          isMatch: v,
           score: b,
           indices: C,
-        } = ii(e, f, m, {
-          location: n + g,
+        } = ii(e, d, m, {
+          location: n + _,
           distance: r,
           threshold: o,
           findAllMatches: a,
           minMatchCharLength: l,
           includeMatches: s,
-          ignoreLocation: u,
+          ignoreLocation: h,
         })
-        ;(y && (d = !0), (h += b), y && C && (c = [...c, ...C]))
+        ;(v && (p = !0), (u += b), v && C && (c = [...c, ...C]))
       })
-      let p = { isMatch: d, score: d ? h / this.chunks.length : 1 }
-      return (d && s && (p.indices = c), p)
+      let f = { isMatch: p, score: p ? u / this.chunks.length : 1 }
+      return (p && s && (f.indices = c), f)
     }
   },
   R = class {
@@ -1887,14 +1887,14 @@ var me = class extends R {
     constructor(
       e,
       {
-        location: t = v.location,
-        threshold: s = v.threshold,
-        distance: n = v.distance,
-        includeMatches: r = v.includeMatches,
-        findAllMatches: o = v.findAllMatches,
-        minMatchCharLength: a = v.minMatchCharLength,
-        isCaseSensitive: l = v.isCaseSensitive,
-        ignoreLocation: u = v.ignoreLocation,
+        location: t = g.location,
+        threshold: s = g.threshold,
+        distance: n = g.distance,
+        includeMatches: r = g.includeMatches,
+        findAllMatches: o = g.findAllMatches,
+        minMatchCharLength: a = g.minMatchCharLength,
+        isCaseSensitive: l = g.isCaseSensitive,
+        ignoreLocation: h = g.ignoreLocation,
       } = {},
     ) {
       ;(super(e),
@@ -1906,7 +1906,7 @@ var me = class extends R {
           findAllMatches: o,
           minMatchCharLength: a,
           isCaseSensitive: l,
-          ignoreLocation: u,
+          ignoreLocation: h,
         })))
     }
     static get type() {
@@ -1960,18 +1960,18 @@ function oi(i, e = {}) {
     for (let r = 0, o = s.length; r < o; r += 1) {
       let a = s[r],
         l = !1,
-        u = -1
-      for (; !l && ++u < We;) {
-        let c = Ee[u],
-          h = c.isMultiMatch(a)
-        h && (n.push(new c(h, e)), (l = !0))
+        h = -1
+      for (; !l && ++h < We;) {
+        let c = Ee[h],
+          u = c.isMultiMatch(a)
+        u && (n.push(new c(u, e)), (l = !0))
       }
       if (!l)
-        for (u = -1; ++u < We;) {
-          let c = Ee[u],
-            h = c.isSingleMatch(a)
-          if (h) {
-            n.push(new c(h, e))
+        for (h = -1; ++h < We;) {
+          let c = Ee[h],
+            u = c.isSingleMatch(a)
+          if (u) {
+            n.push(new c(u, e))
             break
           }
         }
@@ -1984,14 +1984,14 @@ var ai = new Set([se.type, ne.type]),
     constructor(
       e,
       {
-        isCaseSensitive: t = v.isCaseSensitive,
-        includeMatches: s = v.includeMatches,
-        minMatchCharLength: n = v.minMatchCharLength,
-        ignoreLocation: r = v.ignoreLocation,
-        findAllMatches: o = v.findAllMatches,
-        location: a = v.location,
-        threshold: l = v.threshold,
-        distance: u = v.distance,
+        isCaseSensitive: t = g.isCaseSensitive,
+        includeMatches: s = g.includeMatches,
+        minMatchCharLength: n = g.minMatchCharLength,
+        ignoreLocation: r = g.ignoreLocation,
+        findAllMatches: o = g.findAllMatches,
+        location: a = g.location,
+        threshold: l = g.threshold,
+        distance: h = g.distance,
       } = {},
     ) {
       ;((this.query = null),
@@ -2003,7 +2003,7 @@ var ai = new Set([se.type, ne.type]),
           ignoreLocation: r,
           location: a,
           threshold: l,
-          distance: u,
+          distance: h,
         }),
         (this.pattern = t ? e : e.toLowerCase()),
         (this.query = oi(this.pattern, this.options)))
@@ -2019,16 +2019,16 @@ var ai = new Set([se.type, ne.type]),
       let r = 0,
         o = [],
         a = 0
-      for (let l = 0, u = t.length; l < u; l += 1) {
+      for (let l = 0, h = t.length; l < h; l += 1) {
         let c = t[l]
         ;((o.length = 0), (r = 0))
-        for (let h = 0, d = c.length; h < d; h += 1) {
-          let p = c[h],
-            { isMatch: f, indices: m, score: g } = p.search(e)
-          if (f) {
-            if (((r += 1), (a += g), s)) {
-              let y = p.constructor.type
-              ai.has(y) ? (o = [...o, ...m]) : o.push(m)
+        for (let u = 0, p = c.length; u < p; u += 1) {
+          let f = c[u],
+            { isMatch: d, indices: m, score: _ } = f.search(e)
+          if (d) {
+            if (((r += 1), (a += _), s)) {
+              let v = f.constructor.type
+              ai.has(v) ? (o = [...o, ...m]) : o.push(m)
             }
           } else {
             ;((a = 0), (r = 0), (o.length = 0))
@@ -2036,8 +2036,8 @@ var ai = new Set([se.type, ne.type]),
           }
         }
         if (r) {
-          let h = { isMatch: !0, score: a / r }
-          return (s && (h.indices = o), h)
+          let u = { isMatch: !0, score: a / r }
+          return (s && (u.indices = o), u)
         }
       }
       return { isMatch: !1, score: 1 }
@@ -2067,17 +2067,17 @@ function nt(i, e, { auto: t = !0 } = {}) {
     if (!o && r.length > 1 && !Ae(n)) return s(Ue(n))
     if (hi(n)) {
       let l = o ? n[Ie.PATH] : r[0],
-        u = o ? n[Ie.PATTERN] : n[l]
-      if (!P(u)) throw new Error(Bt(l))
-      let c = { keyId: pe(l), pattern: u }
-      return (t && (c.searcher = we(u, e)), c)
+        h = o ? n[Ie.PATTERN] : n[l]
+      if (!P(h)) throw new Error(Bt(l))
+      let c = { keyId: pe(l), pattern: h }
+      return (t && (c.searcher = we(h, e)), c)
     }
     let a = { children: [], operator: r[0] }
     return (
       r.forEach((l) => {
-        let u = n[l]
-        F(u) &&
-          u.forEach((c) => {
+        let h = n[l]
+        F(h) &&
+          h.forEach((c) => {
             a.children.push(s(c))
           })
       }),
@@ -2086,7 +2086,7 @@ function nt(i, e, { auto: t = !0 } = {}) {
   }
   return (Ae(i) || (i = Ue(i)), s(i))
 }
-function ui(i, { ignoreFieldNorm: e = v.ignoreFieldNorm }) {
+function ui(i, { ignoreFieldNorm: e = g.ignoreFieldNorm }) {
   i.forEach((t) => {
     let s = 1
     ;(t.matches.forEach(({ key: n, norm: r, score: o }) => {
@@ -2116,8 +2116,8 @@ function pi(
   i,
   e,
   {
-    includeMatches: t = v.includeMatches,
-    includeScore: s = v.includeScore,
+    includeMatches: t = g.includeMatches,
+    includeScore: s = g.includeScore,
   } = {},
 ) {
   let n = []
@@ -2139,7 +2139,7 @@ function pi(
 }
 var V = class {
   constructor(e, t = {}, s) {
-    ;((this.options = U(U({}, v), t)),
+    ;((this.options = U(U({}, g), t)),
       this.options.useExtendedSearch,
       (this._keyStore = new fe(this.options.keys)),
       this.setCollection(e, s))
@@ -2197,12 +2197,12 @@ var V = class {
     return (
       s.forEach(({ v: r, i: o, n: a }) => {
         if (!O(r)) return
-        let { isMatch: l, score: u, indices: c } = t.searchIn(r)
+        let { isMatch: l, score: h, indices: c } = t.searchIn(r)
         l &&
           n.push({
             item: r,
             idx: o,
-            matches: [{ score: u, value: r, norm: a, indices: c }],
+            matches: [{ score: h, value: r, norm: a, indices: c }],
           })
       }),
       n
@@ -2210,21 +2210,21 @@ var V = class {
   }
   _searchLogical(e) {
     let t = nt(e, this.options),
-      s = (a, l, u) => {
+      s = (a, l, h) => {
         if (!a.children) {
-          let { keyId: h, searcher: d } = a,
-            p = this._findMatches({
-              key: this._keyStore.get(h),
-              value: this._myIndex.getValueForItemAtKeyId(l, h),
-              searcher: d,
+          let { keyId: u, searcher: p } = a,
+            f = this._findMatches({
+              key: this._keyStore.get(u),
+              value: this._myIndex.getValueForItemAtKeyId(l, u),
+              searcher: p,
             })
-          return p && p.length ? [{ idx: u, item: l, matches: p }] : []
+          return f && f.length ? [{ idx: h, item: l, matches: f }] : []
         }
         let c = []
-        for (let h = 0, d = a.children.length; h < d; h += 1) {
-          let p = a.children[h],
-            f = s(p, l, u)
-          if (f.length) c.push(...f)
+        for (let u = 0, p = a.children.length; u < p; u += 1) {
+          let f = a.children[u],
+            d = s(f, l, h)
+          if (d.length) c.push(...d)
           else if (a.operator === re.AND) return []
         }
         return c
@@ -2235,10 +2235,10 @@ var V = class {
     return (
       n.forEach(({ $: a, i: l }) => {
         if (O(a)) {
-          let u = s(t, a, l)
-          u.length &&
+          let h = s(t, a, l)
+          h.length &&
             (r[l] || ((r[l] = { idx: l, item: a, matches: [] }), o.push(r[l])),
-            u.forEach(({ matches: c }) => {
+            h.forEach(({ matches: c }) => {
               r[l].matches.push(...c)
             }))
         }
@@ -2254,8 +2254,8 @@ var V = class {
       n.forEach(({ $: o, i: a }) => {
         if (!O(o)) return
         let l = []
-        ;(s.forEach((u, c) => {
-          l.push(...this._findMatches({ key: u, value: o[c], searcher: t }))
+        ;(s.forEach((h, c) => {
+          l.push(...this._findMatches({ key: h, value: o[c], searcher: t }))
         }),
           l.length && r.push({ idx: a, item: o, matches: l }))
       }),
@@ -2268,13 +2268,13 @@ var V = class {
     if (F(t))
       t.forEach(({ v: r, i: o, n: a }) => {
         if (!O(r)) return
-        let { isMatch: l, score: u, indices: c } = s.searchIn(r)
-        l && n.push({ score: u, key: e, value: r, idx: o, norm: a, indices: c })
+        let { isMatch: l, score: h, indices: c } = s.searchIn(r)
+        l && n.push({ score: h, key: e, value: r, idx: o, norm: a, indices: c })
       })
     else {
       let { v: r, n: o } = t,
-        { isMatch: a, score: l, indices: u } = s.searchIn(r)
-      a && n.push({ score: l, key: e, value: r, norm: o, indices: u })
+        { isMatch: a, score: l, indices: h } = s.searchIn(r)
+      a && n.push({ score: l, key: e, value: r, norm: o, indices: h })
     }
     return n
   }
@@ -2282,7 +2282,7 @@ var V = class {
 V.version = '7.0.0'
 V.createIndex = st
 V.parseIndex = ei
-V.config = v
+V.config = g
 V.parseQuery = nt
 li(Ce)
 var mi = (function () {
@@ -2335,7 +2335,7 @@ var _i = function (i) {
             !_i(n) &&
             (s.customProperties = JSON.stringify(n))))
   },
-  Ye = function (i, e, t) {
+  qe = function (i, e, t) {
     var s = e && i.querySelector("label[for='".concat(e, "']")),
       n = s && s.innerText
     n && t.setAttribute('aria-label', n)
@@ -2345,7 +2345,7 @@ var _i = function (i) {
       var a = i.classNames.containerOuter,
         l = document.createElement('div')
       return (
-        _(l, a),
+        y(l, a),
         (l.dataset.type = r),
         e && (l.dir = e),
         s && (l.tabIndex = 0),
@@ -2353,7 +2353,7 @@ var _i = function (i) {
           (l.setAttribute('role', n ? 'combobox' : 'listbox'),
           n
             ? l.setAttribute('aria-autocomplete', 'list')
-            : o || Ye(this._docRoot, this.passedElement.element.id, l),
+            : o || qe(this._docRoot, this.passedElement.element.id, l),
           l.setAttribute('aria-haspopup', 'true'),
           l.setAttribute('aria-expanded', 'false')),
         o && l.setAttribute('aria-labelledby', o),
@@ -2363,7 +2363,7 @@ var _i = function (i) {
     containerInner: function (i) {
       var e = i.classNames.containerInner,
         t = document.createElement('div')
-      return (_(t, e), t)
+      return (y(t, e), t)
     },
     itemList: function (i, e) {
       var t = i.searchEnabled,
@@ -2373,8 +2373,8 @@ var _i = function (i) {
         o = s.listItems,
         a = document.createElement('div')
       return (
-        _(a, n),
-        _(a, e ? r : o),
+        y(a, n),
+        y(a, e ? r : o),
         this._isSelectElement && t && a.setAttribute('role', 'listbox'),
         a
       )
@@ -2383,7 +2383,7 @@ var _i = function (i) {
       var t = i.allowHTML,
         s = i.classNames.placeholder,
         n = document.createElement('div')
-      return (_(n, s), k(n, t, e), n)
+      return (y(n, s), k(n, t, e), n)
     },
     item: function (i, e, t) {
       var s = i.allowHTML,
@@ -2392,47 +2392,47 @@ var _i = function (i) {
         o = i.removeItemLabelText,
         a = i.classNames,
         l = a.item,
-        u = a.button,
+        h = a.button,
         c = a.highlightedState,
-        h = a.itemSelectable,
-        d = a.placeholder,
-        p = N(e.value),
-        f = document.createElement('div')
-      if ((_(f, l), e.labelClass)) {
+        u = a.itemSelectable,
+        p = a.placeholder,
+        f = N(e.value),
+        d = document.createElement('div')
+      if ((y(d, l), e.labelClass)) {
         var m = document.createElement('span')
-        ;(k(m, s, e.label), _(m, e.labelClass), f.appendChild(m))
-      } else k(f, s, e.label)
+        ;(k(m, s, e.label), y(m, e.labelClass), d.appendChild(m))
+      } else k(d, s, e.label)
       if (
-        ((f.dataset.item = ''),
-        (f.dataset.id = e.id),
-        (f.dataset.value = p),
-        he(f, e, !0),
+        ((d.dataset.item = ''),
+        (d.dataset.id = e.id),
+        (d.dataset.value = f),
+        he(d, e, !0),
         (e.disabled || this.containerOuter.isDisabled) &&
-          f.setAttribute('aria-disabled', 'true'),
+          d.setAttribute('aria-disabled', 'true'),
         this._isSelectElement &&
-          (f.setAttribute('aria-selected', 'true'),
-          f.setAttribute('role', 'option')),
-        e.placeholder && (_(f, d), (f.dataset.placeholder = '')),
-        _(f, e.highlighted ? c : h),
+          (d.setAttribute('aria-selected', 'true'),
+          d.setAttribute('role', 'option')),
+        e.placeholder && (y(d, p), (d.dataset.placeholder = '')),
+        y(d, e.highlighted ? c : u),
         t)
       ) {
-        ;(e.disabled && D(f, h), (f.dataset.deletable = ''))
-        var g = document.createElement('button')
-        ;((g.type = 'button'), _(g, u))
-        var y = x(e)
-        k(g, !0, X(r, e.value, y))
-        var b = X(o, e.value, y)
-        ;(b && g.setAttribute('aria-label', b),
-          (g.dataset.button = ''),
-          n ? f.insertAdjacentElement('afterbegin', g) : f.appendChild(g))
+        ;(e.disabled && D(d, u), (d.dataset.deletable = ''))
+        var _ = document.createElement('button')
+        ;((_.type = 'button'), y(_, h))
+        var v = x(e)
+        k(_, !0, X(r, e.value, v))
+        var b = X(o, e.value, v)
+        ;(b && _.setAttribute('aria-label', b),
+          (_.dataset.button = ''),
+          n ? d.insertAdjacentElement('afterbegin', _) : d.appendChild(_))
       }
-      return f
+      return d
     },
     choiceList: function (i, e) {
       var t = i.classNames.list,
         s = document.createElement('div')
       return (
-        _(s, t),
+        y(s, t),
         e || s.setAttribute('aria-multiselectable', 'true'),
         s.setAttribute('role', 'listbox'),
         s
@@ -2446,18 +2446,18 @@ var _i = function (i) {
         o = s.itemDisabled,
         a = e.id,
         l = e.label,
-        u = e.disabled,
+        h = e.disabled,
         c = N(l),
-        h = document.createElement('div')
-      ;(_(h, n),
-        u && _(h, o),
-        h.setAttribute('role', 'group'),
-        (h.dataset.group = ''),
-        (h.dataset.id = a),
-        (h.dataset.value = c),
-        u && h.setAttribute('aria-disabled', 'true'))
-      var d = document.createElement('div')
-      return (_(d, r), k(d, t, l || ''), h.appendChild(d), h)
+        u = document.createElement('div')
+      ;(y(u, n),
+        h && y(u, o),
+        u.setAttribute('role', 'group'),
+        (u.dataset.group = ''),
+        (u.dataset.id = a),
+        (u.dataset.value = c),
+        h && u.setAttribute('aria-disabled', 'true'))
+      var p = document.createElement('div')
+      return (y(p, r), k(p, t, l || ''), u.appendChild(p), u)
     },
     choice: function (i, e, t, s) {
       var n = i.allowHTML,
@@ -2465,45 +2465,45 @@ var _i = function (i) {
         o = r.item,
         a = r.itemChoice,
         l = r.itemSelectable,
-        u = r.selectedState,
+        h = r.selectedState,
         c = r.itemDisabled,
-        h = r.description,
-        d = r.placeholder,
-        p = e.label,
-        f = N(e.value),
+        u = r.description,
+        p = r.placeholder,
+        f = e.label,
+        d = N(e.value),
         m = document.createElement('div')
       ;((m.id = e.elementId),
-        _(m, o),
-        _(m, a),
+        y(m, o),
+        y(m, a),
         s &&
-          typeof p == 'string' &&
-          ((p = Oe(n, p)), (p += ' ('.concat(s, ')')), (p = { trusted: p })))
-      var g = m
+          typeof f == 'string' &&
+          ((f = Oe(n, f)), (f += ' ('.concat(s, ')')), (f = { trusted: f })))
+      var _ = m
       if (e.labelClass) {
-        var y = document.createElement('span')
-        ;(k(y, n, p), _(y, e.labelClass), (g = y), m.appendChild(y))
-      } else k(m, n, p)
+        var v = document.createElement('span')
+        ;(k(v, n, f), y(v, e.labelClass), (_ = v), m.appendChild(v))
+      } else k(m, n, f)
       if (e.labelDescription) {
         var b = ''.concat(e.elementId, '-description')
-        g.setAttribute('aria-describedby', b)
+        _.setAttribute('aria-describedby', b)
         var C = document.createElement('span')
-        ;(k(C, n, e.labelDescription), (C.id = b), _(C, h), m.appendChild(C))
+        ;(k(C, n, e.labelDescription), (C.id = b), y(C, u), m.appendChild(C))
       }
       return (
-        e.selected && _(m, u),
-        e.placeholder && _(m, d),
+        e.selected && y(m, h),
+        e.placeholder && y(m, p),
         m.setAttribute('role', e.group ? 'treeitem' : 'option'),
         (m.dataset.choice = ''),
         (m.dataset.id = e.id),
-        (m.dataset.value = f),
+        (m.dataset.value = d),
         t && (m.dataset.selectText = t),
         e.group && (m.dataset.groupId = ''.concat(e.group.id)),
         he(m, e, !1),
         e.disabled
-          ? (_(m, c),
+          ? (y(m, c),
             (m.dataset.choiceDisabled = ''),
             m.setAttribute('aria-disabled', 'true'))
-          : (_(m, l),
+          : (y(m, l),
             (m.dataset.choiceSelectable = ''),
             m.setAttribute('aria-selected', e.selected ? 'true' : 'false')),
         m
@@ -2517,15 +2517,15 @@ var _i = function (i) {
         o = document.createElement('input')
       return (
         (o.type = 'search'),
-        _(o, s),
-        _(o, n),
+        y(o, s),
+        y(o, n),
         (o.autocomplete = 'off'),
         (o.autocapitalize = 'off'),
         (o.spellcheck = !1),
         o.setAttribute('aria-autocomplete', 'list'),
         e
           ? o.setAttribute('aria-label', e)
-          : r || Ye(this._docRoot, this.passedElement.element.id, o),
+          : r || qe(this._docRoot, this.passedElement.element.id, o),
         o
       )
     },
@@ -2534,7 +2534,7 @@ var _i = function (i) {
         t = e.list,
         s = e.listDropdown,
         n = document.createElement('div')
-      return (_(n, t), _(n, s), n.setAttribute('aria-expanded', 'false'), n)
+      return (y(n, t), y(n, s), n.setAttribute('aria-expanded', 'false'), n)
     },
     notice: function (i, e, t) {
       var s = i.classNames,
@@ -2543,18 +2543,18 @@ var _i = function (i) {
         o = s.addChoice,
         a = s.noResults,
         l = s.noChoices,
-        u = s.notice
+        h = s.notice
       t === void 0 && (t = S.generic)
       var c = document.createElement('div')
-      switch ((k(c, !0, e), _(c, n), _(c, r), _(c, u), t)) {
+      switch ((k(c, !0, e), y(c, n), y(c, r), y(c, h), t)) {
         case S.addChoice:
-          _(c, o)
+          y(c, o)
           break
         case S.noResults:
-          _(c, a)
+          y(c, a)
           break
         case S.noChoices:
-          _(c, l)
+          y(c, l)
           break
       }
       return (
@@ -2581,7 +2581,7 @@ var _i = function (i) {
   ue = function (i) {
     if (i) return i.dataset.id ? parseInt(i.dataset.id, 10) : void 0
   },
-  q = '[data-choice-selectable]',
+  Y = '[data-choice-selectable]',
   rt = (function () {
     function i(e, t) {
       ;(e === void 0 && (e = '[data-choice]'), t === void 0 && (t = {}))
@@ -2592,8 +2592,8 @@ var _i = function (i) {
         (this._lastAddedGroupId = 0))
       var n = i.defaults
       ;((this.config = A(A(A({}, n.allOptions), n.options), t)),
-        at.forEach(function (y) {
-          s.config[y] = A(A(A({}, n.allOptions[y]), n.options[y]), t[y])
+        at.forEach(function (v) {
+          s.config[v] = A(A(A({}, n.allOptions[v]), n.options[v]), t[v])
         }))
       var r = this.config
       r.silent || this._validateConfig()
@@ -2607,23 +2607,23 @@ var _i = function (i) {
             : 'Expected one of the following types text|select-one|select-multiple',
         )
       var l = a.type,
-        u = l === j.Text
-      ;((u || r.maxItemCount !== 1) && (r.singleModeForMultiSelect = !1),
+        h = l === j.Text
+      ;((h || r.maxItemCount !== 1) && (r.singleModeForMultiSelect = !1),
         r.singleModeForMultiSelect && (l = j.SelectMultiple))
       var c = l === j.SelectOne,
-        h = l === j.SelectMultiple,
-        d = c || h
+        u = l === j.SelectMultiple,
+        p = c || u
       if (
         ((this._elementType = l),
-        (this._isTextElement = u),
+        (this._isTextElement = h),
         (this._isSelectOneElement = c),
-        (this._isSelectMultipleElement = h),
-        (this._isSelectElement = c || h),
-        (this._canAddUserChoices = (u && r.addItems) || (d && r.addChoices)),
+        (this._isSelectMultipleElement = u),
+        (this._isSelectElement = c || u),
+        (this._canAddUserChoices = (h && r.addItems) || (p && r.addChoices)),
         typeof r.renderSelectedChoices != 'boolean' &&
           (r.renderSelectedChoices = r.renderSelectedChoices === 'always' || c),
         r.closeDropdownOnSelect === 'auto'
-          ? (r.closeDropdownOnSelect = u || c || r.singleModeForMultiSelect)
+          ? (r.closeDropdownOnSelect = h || c || r.singleModeForMultiSelect)
           : (r.closeDropdownOnSelect = z(r.closeDropdownOnSelect)),
         r.placeholder &&
           (r.placeholderValue
@@ -2633,21 +2633,21 @@ var _i = function (i) {
               (r.placeholderValue = a.dataset.placeholder))),
         t.addItemFilter && typeof t.addItemFilter != 'function')
       ) {
-        var p =
+        var f =
           t.addItemFilter instanceof RegExp
             ? t.addItemFilter
             : new RegExp(t.addItemFilter)
-        r.addItemFilter = p.test.bind(p)
+        r.addItemFilter = f.test.bind(f)
       }
       if (this._isTextElement)
         this.passedElement = new It({ element: a, classNames: r.classNames })
       else {
-        var f = a
+        var d = a
         this.passedElement = new Lt({
-          element: f,
+          element: d,
           classNames: r.classNames,
-          template: function (y) {
-            return s._templates.option(y)
+          template: function (v) {
+            return s._templates.option(v)
           },
           extractPlaceholder: r.placeholder && !this._hasNonChoicePlaceholder,
         })
@@ -2656,7 +2656,7 @@ var _i = function (i) {
         ((this.initialised = !1),
         (this._store = new Pt(r)),
         (this._currentValue = ''),
-        (r.searchEnabled = !u && r.searchEnabled),
+        (r.searchEnabled = !h && r.searchEnabled),
         (this._canSearch = r.searchEnabled),
         (this._isScrollingOnIe = !1),
         (this._highlightPosition = 0),
@@ -2667,8 +2667,8 @@ var _i = function (i) {
         !this._direction)
       ) {
         var m = window.getComputedStyle(a).direction,
-          g = window.getComputedStyle(document.documentElement).direction
-        m !== g && (this._direction = m)
+          _ = window.getComputedStyle(document.documentElement).direction
+        m !== _ && (this._direction = m)
       }
       if (
         ((this._idNames = { itemChoice: 'item-choice' }),
@@ -2704,8 +2704,8 @@ var _i = function (i) {
         return
       }
       ;(this.init(),
-        (this._initialItems = this._store.items.map(function (y) {
-          return y.value
+        (this._initialItems = this._store.items.map(function (v) {
+          return v.value
         })))
     }
     return (
@@ -2716,7 +2716,7 @@ var _i = function (i) {
               return bi
             },
             get allOptions() {
-              return He
+              return Ke
             },
             get templates() {
               return gi
@@ -2962,8 +2962,8 @@ var _i = function (i) {
         if (typeof e == 'function') {
           var l = e(this)
           if (typeof Promise == 'function' && l instanceof Promise)
-            return new Promise(function (u) {
-              return requestAnimationFrame(u)
+            return new Promise(function (h) {
+              return requestAnimationFrame(h)
             })
               .then(function () {
                 return a._handleLoadingState(!0)
@@ -2971,11 +2971,11 @@ var _i = function (i) {
               .then(function () {
                 return l
               })
-              .then(function (u) {
-                return a.setChoices(u, t, s, n, r, o)
+              .then(function (h) {
+                return a.setChoices(h, t, s, n, r, o)
               })
-              .catch(function (u) {
-                a.config.silent || console.error(u)
+              .catch(function (h) {
+                a.config.silent || console.error(h)
               })
               .then(function () {
                 return a._handleLoadingState(!1)
@@ -2999,21 +2999,21 @@ var _i = function (i) {
           this.containerOuter.removeLoadingState(),
           this._store.withTxn(function () {
             ;(r && (a._isSearching = !1), n && a.clearChoices(!0, o))
-            var u = t === 'value',
+            var h = t === 'value',
               c = s === 'label'
-            ;(e.forEach(function (h) {
-              if ('choices' in h) {
-                var d = h
-                ;(c || (d = A(A({}, d), { label: d[s] })),
-                  a._addGroup(M(d, !0)))
+            ;(e.forEach(function (u) {
+              if ('choices' in u) {
+                var p = u
+                ;(c || (p = A(A({}, p), { label: p[s] })),
+                  a._addGroup(M(p, !0)))
               } else {
-                var p = h
-                ;(!c || !u) && (p = A(A({}, p), { value: p[t], label: p[s] }))
-                var f = M(p, !1)
-                ;(a._addChoice(f),
-                  f.placeholder &&
+                var f = u
+                ;(!c || !h) && (f = A(A({}, f), { value: f[t], label: f[s] }))
+                var d = M(f, !1)
+                ;(a._addChoice(d),
+                  d.placeholder &&
                     !a._hasNonChoicePlaceholder &&
-                    (a._placeholderValue = ze(f.label)))
+                    (a._placeholderValue = ze(d.label)))
               }
             }),
               a.unhighlightAll())
@@ -3116,7 +3116,7 @@ var _i = function (i) {
       }),
       (i.prototype._validateConfig = function () {
         var e = this.config,
-          t = yt(e, He)
+          t = yt(e, Ke)
         ;(t.length &&
           console.warn('Unknown config option(s) passed', t.join(', ')),
           e.allowHTML &&
@@ -3149,43 +3149,43 @@ var _i = function (i) {
             a = r.activeChoices,
             l = n ? s.searchResultLimit : s.renderChoiceLimit
           if (this._isSelectElement) {
-            var u = a.filter(function (g) {
-              return !g.element
+            var h = a.filter(function (_) {
+              return !_.element
             })
-            u.length && this.passedElement.addOptions(u)
+            h.length && this.passedElement.addOptions(h)
           }
           var c = document.createDocumentFragment(),
-            h = function (g) {
-              return g.filter(function (y) {
+            u = function (_) {
+              return _.filter(function (v) {
                 return (
-                  !y.placeholder &&
+                  !v.placeholder &&
                   (n
-                    ? (s.searchRenderSelectedChoices || !y.selected) && !!y.rank
-                    : s.renderSelectedChoices || !y.selected)
+                    ? (s.searchRenderSelectedChoices || !v.selected) && !!v.rank
+                    : s.renderSelectedChoices || !v.selected)
                 )
               })
             },
-            d = s.appendGroupInSearch && n,
-            p = !1,
-            f = null,
-            m = function (g, y) {
-              n ? g.sort(_t) : s.shouldSort && g.sort(s.sorter)
-              var b = g.length
-              ;((b = !y && l > 0 && b > l ? l : b),
+            p = s.appendGroupInSearch && n,
+            f = !1,
+            d = null,
+            m = function (_, v) {
+              n ? _.sort(_t) : s.shouldSort && _.sort(s.sorter)
+              var b = _.length
+              ;((b = !v && l > 0 && b > l ? l : b),
                 b--,
-                g.every(function (C, B) {
-                  var Y =
+                _.every(function (C, B) {
+                  var q =
                     C.choiceEl ||
                     e._templates.choice(
                       s,
                       C,
                       s.itemSelectText,
-                      d && C.group ? C.group.label : void 0,
+                      p && C.group ? C.group.label : void 0,
                     )
                   return (
-                    (C.choiceEl = Y),
-                    c.appendChild(Y),
-                    n || !C.selected ? (p = !0) : f || (f = Y),
+                    (C.choiceEl = q),
+                    c.appendChild(q),
+                    n || !C.selected ? (f = !0) : d || (d = q),
                     B < b
                   )
                 }))
@@ -3199,31 +3199,31 @@ var _i = function (i) {
               !n &&
               this._isSelectOneElement &&
               m(
-                a.filter(function (g) {
-                  return g.placeholder && !g.group
+                a.filter(function (_) {
+                  return _.placeholder && !_.group
                 }),
                 !1,
               ),
             o.length && !n
               ? (s.shouldSort && o.sort(s.sorter),
                 m(
-                  a.filter(function (g) {
-                    return !g.placeholder && !g.group
+                  a.filter(function (_) {
+                    return !_.placeholder && !_.group
                   }),
                   !1,
                 ),
-                o.forEach(function (g) {
-                  var y = h(g.choices)
-                  if (y.length) {
-                    if (g.label) {
-                      var b = g.groupEl || e._templates.choiceGroup(e.config, g)
-                      ;((g.groupEl = b), b.remove(), c.appendChild(b))
+                o.forEach(function (_) {
+                  var v = u(_.choices)
+                  if (v.length) {
+                    if (_.label) {
+                      var b = _.groupEl || e._templates.choiceGroup(e.config, _)
+                      ;((_.groupEl = b), b.remove(), c.appendChild(b))
                     }
-                    m(y, !0)
+                    m(v, !0)
                   }
                 }))
-              : m(h(a), !1)),
-            !p &&
+              : m(u(a), !1)),
+            !f &&
               (n || !c.children.length || !s.renderSelectedChoices) &&
               (this._notice ||
                 (this._notice = {
@@ -3233,7 +3233,7 @@ var _i = function (i) {
               c.replaceChildren('')),
             this._renderNotice(c),
             this.choiceList.element.replaceChildren(c),
-            this._highlightChoice(f))
+            this._highlightChoice(d))
         }
       }),
       (i.prototype._renderItems = function () {
@@ -3242,26 +3242,26 @@ var _i = function (i) {
           s = this.itemList.element,
           n = this.config,
           r = document.createDocumentFragment(),
-          o = function (h) {
-            return s.querySelector('[data-item][data-id="'.concat(h.id, '"]'))
+          o = function (u) {
+            return s.querySelector('[data-item][data-id="'.concat(u.id, '"]'))
           },
-          a = function (h) {
-            var d = h.itemEl
-            ;(d && d.parentElement) ||
-              ((d = o(h) || e._templates.item(n, h, n.removeItemButton)),
-              (h.itemEl = d),
-              r.appendChild(d))
+          a = function (u) {
+            var p = u.itemEl
+            ;(p && p.parentElement) ||
+              ((p = o(u) || e._templates.item(n, u, n.removeItemButton)),
+              (u.itemEl = p),
+              r.appendChild(p))
           }
         t.forEach(a)
         var l = !!r.childNodes.length
         if (this._isSelectOneElement) {
-          var u = s.children.length
-          if (l || u > 1) {
+          var h = s.children.length
+          if (l || h > 1) {
             var c = s.querySelector(W(n.classNames.placeholder))
             c && c.remove()
           } else
             !l &&
-              !u &&
+              !h &&
               this._placeholderValue &&
               ((l = !0),
               a(
@@ -3281,16 +3281,16 @@ var _i = function (i) {
           n.shouldSortItems &&
             !this._isSelectOneElement &&
             (t.sort(n.sorter),
-            t.forEach(function (h) {
-              var d = o(h)
-              d && (d.remove(), r.append(d))
+            t.forEach(function (u) {
+              var p = o(u)
+              p && (p.remove(), r.append(p))
             }),
             s.append(r))),
           this._isTextElement &&
             (this.passedElement.value = t
-              .map(function (h) {
-                var d = h.value
-                return d
+              .map(function (u) {
+                var p = u.value
+                return p
               })
               .join(n.delimiter)))
       }),
@@ -3747,14 +3747,14 @@ var _i = function (i) {
           if (r)
             n > 0
               ? (o = this.dropdown.element.querySelector(
-                  ''.concat(q, ':last-of-type'),
+                  ''.concat(Y, ':last-of-type'),
                 ))
-              : (o = this.dropdown.element.querySelector(q))
+              : (o = this.dropdown.element.querySelector(Y))
           else {
             var a = this.dropdown.element.querySelector(
               W(this.config.classNames.highlightedState),
             )
-            a ? (o = pt(a, q, n)) : (o = this.dropdown.element.querySelector(q))
+            a ? (o = pt(a, Y, n)) : (o = this.dropdown.element.querySelector(Y))
           }
           ;(o &&
             (Pe(o, this.choiceList.element, n) ||
@@ -3883,7 +3883,7 @@ var _i = function (i) {
       }),
       (i.prototype._highlightChoice = function (e) {
         e === void 0 && (e = null)
-        var t = Array.from(this.dropdown.element.querySelectorAll(q))
+        var t = Array.from(this.dropdown.element.querySelectorAll(Y))
         if (t.length) {
           var s = e,
             n = this.config.classNames.highlightedState
@@ -3894,7 +3894,7 @@ var _i = function (i) {
                   ? (s = t[this._highlightPosition])
                   : (s = t[t.length - 1]),
                 s || (s = t[0])),
-            _(s, n),
+            y(s, n),
             s.setAttribute('aria-selected', 'true'),
             this.passedElement.triggerEvent(I.highlightChoice, { el: s }),
             this.dropdown.isActive &&
@@ -4124,13 +4124,15 @@ function Ei({
   hasDynamicSearchResults: e,
   label: t,
   loadingMessage: s,
-  noSearchResultsMessage: n,
-  optionsLimit: r,
-  placeholder: o,
-  searchPrompt: a,
-  searchingMessage: l,
+  errorMessage: n,
+  unavailableMessage: r,
+  noSearchResultsMessage: o,
+  optionsLimit: a,
+  placeholder: l,
+  searchPrompt: h,
+  searchingMessage: c,
   state: u,
-  updateSelected: c,
+  updateSelected: p,
 }) {
   return {
     isSearching: !1,
@@ -4141,22 +4143,25 @@ function Ei({
     state: u,
     _handlers: {},
     _loadingTimer: null,
+    destroyed: !1,
+    suppressRefresh: !1,
     async init() {
       ;((this.select = new rt(this.$refs.input, {
-        allowHTML: !0,
+        allowHTML: !1,
+        searchChoices: !1,
         duplicateItemsAllowed: !1,
         itemSelectText: '',
         loadingText: s,
         maxItemCount: -1,
-        noChoicesText: a,
-        noResultsText: n,
-        placeholderValue: o,
+        noChoicesText: h,
+        noResultsText: o,
+        placeholderValue: l,
         removeItemButton: !1,
-        renderChoiceLimit: r,
+        renderChoiceLimit: a,
         searchEnabled: !0,
         searchFields: ['label'],
-        searchPlaceholderValue: a,
-        searchResultLimit: r,
+        searchPlaceholderValue: h,
+        searchResultLimit: a,
         shouldSort: !1,
         searchFloor: e ? 0 : 1,
         classNames: {
@@ -4171,19 +4176,40 @@ function Ei({
       })),
         this.refreshPlaceholder(),
         (this._handlers.showDropdown = async () => {
+          if (this.suppressRefresh) {
+            this.suppressRefresh = !1
+            return
+          }
           await this.refreshChoices()
         }),
         (this._handlers.change = async () => {
-          this.refreshPlaceholder()
           let d = this.select.getValue(!0) ?? null
-          ;(this.setChoices([{ label: t, value: u, selected: !0 }]), await c(d))
+          if ((this.setChoices([{ label: t, value: u, selected: !0 }]), !d))
+            return
+          let m = ++this.searchRequest
+          try {
+            let _ = await p(d)
+            if (this.destroyed || m !== this.searchRequest) return
+            let v = _ ? new URL(_, window.location.href) : null
+            if (
+              !v ||
+              !['http:', 'https:'].includes(v.protocol) ||
+              v.origin !== window.location.origin
+            ) {
+              this.showMessage(r)
+              return
+            }
+            window.location.assign(v.href)
+          } catch {
+            !this.destroyed && m === this.searchRequest && this.showMessage(n)
+          }
         }),
         (this._handlers.search = async () => {
-          this.isSearching = !0
+          ;(++this.searchRequest, (this.isSearching = !0))
         }))
-      let h = window.Alpine
-      ;((this._handlers.debouncedSearch = h?.debounce
-        ? h.debounce(async (d) => {
+      let f = window.Alpine
+      ;((this._handlers.debouncedSearch = f?.debounce
+        ? f.debounce(async (d) => {
             ;(await this.refreshChoices({ search: d.detail.value?.trim() }),
               (this.isSearching = !1))
           }, 120)
@@ -4192,10 +4218,12 @@ function Ei({
               (this.isSearching = !1))
           }),
         (this._handlers.keydown = (d) => {
-          d.key === 'Tab' &&
-            this.select?.dropdown?.isActive &&
-            this.acceptHighlightedChoice() &&
-            (d.preventDefault(), d.stopPropagation())
+          d.key === 'Escape' && this.select?.dropdown?.isActive
+            ? (d.preventDefault(),
+              d.stopPropagation(),
+              this.select.hideDropdown(),
+              this.select.containerOuter.element.focus())
+            : d.key === 'Tab' && this.select.hideDropdown()
         }),
         this.$refs.input.addEventListener(
           'showDropdown',
@@ -4208,17 +4236,17 @@ function Ei({
           this._handlers.debouncedSearch,
         ),
         this.$el.addEventListener('keydown', this._handlers.keydown),
-        (this._handlers.wireRefresh = (d) => {
+        (this._handlers.wireRefresh = () => {
           ;(this.select.clearChoices(),
-            this.select.setChoices([
-              { label: d.label, value: u, selected: !0 },
-            ]))
+            this.select.setChoices([{ label: t, value: u, selected: !0 }]))
         }),
         this.$wire?.on &&
           this.$wire.on('record-switcher:refresh', this._handlers.wireRefresh))
     },
     destroy() {
-      ;(window.clearTimeout(this._loadingTimer),
+      ;((this.destroyed = !0),
+        ++this.searchRequest,
+        window.clearTimeout(this._loadingTimer),
         this.select && (this.select.destroy(), (this.select = null)),
         this.$refs.input &&
           (this.$refs.input.removeEventListener(
@@ -4237,29 +4265,33 @@ function Ei({
           this._handlers.wireRefresh &&
           this.$wire.off('record-switcher:refresh', this._handlers.wireRefresh))
     },
-    async refreshChoices(h = {}) {
+    async refreshChoices(f = {}) {
+      if (this.destroyed) return
       let d,
-        p = ++this.searchRequest
-      this.scheduleLoadingChoice(h.search)
+        m = ++this.searchRequest
+      this.scheduleLoadingChoice(f.search)
       try {
-        d = await this.getChoices(h)
+        d = await this.getChoices(f)
       } catch {
-        d = []
+        d = [{ label: n, value: '', disabled: !0 }]
       }
-      p === this.searchRequest &&
+      this.destroyed ||
+        m !== this.searchRequest ||
         (window.clearTimeout(this._loadingTimer),
         this.refreshPlaceholder(),
-        this.setChoices(d),
+        this.setChoices(d.length ? d : [{ label: o, value: '', disabled: !0 }]),
+        (this.isSearching = !1),
         this.highlightSelectedChoice())
     },
-    scheduleLoadingChoice(h) {
+    scheduleLoadingChoice(f) {
       ;(window.clearTimeout(this._loadingTimer),
         (this._loadingTimer = window.setTimeout(() => {
-          this.hasVisibleChoices() ||
+          this.destroyed ||
+            this.hasVisibleChoices() ||
             (this.select.clearChoices(),
             this.select.setChoices([
               {
-                label: [null, void 0, ''].includes(h) ? s : l,
+                label: [null, void 0, ''].includes(f) ? s : c,
                 value: '',
                 disabled: !0,
               },
@@ -4268,23 +4300,12 @@ function Ei({
     },
     highlightSelectedChoice() {
       if ([null, void 0, ''].includes(this.state)) return
-      let h = this.select.dropdown.element.querySelector(
+      let f = this.select.dropdown.element.querySelector(
         `.choices__item[data-value="${this.state}"]`,
       )
-      h &&
-        (this.select._highlightChoice(h),
-        window.setTimeout(() => h.scrollIntoView({ block: 'nearest' }), 100))
-    },
-    acceptHighlightedChoice() {
-      let h = this.select.dropdown.element.querySelector(
-        '.choices__item.is-highlighted[data-choice-selectable], .choices__item[data-choice-selectable]',
-      )
-      return h?.dataset?.value
-        ? (this.select.setChoiceByValue(h.dataset.value),
-          this.select.hideDropdown(),
-          this.$refs.input.dispatchEvent(new Event('change', { bubbles: !0 })),
-          !0)
-        : !1
+      f &&
+        (this.select._highlightChoice(f),
+        window.setTimeout(() => f.scrollIntoView({ block: 'nearest' }), 100))
     },
     hasVisibleChoices() {
       return (
@@ -4293,29 +4314,38 @@ function Ei({
         ) !== null
       )
     },
-    setChoices(h) {
-      this.select.setChoices(h, 'value', 'label', !0)
+    setChoices(f) {
+      this.select.setChoices(f, 'value', 'label', !0)
     },
-    async getChoices({ search: h }) {
-      let d
-      try {
-        d = await i(h)
-      } catch {
-        d = []
-      }
-      let p = {}
+    showMessage(f) {
+      ;(this.setChoices([{ label: f, value: '', disabled: !0 }]),
+        this.select.dropdown.isActive ||
+          ((this.suppressRefresh = !0), this.select.showDropdown()))
+    },
+    async getChoices({ search: f }) {
+      let m = (await i(f)).map((v) => ({
+          ...v,
+          value: v.recordKey,
+          label: [
+            v.label,
+            [v.site, ...(v.ancestors ?? [])].filter(Boolean).join(' \u203A '),
+            v.path,
+          ].filter(Boolean).join(`
+`),
+        })),
+        _ = {}
       return (
-        d.forEach((f) => {
-          f.group &&
-            ((p[f.group] ??= {
-              label: f.group,
-              id: f.group,
+        m.forEach((v) => {
+          v.group &&
+            ((_[v.group] ??= {
+              label: v.group,
+              id: v.group,
               disabled: !1,
               choices: [],
             }),
-            p[f.group].choices.push(f))
+            _[v.group].choices.push(v))
         }),
-        Object.keys(p).length === 0 ? d : Object.values(p)
+        Object.keys(_).length === 0 ? m : Object.values(_)
       )
     },
     refreshPlaceholder() {
@@ -4323,9 +4353,8 @@ function Ei({
         (this.select._renderItems(), ![null, void 0, ''].includes(this.state))
       )
         return
-      let h = this.$el.querySelector('.choices__list--single')
-      h &&
-        (h.innerHTML = `<div class="choices__placeholder choices__item">${o ?? ''}</div>`)
+      let f = this.$el.querySelector('.choices__list--single')
+      f && (f.textContent = t ?? l ?? '')
     },
   }
 }

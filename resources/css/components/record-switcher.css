@@ -1,5 +1,5 @@
 .filament-record-switcher {
-    display: inline-flex;
+    display: flex;
     max-width: min(100%, 42rem);
     vertical-align: top;
 }
@@ -221,4 +221,26 @@
         font-size: 1.875rem;
         line-height: 2.25rem;
     }
+}
+
+.filament-record-switcher {
+    margin-block-start: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+}
+
+.filament-record-switcher .choices.choices__select__changer {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5rem;
+}
+
+.filament-record-switcher .choices__list--dropdown .choices__item {
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.filament-record-switcher .is-focused .choices__inner {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
 }
