@@ -18,7 +18,7 @@
             "click": ".filament-record-switcher .choices__inner",
             "waitFor": ".filament-record-switcher .choices__list--dropdown.is-active .choices__item[data-choice-selectable][data-value*=\"/pages/\"]",
             "required": true,
-            "notes": "Capture a Capell admin edit page heading with record-switcher page suggestions loaded.",
+            "notes": "Capture a real seeded Capell admin edit page with record-switcher page suggestions loaded. Require actual populated options before saving the image.",
             "useCase": "An editor jumps between related editable records without returning to the table view.",
             "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher.png",
             "darkScreenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-dark.png"
@@ -31,7 +31,7 @@
             "targetType": "admin-surface",
             "target": "RecordSwitcherHeadingExtender",
             "scenario": "admin-index",
-            "url": "/pages/{first-record}/edit",
+            "url": "/screenshot-fixtures/record-switcher/pages",
             "waitFor": ".filament-record-switcher .choices__list--dropdown:has-text(\"No options match your search.\")",
             "required": false,
             "notes": "Follow-up capture for a search with no matching records, proving the heading switcher fails quietly and remains usable.",
@@ -57,28 +57,23 @@
             "targetType": "admin-surface",
             "target": "RecordSwitcherHeadingExtender",
             "scenario": "admin-index",
-            "url": "/pages/{first-record}/edit",
-            "click": ".filament-record-switcher .choices__inner",
-            "waitFor": ".filament-record-switcher .choices__list--dropdown:has-text(\"Other sites\")",
+            "url": "/screenshot-fixtures/record-switcher/pages",
+            "waitFor": ".filament-record-switcher .choices__list--dropdown:has-text(\"Other sites\"):has-text(\"Partner guide\")",
             "required": false,
-            "notes": "Use a global administrator and seeded accessible pages on at least two sites. Wait for the actual Other sites group; a tenant-scoped actor must never be used for this claim.",
+            "notes": "The guarded fixture prepares accessible pages on two sites for a global administrator. Search for Partner guide and require the actual Other sites group; a tenant-scoped actor is refused.",
             "useCase": "An editor switches between related pages while avoiding similarly named records on other sites.",
-            "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-cross-site-pages.png"
-        },
-        {
-            "id": "admin-heading-switcher-unavailable-resource",
-            "title": "Record Switcher unavailable resource state.",
-            "package": "record-switcher",
-            "surface": "admin",
-            "targetType": "admin-surface",
-            "target": "RecordSwitcherHeadingExtender",
-            "scenario": "admin-index",
-            "url": "/pages/{first-record}/edit",
-            "waitFor": ".filament-record-switcher",
-            "required": false,
-            "notes": "Capture an edit page where the current resource cannot provide switchable records because of permission, tenancy, or unsupported model configuration.",
-            "useCase": "An editor lands on a supported admin page without switchable peer records and the heading remains stable without exposing inaccessible records.",
-            "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-unavailable-resource.png"
+            "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-cross-site-pages.png",
+            "beforeWait": [
+                {
+                    "type": "click",
+                    "selector": ".filament-record-switcher .choices__inner"
+                },
+                {
+                    "type": "fill",
+                    "selector": ".filament-record-switcher .choices__input",
+                    "value": "Partner guide"
+                }
+            ]
         }
     ],
     "notCaptured": [
@@ -86,6 +81,11 @@
             "id": "record-switcher-admin-sidebar-menu-open",
             "surface": "admin",
             "reason": "Not captured: the real in-repo runner was blocked before navigation on 2026-08-16 when the all-package workbench install failed with missing Capell\\ThemeBistro\\ThemeBistroServiceProvider autoloading. This non-required light/dark pair was removed rather than fabricated."
+        },
+        {
+            "id": "admin-heading-switcher-unavailable-resource",
+            "surface": "admin",
+            "reason": "An unavailable resource deliberately hides the switcher. Waiting for .filament-record-switcher could only capture an available control, so this image cannot prove the former claim. Absence and inaccessible endpoints remain covered by the Livewire tests."
         }
     ]
 }
