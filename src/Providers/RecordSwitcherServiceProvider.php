@@ -29,7 +29,9 @@ final class RecordSwitcherServiceProvider extends AbstractPackageServiceProvider
 
     public function packageBooted(): void
     {
-        $this->app->tag([RecordSwitcherHeadingExtender::class], EditRecordHeadingExtender::TAG);
+        if ($this->isPackageInstalled()) {
+            $this->app->tag([RecordSwitcherHeadingExtender::class], EditRecordHeadingExtender::TAG);
+        }
 
         Livewire::addNamespace('capell-record-switcher', classNamespace: 'Capell\\RecordSwitcher\\Livewire');
 

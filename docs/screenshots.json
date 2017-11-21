@@ -32,12 +32,22 @@
             "target": "RecordSwitcherHeadingExtender",
             "scenario": "admin-index",
             "url": "/pages/{first-record}/edit",
-            "click": ".filament-record-switcher .choices__inner",
-            "waitFor": ".filament-record-switcher",
+            "waitFor": ".filament-record-switcher .choices__list--dropdown:has-text(\"No options match your search.\")",
             "required": false,
             "notes": "Follow-up capture for a search with no matching records, proving the heading switcher fails quietly and remains usable.",
             "useCase": "An editor searches for a record that does not exist and understands there are no suggestions without leaving the edit page.",
-            "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-empty-search.png"
+            "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-empty-search.png",
+            "beforeWait": [
+                {
+                    "type": "click",
+                    "selector": ".filament-record-switcher .choices__inner"
+                },
+                {
+                    "type": "fill",
+                    "selector": ".filament-record-switcher .choices__input",
+                    "value": "zz-screenshot-no-matching-record"
+                }
+            ]
         },
         {
             "id": "admin-heading-switcher-cross-site-pages",
@@ -49,9 +59,9 @@
             "scenario": "admin-index",
             "url": "/pages/{first-record}/edit",
             "click": ".filament-record-switcher .choices__inner",
-            "waitFor": ".filament-record-switcher .choices__list--dropdown.is-active",
+            "waitFor": ".filament-record-switcher .choices__list--dropdown:has-text(\"Other sites\")",
             "required": false,
-            "notes": "Follow-up capture for Page suggestions with same-parent, same-site, and other-site records visibly distinguished.",
+            "notes": "Use a global administrator and seeded accessible pages on at least two sites. Wait for the actual Other sites group; a tenant-scoped actor must never be used for this claim.",
             "useCase": "An editor switches between related pages while avoiding similarly named records on other sites.",
             "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-cross-site-pages.png"
         },
