@@ -14,7 +14,6 @@ use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Css;
 use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\Collection;
-use Livewire\Component;
 use Throwable;
 
 final class RecordSwitcherHealthCheck implements ChecksExtensionHealth
