@@ -135,7 +135,7 @@ final class RecordSwitcherHealthCheck implements ChecksExtensionHealth
 
     public function livewireNamespaceIsRegistered(): bool
     {
-        if (! class_exists(RecordSwitcher::class) || ! is_subclass_of(RecordSwitcher::class, Component::class)) {
+        if (! class_exists(RecordSwitcher::class)) {
             return false;
         }
 
