@@ -1,7 +1,3 @@
-# Record Switcher
-
-<!-- prettier-ignore-start -->
-
 ## What it does
 
 Record Switcher lets you quickly jump between records in the admin without going back to a list each time.
@@ -18,9 +14,3 @@ In the admin, when you are viewing or editing a record, as a way to move to the 
 
 - There is nothing to configure; the switcher appears where it is useful.
 - It speeds up moving through many records but changes nothing about the records themselves.
-
----
-
-For developers: see the [README](../README.md).
-
-<!-- prettier-ignore-end -->
