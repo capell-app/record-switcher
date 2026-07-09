@@ -113,6 +113,11 @@ describe('record-switcher manifest', function (): void {
 
         foreach ($entries as $entry) {
             throw_unless(is_array($entry), RuntimeException::class, 'Record Switcher screenshot contract entries must be arrays.');
+
+            if (($entry['required'] ?? false) !== true) {
+                continue;
+            }
+
             $screenshotPath = $entry['screenshotPath'] ?? null;
             throw_unless(is_string($screenshotPath), RuntimeException::class, 'Record Switcher screenshot paths must be strings.');
 

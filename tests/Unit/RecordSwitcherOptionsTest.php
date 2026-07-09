@@ -6,8 +6,8 @@ use Capell\Admin\Filament\Resources\Pages\PageResource;
 use Capell\Core\Models\Blueprint;
 use Capell\Core\Models\Page;
 use Capell\Core\Models\Site;
+use Capell\RecordSwitcher\Actions\BuildRecordSwitcherOptionsAction;
 use Capell\RecordSwitcher\Filament\RecordSwitcherHeadingExtender;
-use Capell\RecordSwitcher\Livewire\RecordSwitcher;
 use Capell\RecordSwitcher\Tests\Fixtures\RecordSwitcherDisabledEditPage;
 use Capell\RecordSwitcher\Tests\Fixtures\RecordSwitcherEmptySearchResource;
 use Capell\RecordSwitcher\Tests\Fixtures\RecordSwitcherTestRecord;
@@ -21,12 +21,10 @@ it('returns page option labels as html strings for browser choices', function ()
     $currentPage = Page::factory()->type($pageType)->create(['name' => 'Home']);
     Page::factory()->type($pageType)->create(['name' => 'Pricing']);
 
-    $switcher = new RecordSwitcher;
-    $switcher->resourceClass = PageResource::class;
-    $switcher->recordKey = (string) $currentPage->getRouteKey();
-    $switcher->label = 'Home';
-
-    $options = $switcher->getOptions();
+    $options = BuildRecordSwitcherOptionsAction::run(
+        resourceClass: PageResource::class,
+        recordKey: (string) $currentPage->getRouteKey(),
+    );
 
     expect($options)->toHaveCount(1)
         ->and($options[0]['label'])->toBe('Pricing')
@@ -40,12 +38,11 @@ it('searches generic resource options with declared searchable attributes', func
     RecordSwitcherTestRecord::query()->create(['name' => 'Launch Plan', 'code' => 'editorial']);
     RecordSwitcherTestRecord::query()->create(['name' => 'Archive', 'code' => 'old']);
 
-    $switcher = new RecordSwitcher;
-    $switcher->resourceClass = RecordSwitcherTestRecordResource::class;
-    $switcher->recordKey = recordSwitcherRouteKey($currentRecord);
-    $switcher->label = 'Current';
-
-    $options = $switcher->getOptions('launch');
+    $options = BuildRecordSwitcherOptionsAction::run(
+        resourceClass: RecordSwitcherTestRecordResource::class,
+        recordKey: recordSwitcherRouteKey($currentRecord),
+        search: 'launch',
+    );
 
     expect($options)->toHaveCount(1)
         ->and($options[0]['label'])->toBe('Launch Plan')
@@ -59,13 +56,12 @@ it('keeps empty searchable attributes from breaking generic option loading', fun
     RecordSwitcherTestRecord::query()->create(['name' => 'Beta', 'code' => 'beta']);
     RecordSwitcherTestRecord::query()->create(['name' => 'Alpha', 'code' => 'alpha']);
 
-    $switcher = new RecordSwitcher;
-    $switcher->resourceClass = RecordSwitcherEmptySearchResource::class;
-    $switcher->recordKey = recordSwitcherRouteKey($currentRecord);
-    $switcher->label = 'Current';
-    $switcher->limitResults = 1;
-
-    $options = $switcher->getOptions('anything');
+    $options = BuildRecordSwitcherOptionsAction::run(
+        resourceClass: RecordSwitcherEmptySearchResource::class,
+        recordKey: recordSwitcherRouteKey($currentRecord),
+        limitResults: 1,
+        search: 'anything',
+    );
 
     expect($options)->toHaveCount(1)
         ->and($options[0]['label'])->toBe('Beta');
@@ -86,12 +82,10 @@ it('prioritizes recently updated generic records before older records', function
         'updated_at' => now()->subMinute(),
     ]);
 
-    $switcher = new RecordSwitcher;
-    $switcher->resourceClass = RecordSwitcherTestRecordResource::class;
-    $switcher->recordKey = recordSwitcherRouteKey($currentRecord);
-    $switcher->label = 'Current';
-
-    $options = $switcher->getOptions();
+    $options = BuildRecordSwitcherOptionsAction::run(
+        resourceClass: RecordSwitcherTestRecordResource::class,
+        recordKey: recordSwitcherRouteKey($currentRecord),
+    );
 
     expect($options)->toHaveCount(2)
         ->and($options[0]['label'])->toBe('Recent')
@@ -109,12 +103,10 @@ it('prioritizes page siblings before same-site and other-site pages', function (
     Page::factory()->site($primarySite)->type($pageType)->create(['name' => 'Zulu same site']);
     Page::query()->fixTree();
 
-    $switcher = new RecordSwitcher;
-    $switcher->resourceClass = PageResource::class;
-    $switcher->recordKey = (string) $currentPage->getRouteKey();
-    $switcher->label = 'Current';
-
-    $options = $switcher->getOptions();
+    $options = BuildRecordSwitcherOptionsAction::run(
+        resourceClass: PageResource::class,
+        recordKey: (string) $currentPage->getRouteKey(),
+    );
 
     expect($options)->toHaveCount(4)
         ->and($options[0]['label'])->toContain('Beta sibling')
@@ -135,15 +127,14 @@ it('keeps page option rendering inside the manifest admin query budget', functio
     Page::factory()->site($site)->type($pageType)->parent($parentPage)->create(['name' => 'Pricing']);
     Page::query()->fixTree();
 
-    $switcher = new RecordSwitcher;
-    $switcher->resourceClass = PageResource::class;
-    $switcher->recordKey = (string) $currentPage->getRouteKey();
-    $switcher->label = 'Current';
-
     DB::flushQueryLog();
     DB::enableQueryLog();
 
-    $options = $switcher->getOptions('pricing');
+    $options = BuildRecordSwitcherOptionsAction::run(
+        resourceClass: PageResource::class,
+        recordKey: (string) $currentPage->getRouteKey(),
+        search: 'pricing',
+    );
     $queryCount = count(DB::getQueryLog());
 
     DB::disableQueryLog();

@@ -22,6 +22,53 @@
             "useCase": "An editor jumps between related editable records without returning to the table view.",
             "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher.png",
             "darkScreenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-dark.png"
+        },
+        {
+            "id": "admin-heading-switcher-empty-search",
+            "title": "Record Switcher empty search state.",
+            "package": "record-switcher",
+            "surface": "admin",
+            "targetType": "admin-surface",
+            "target": "RecordSwitcherHeadingExtender",
+            "scenario": "admin-index",
+            "url": "/pages/{first-record}/edit",
+            "click": ".filament-record-switcher .choices__inner",
+            "waitFor": ".filament-record-switcher",
+            "required": false,
+            "notes": "Follow-up capture for a search with no matching records, proving the heading switcher fails quietly and remains usable.",
+            "useCase": "An editor searches for a record that does not exist and understands there are no suggestions without leaving the edit page.",
+            "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-empty-search.png"
+        },
+        {
+            "id": "admin-heading-switcher-cross-site-pages",
+            "title": "Record Switcher cross-site page suggestions.",
+            "package": "record-switcher",
+            "surface": "admin",
+            "targetType": "admin-surface",
+            "target": "RecordSwitcherHeadingExtender",
+            "scenario": "admin-index",
+            "url": "/pages/{first-record}/edit",
+            "click": ".filament-record-switcher .choices__inner",
+            "waitFor": ".filament-record-switcher .choices__list--dropdown.is-active",
+            "required": false,
+            "notes": "Follow-up capture for Page suggestions with same-parent, same-site, and other-site records visibly distinguished.",
+            "useCase": "An editor switches between related pages while avoiding similarly named records on other sites.",
+            "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-cross-site-pages.png"
+        },
+        {
+            "id": "admin-heading-switcher-unavailable-resource",
+            "title": "Record Switcher unavailable resource state.",
+            "package": "record-switcher",
+            "surface": "admin",
+            "targetType": "admin-surface",
+            "target": "RecordSwitcherHeadingExtender",
+            "scenario": "admin-index",
+            "url": "/pages/{first-record}/edit",
+            "waitFor": ".filament-record-switcher",
+            "required": false,
+            "notes": "Capture an edit page where the current resource cannot provide switchable records because of permission, tenancy, or unsupported model configuration.",
+            "useCase": "An editor lands on a supported admin page without switchable peer records and the heading remains stable without exposing inaccessible records.",
+            "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-unavailable-resource.png"
         }
     ]
 }
