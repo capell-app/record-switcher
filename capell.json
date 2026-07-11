@@ -4,8 +4,8 @@
     "slug": "record-switcher",
     "displayName": "Record Switcher",
     "kind": "package",
-    "capellApiVersion": "^1.0",
-    "version": "1.x-dev",
+    "capellApiVersion": "^0.0.1",
+    "version": "0.0.x-dev",
     "description": "Fast Filament edit-page record switching for Capell admins, with searchable suggestions, sibling and same-site prioritization, recent-record ordering, and keyboard selection.",
     "product": {
         "group": "Capell Foundation",
