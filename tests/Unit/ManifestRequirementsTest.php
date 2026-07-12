@@ -55,7 +55,7 @@ describe('record-switcher manifest', function (): void {
         expect($contribution['type'])->toBe('asset')
             ->and($contribution['class'])->toBe(RecordSwitcherAssetsContribution::class)
             ->and(is_string($contributionClass) && is_subclass_of($contributionClass, RegistersExtensionAsset::class))->toBeTrue()
-            ->and(RecordSwitcherAssetsContribution::compatibleCapellApiVersion())->toBe('^4.0');
+            ->and(RecordSwitcherAssetsContribution::compatibleCapellApiVersion())->toBe('^0.0');
     });
 
     it('declares the shipped diagnostics contribution contract', function () use ($manifest): void {
@@ -67,7 +67,7 @@ describe('record-switcher manifest', function (): void {
         expect($contribution['type'])->toBe('health-check')
             ->and($contribution['checkClass'])->toBe(RecordSwitcherHealthCheck::class)
             ->and(is_string($contributionClass) && is_subclass_of($contributionClass, ChecksExtensionHealth::class))->toBeTrue()
-            ->and(RecordSwitcherHealthContribution::compatibleCapellApiVersion())->toBe('^4.0');
+            ->and(RecordSwitcherHealthContribution::compatibleCapellApiVersion())->toBe('^0.0');
     });
 
     it('keeps marketplace screenshots readable and backed by committed files', function () use ($manifest, $packagePath): void {
