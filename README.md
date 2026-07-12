@@ -2,7 +2,7 @@
 
 <!-- prettier-ignore-start -->
 
-## What This Extension Adds
+## What This Plugin Adds
 
 Record Switcher is an **Available**, **No schema impact** Capell package in the **Capell Foundation** product group. It ships as `capell-app/record-switcher` and extends these surfaces: admin.
 
@@ -21,7 +21,7 @@ Status details:
 
 ## Why It Matters
 
-**For developers:** The package gives developers package-owned service providers, Filament classes, and Blade views instead of pushing this behaviour into core or application code.
+**For developers:** The package gives developers package-owned service providers, Actions, Data objects, Filament classes, and Blade views instead of pushing this behaviour into core or application code.
 
 **For teams:** Jump between editable Capell records directly from the page heading with fast suggestions and Tab-to-accept keyboard flow.
 
@@ -29,13 +29,20 @@ Status details:
 
 Screenshot contract: `docs/screenshots.json`.
 
+![Record Switcher admin heading suggestions](docs/screenshots/admin-heading-switcher.png)
+
 - Record Switcher admin heading suggestions (admin, required).
+- Record Switcher empty search state (admin, optional).
+- Record Switcher cross-site page suggestions (admin, optional).
+- Record Switcher unavailable resource state (admin, optional).
 
 ## Technical Shape
 
 - Service providers: `Capell\RecordSwitcher\Providers\RecordSwitcherServiceProvider`.
 - Filament classes: `RecordSwitcherHeadingExtender`.
 - Livewire components: `RecordSwitcher`.
+- Actions: `BuildRecordSwitcherOptionsAction`.
+- Data objects: `RecordSwitcherOptionData`.
 - Manifest contributions: `asset: Capell\RecordSwitcher\Manifest\RecordSwitcherAssetsContribution`, `health-check: Capell\RecordSwitcher\Manifest\RecordSwitcherHealthContribution`.
 - Health checks: `Capell\RecordSwitcher\Health\RecordSwitcherHealthCheck`.
 - Blade views: `packages/record-switcher/resources/views/components/record-switcher.blade.php`.
