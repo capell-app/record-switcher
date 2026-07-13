@@ -20,6 +20,9 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Lorisleiva\Actions\Concerns\AsAction;
 
+/**
+ * @method static list<array{value: string, label: string, group?: string}> run(class-string<resource> $resourceClass, string $recordKey, int $limitResults = 10, ?string $search = null)
+ */
 final class BuildRecordSwitcherOptionsAction
 {
     use AsAction;
@@ -232,7 +235,7 @@ final class BuildRecordSwitcherOptionsAction
         $columnExpression = sprintf('lower(%s)', $qualifiedColumn);
         $collation = $databaseConnection->getConfig('search_collation');
 
-        if (filled($collation)) {
+        if (is_string($collation) && $collation !== '') {
             $columnExpression = sprintf('%s collate %s', $columnExpression, $collation);
         }
 
@@ -287,7 +290,7 @@ final class BuildRecordSwitcherOptionsAction
     {
         $pageUrl = $model->relationLoaded('pageUrl')
             ? $model->getRelation('pageUrl')
-            : $model->pageUrl()->with('siteDomain')->first();
+            : PageUrl::query()->where('page_id', $model->getKey())->first();
 
         if (! $pageUrl instanceof PageUrl || ! $pageUrl->exists) {
             return '';

@@ -12,11 +12,13 @@ test('record switcher asset is generated from committed package source', functio
         true,
         flags: JSON_THROW_ON_ERROR,
     );
+    throw_unless(is_array($packageManifest), RuntimeException::class, 'Record Switcher package manifest must decode to an array.');
     $source = file_get_contents($packageRoot . '/resources/js/record-switcher.js');
     $distribution = file_get_contents($packageRoot . '/resources/dist/record-switcher.js');
+    $dependencies = is_array($packageManifest['dependencies'] ?? null) ? $packageManifest['dependencies'] : [];
 
     expect($packageManifest)->toBeArray()
-        ->and($packageManifest['dependencies']['choices.js'] ?? null)->toBe('10.2.0')
+        ->and($dependencies['choices.js'] ?? null)->toBe('10.2.0')
         ->and(data_get($packageManifest, 'scripts.build:check'))->toBe('node build.mjs --check')
         ->and($source)->toBeString()
         ->toContain("import Choices from 'choices.js'")
