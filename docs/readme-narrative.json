@@ -1,0 +1,35 @@
+{
+    "whatThisPluginAdds": {
+        "text": "Record Switcher adds a compact selector to supported Filament record headings so users can move between nearby records without returning to the list page.",
+        "evidence": [
+            "src/Filament/RecordSwitcherHeadingExtender.php",
+            "src/Actions/BuildRecordSwitcherOptionsAction.php",
+            "tests/Unit/RecordSwitcherOptionsTest.php"
+        ]
+    },
+    "surfaceOutcome": {
+        "text": "On supported edit and view pages, admin users can search the current resource and open another permitted record from the heading.",
+        "evidence": [
+            "src/Filament/RecordSwitcherHeadingExtender.php",
+            "tests/Unit/RecordSwitcherOptionsTest.php",
+            "docs/overview.admin.md"
+        ]
+    },
+    "whyItMatters": {
+        "developers": {
+            "text": "A focused query Action builds authorized labels and URLs, keeping resource discovery and option construction outside the heading extension.",
+            "evidence": [
+                "src/Actions/BuildRecordSwitcherOptionsAction.php",
+                "src/Filament/RecordSwitcherHeadingExtender.php",
+                "tests/Unit/RecordSwitcherOptionsTest.php"
+            ]
+        },
+        "teams": {
+            "text": "Editors can review or update a sequence of records with fewer trips through index pages.",
+            "evidence": [
+                "docs/overview.admin.md",
+                "tests/Unit/RecordSwitcherOptionsTest.php"
+            ]
+        }
+    }
+}

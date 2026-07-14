@@ -6,9 +6,11 @@
 
 Record Switcher is an **Available**, **No schema impact** Capell package in the **Capell Foundation** product group. It ships as `capell-app/record-switcher` and extends these surfaces: admin.
 
-Fast Filament edit-page record switching for Capell admins, with searchable suggestions, sibling and same-site prioritization, recent-record ordering, and keyboard selection.
+Record Switcher adds a compact selector to supported Filament record headings so users can move between nearby records without returning to the list page.
 
-After install, admins get package-owned management or reporting surfaces inside Capell.
+On supported edit and view pages, admin users can search the current resource and open another permitted record from the heading.
+
+Evidence: [`src/Filament/RecordSwitcherHeadingExtender.php`](src/Filament/RecordSwitcherHeadingExtender.php), [`src/Actions/BuildRecordSwitcherOptionsAction.php`](src/Actions/BuildRecordSwitcherOptionsAction.php), [`tests/Unit/RecordSwitcherOptionsTest.php`](tests/Unit/RecordSwitcherOptionsTest.php), [`docs/overview.admin.md`](docs/overview.admin.md).
 
 Status details:
 
@@ -21,9 +23,11 @@ Status details:
 
 ## Why It Matters
 
-**For developers:** The package gives developers package-owned service providers, Actions, Data objects, Filament classes, and Blade views instead of pushing this behaviour into core or application code.
+**For developers:** A focused query Action builds authorized labels and URLs, keeping resource discovery and option construction outside the heading extension.
 
-**For teams:** Jump between editable Capell records directly from the page heading with fast suggestions and Tab-to-accept keyboard flow.
+**For teams:** Editors can review or update a sequence of records with fewer trips through index pages.
+
+Evidence: [`src/Actions/BuildRecordSwitcherOptionsAction.php`](src/Actions/BuildRecordSwitcherOptionsAction.php), [`src/Filament/RecordSwitcherHeadingExtender.php`](src/Filament/RecordSwitcherHeadingExtender.php), [`tests/Unit/RecordSwitcherOptionsTest.php`](tests/Unit/RecordSwitcherOptionsTest.php), [`docs/overview.admin.md`](docs/overview.admin.md).
 
 ## Screens And Workflow
 
@@ -49,25 +53,25 @@ Screenshot contract: `docs/screenshots.json`.
 
 ## Data Model
 
-This package has no schema impact. It does not declare package-owned migrations or required tables.
-
-Docs gap: document extension points here if the package delegates persistence to a host package.
+This package has no schema impact. It extends Capell through `asset` contributions and `health-check` contributions instead of declaring package-owned tables.
 
 ## Install Impact
 
-- Admin navigation: adds package-owned Filament classes when registered.
+- Required packages: `capell-app/admin`, `capell-app/core`.
+- Admin navigation: no admin page or resource contribution is declared.
+- Admin/editor extensions: none declared.
 - Permissions: none declared in `capell.json`.
-- Public routes: none detected in package route files.
+- Public routes: none declared.
 - Database changes: no package migrations declared.
+- Config: no package config files.
 - Settings: no package settings declared.
-- Queues or schedules: none detected in standard package paths.
+- Queues or schedules: none declared.
 - Cache tags: none declared.
 - Commands: none declared.
 
 ## Common Pitfalls
 
-- Verify the package is installed before expecting its provider, views, or extension contributions to run.
-- Keep `composer.json`, `composer.local.json`, `capell.json`, docs, screenshots, and tests aligned when the package surface changes.
+- Keep required Capell packages on compatible v4 releases: `capell-app/admin`, `capell-app/core`.
 
 ## Troubleshooting
 
@@ -78,13 +82,14 @@ Docs gap: document extension points here if the package delegates persistence to
 ## Quick Start
 
 1. Install the package: `composer require capell-app/record-switcher`.
-2. Run the required setup: no package migrations are declared; clear cached config and routes if the host app uses caches.
-3. Open the related Capell admin surface and verify Record Switcher appears.
+2. No package-specific setup command or migrations are declared.
+3. Open the Record Switcher admin heading suggestions and confirm the admin workflow loads.
 
 ## Next Steps
 
 - [Package docs](docs/README.md)
 - [Overview](docs/overview.md)
+- [Troubleshooting](#troubleshooting)
 - [Screenshot contract](docs/screenshots.json)
 - [Marketplace assets](docs/assets/marketplace/)
 - [Capell content language plan](../../docs/CONTENT_LANGUAGE_PLAN.md)
