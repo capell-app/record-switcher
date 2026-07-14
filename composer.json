@@ -27,7 +27,7 @@
         "php": "^8.4",
         "capell-app/admin": "^1.0",
         "capell-app/core": "^1.0",
-        "filament/filament": "^5.7",
+        "filament/filament": "~5.6.8",
         "laravel/framework": "^11.44.2|^12.61.1|^13.0",
         "livewire/livewire": "^3.0|^4.0",
         "spatie/laravel-package-tools": "^1.15"
