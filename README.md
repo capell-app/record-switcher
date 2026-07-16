@@ -8,7 +8,7 @@ Record Switcher is an **Available**, **No schema impact** Capell package in the 
 
 Record Switcher adds a compact selector to supported Filament record headings so users can move between nearby records without returning to the list page.
 
-On supported edit and view pages, admin users can search the current resource and open another permitted record from the heading.
+On supported edit pages, admin users can search the current resource and open another permitted record from the heading.
 
 Evidence: [`src/Filament/RecordSwitcherHeadingExtender.php`](src/Filament/RecordSwitcherHeadingExtender.php), [`src/Actions/BuildRecordSwitcherOptionsAction.php`](src/Actions/BuildRecordSwitcherOptionsAction.php), [`tests/Unit/RecordSwitcherOptionsTest.php`](tests/Unit/RecordSwitcherOptionsTest.php), [`docs/overview.admin.md`](docs/overview.admin.md).
 
@@ -34,6 +34,8 @@ Evidence: [`src/Actions/BuildRecordSwitcherOptionsAction.php`](src/Actions/Build
 Screenshot contract: `docs/screenshots.json`.
 
 ![Record Switcher admin heading suggestions](docs/screenshots/admin-heading-switcher.png)
+
+![Record Switcher empty search state](docs/screenshots/admin-heading-switcher-empty-search.png)
 
 - Record Switcher admin heading suggestions (admin, required).
 - Record Switcher empty search state (admin, optional).

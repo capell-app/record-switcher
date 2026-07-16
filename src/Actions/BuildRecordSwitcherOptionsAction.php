@@ -18,14 +18,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Lorisleiva\Actions\Concerns\AsAction;
+use Lorisleiva\Actions\Concerns\AsFake;
+use Lorisleiva\Actions\Concerns\AsObject;
 
 /**
  * @method static list<array{value: string, label: string, group?: string}> run(class-string<resource> $resourceClass, string $recordKey, int $limitResults = 10, ?string $search = null)
  */
 final class BuildRecordSwitcherOptionsAction
 {
-    use AsAction;
+    use AsFake;
+    use AsObject;
 
     /**
      * @param  class-string<resource>  $resourceClass

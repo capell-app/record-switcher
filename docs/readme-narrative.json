@@ -8,7 +8,7 @@
         ]
     },
     "surfaceOutcome": {
-        "text": "On supported edit and view pages, admin users can search the current resource and open another permitted record from the heading.",
+        "text": "On supported edit pages, admin users can search the current resource and open another permitted record from the heading.",
         "evidence": [
             "src/Filament/RecordSwitcherHeadingExtender.php",
             "tests/Unit/RecordSwitcherOptionsTest.php",

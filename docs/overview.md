@@ -12,7 +12,7 @@ Usually no. It works automatically once installed. You will see its effect as a 
 
 ## Where it shows up
 
-In the admin, when you are viewing or editing a record, as a way to move to the next or another record.
+In the admin, while you are editing a record, as a way to search for and open another record.
 
 ## Good to know
 
