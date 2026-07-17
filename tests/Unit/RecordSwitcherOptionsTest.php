@@ -27,8 +27,7 @@ it('returns page option labels as html strings for browser choices', function ()
     );
 
     expect($options)->toHaveCount(1)
-        ->and($options[0]['label'])->toBe('Pricing')
-        ->and(is_string($options[0]['label']))->toBeTrue();
+        ->and($options[0]['label'])->toBe('Pricing');
 });
 
 it('searches generic resource options with declared searchable attributes', function (): void {
