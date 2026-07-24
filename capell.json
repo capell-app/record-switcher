@@ -55,7 +55,7 @@
     "actions": [],
     "settings": [],
     "permissions": [],
-    "capabilities": [],
+    "capabilities": ["record-switcher"],
     "security": {
         "riskTier": "low",
         "publicSurface": {
