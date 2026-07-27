@@ -1,5325 +1,4135 @@
 // Generated from resources/js/record-switcher.js. Run npm run build.
-var ct = Object.create
-var Ge = Object.defineProperty
-var lt = Object.getOwnPropertyDescriptor
-var ut = Object.getOwnPropertyNames
-var ht = Object.getPrototypeOf,
-  dt = Object.prototype.hasOwnProperty
-var ft = (se, te) => () => {
-  try {
-    return (te || se((te = { exports: {} }).exports, te), te.exports)
-  } catch (z) {
-    throw ((te = 0), z)
+/*! choices.js v11.2.3 | © 2026 Josh Johnson | https://github.com/Choices-js/Choices#readme */ var de =
+  function (i, e) {
+    return (
+      (de =
+        Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array &&
+          function (t, s) {
+            t.__proto__ = s
+          }) ||
+        function (t, s) {
+          for (var n in s)
+            Object.prototype.hasOwnProperty.call(s, n) && (t[n] = s[n])
+        }),
+      de(i, e)
+    )
+  }
+function qe(i, e) {
+  if (typeof e != 'function' && e !== null)
+    throw new TypeError(
+      'Class extends value ' + String(e) + ' is not a constructor or null',
+    )
+  de(i, e)
+  function t() {
+    this.constructor = i
+  }
+  i.prototype =
+    e === null ? Object.create(e) : ((t.prototype = e.prototype), new t())
+}
+var A = function () {
+  return (
+    (A =
+      Object.assign ||
+      function (e) {
+        for (var t, s = 1, n = arguments.length; s < n; s++) {
+          t = arguments[s]
+          for (var r in t)
+            Object.prototype.hasOwnProperty.call(t, r) && (e[r] = t[r])
+        }
+        return e
+      }),
+    A.apply(this, arguments)
+  )
+}
+function ot(i, e, t) {
+  if (t || arguments.length === 2)
+    for (var s = 0, n = e.length, r; s < n; s++)
+      (r || !(s in e)) &&
+        (r || (r = Array.prototype.slice.call(e, 0, s)), (r[s] = e[s]))
+  return i.concat(r || Array.prototype.slice.call(e))
+}
+var E = {
+    ADD_CHOICE: 'ADD_CHOICE',
+    REMOVE_CHOICE: 'REMOVE_CHOICE',
+    FILTER_CHOICES: 'FILTER_CHOICES',
+    ACTIVATE_CHOICES: 'ACTIVATE_CHOICES',
+    CLEAR_CHOICES: 'CLEAR_CHOICES',
+    ADD_GROUP: 'ADD_GROUP',
+    ADD_ITEM: 'ADD_ITEM',
+    REMOVE_ITEM: 'REMOVE_ITEM',
+    HIGHLIGHT_ITEM: 'HIGHLIGHT_ITEM',
+  },
+  I = {
+    showDropdown: 'showDropdown',
+    hideDropdown: 'hideDropdown',
+    change: 'change',
+    choice: 'choice',
+    search: 'search',
+    addItem: 'addItem',
+    removeItem: 'removeItem',
+    highlightItem: 'highlightItem',
+    highlightChoice: 'highlightChoice',
+    unhighlightItem: 'unhighlightItem',
+  },
+  w = {
+    TAB_KEY: 9,
+    SHIFT_KEY: 16,
+    BACK_KEY: 46,
+    DELETE_KEY: 8,
+    ENTER_KEY: 13,
+    A_KEY: 65,
+    ESC_KEY: 27,
+    UP_KEY: 38,
+    DOWN_KEY: 40,
+    PAGE_UP_KEY: 33,
+    PAGE_DOWN_KEY: 34,
+  },
+  at = ['fuseOptions', 'classNames'],
+  j = {
+    Text: 'text',
+    SelectOne: 'select-one',
+    SelectMultiple: 'select-multiple',
+  },
+  De = function (i) {
+    return { type: E.ADD_CHOICE, choice: i }
+  },
+  lt = function (i) {
+    return { type: E.REMOVE_CHOICE, choice: i }
+  },
+  ct = function (i) {
+    return { type: E.FILTER_CHOICES, results: i }
+  },
+  ht = function (i) {
+    return { type: E.ACTIVATE_CHOICES, active: i }
+  },
+  ut = function (i) {
+    return { type: E.ADD_GROUP, group: i }
+  },
+  xe = function (i) {
+    return { type: E.ADD_ITEM, item: i }
+  },
+  Me = function (i) {
+    return { type: E.REMOVE_ITEM, item: i }
+  },
+  ee = function (i, e) {
+    return { type: E.HIGHLIGHT_ITEM, item: i, highlighted: e }
+  },
+  dt = function (i, e) {
+    return Math.floor(Math.random() * (e - i) + i)
+  },
+  Ne = function (i) {
+    return Array.from({ length: i }, function () {
+      return dt(0, 36).toString(36)
+    }).join('')
+  },
+  ft = function (i, e) {
+    var t = i.id || (i.name && ''.concat(i.name, '-').concat(Ne(2))) || Ne(4)
+    return (
+      (t = t.replace(/(:|\.|\[|\]|,)/g, '')),
+      (t = ''.concat(e, '-').concat(t)),
+      t
+    )
+  },
+  pt = function (i, e, t) {
+    t === void 0 && (t = 1)
+    for (
+      var s = ''.concat(t > 0 ? 'next' : 'previous', 'ElementSibling'),
+        n = i[s];
+      n;
+    ) {
+      if (n.matches(e)) return n
+      n = n[s]
+    }
+    return null
+  },
+  Pe = function (i, e, t) {
+    t === void 0 && (t = 1)
+    var s
+    return (
+      t > 0
+        ? (s = e.scrollTop + e.offsetHeight >= i.offsetTop + i.offsetHeight)
+        : (s = i.offsetTop >= e.scrollTop),
+      s
+    )
+  },
+  Q = function (i) {
+    if (typeof i != 'string') {
+      if (i == null) return ''
+      if (typeof i == 'object') {
+        if ('raw' in i) return Q(i.raw)
+        if ('trusted' in i) return i.trusted
+      }
+      return i
+    }
+    return i
+      .replace(/&/g, '&amp;')
+      .replace(/>/g, '&gt;')
+      .replace(/</g, '&lt;')
+      .replace(/'/g, '&#039;')
+      .replace(/"/g, '&quot;')
+  },
+  mt = (function () {
+    var i = document.createElement('div')
+    return function (e) {
+      i.innerHTML = e.trim()
+      for (var t = i.children[0]; i.firstChild;) i.removeChild(i.firstChild)
+      return t
+    }
+  })(),
+  Re = function (i) {
+    return typeof i == 'function' ? i() : i
+  },
+  N = function (i) {
+    if (typeof i == 'string') return i
+    if (typeof i == 'object') {
+      if ('trusted' in i) return i.trusted
+      if ('raw' in i) return i.raw
+    }
+    return ''
+  },
+  ze = function (i) {
+    if (typeof i == 'string') return i
+    if (typeof i == 'object') {
+      if ('escaped' in i) return i.escaped
+      if ('trusted' in i) return i.trusted
+    }
+    return ''
+  },
+  x = function (i, e) {
+    return {
+      id: i.id,
+      highlighted: i.highlighted,
+      labelClass: i.labelClass,
+      labelDescription: N(i.labelDescription),
+      customProperties: i.customProperties,
+      disabled: i.disabled,
+      active: i.active,
+      label: i.label,
+      placeholder: i.placeholder,
+      value: i.value,
+      groupValue: i.group ? i.group.label : void 0,
+      element: i.element,
+      keyCode: e,
+    }
+  },
+  X = function (i, e, t) {
+    return typeof i == 'function' ? i(Q(e), N(e), t) : i
+  },
+  Oe = function (i, e) {
+    return i ? ze(e) : Q(e)
+  },
+  k = function (i, e, t) {
+    i.innerHTML = Oe(e, t)
+  },
+  vt = function (i, e) {
+    var t = i.value,
+      s = i.label,
+      n = s === void 0 ? t : s,
+      r = e.value,
+      o = e.label,
+      a = o === void 0 ? r : o
+    return N(n).localeCompare(N(a), [], {
+      sensitivity: 'base',
+      ignorePunctuation: !0,
+      numeric: !0,
+    })
+  },
+  _t = function (i, e) {
+    return i.rank - e.rank
+  },
+  gt = function (i, e, t) {
+    t === void 0 && (t = null)
+    var s = new CustomEvent(e, { detail: t, bubbles: !0, cancelable: !0 })
+    return i.dispatchEvent(s)
+  },
+  yt = function (i, e) {
+    var t = Object.keys(i).sort(),
+      s = Object.keys(e).sort()
+    return t.filter(function (n) {
+      return s.indexOf(n) < 0
+    })
+  },
+  oe = function (i) {
+    return Array.isArray(i) ? i : [i]
+  },
+  W = function (i) {
+    return i && Array.isArray(i)
+      ? i
+          .map(function (e) {
+            return '.'.concat(e)
+          })
+          .join('')
+      : '.'.concat(i)
+  },
+  _ = function (i, e) {
+    var t
+    ;(t = i.classList).add.apply(t, oe(e))
+  },
+  D = function (i, e) {
+    var t
+    ;(t = i.classList).remove.apply(t, oe(e))
+  },
+  bt = function (i) {
+    if (typeof i < 'u')
+      try {
+        return JSON.parse(i)
+      } catch {
+        return i
+      }
+    return {}
+  },
+  Et = function (i, e, t) {
+    var s = i.itemEl
+    s && (D(s, t), _(s, e))
+  },
+  Ct = (function () {
+    function i(e) {
+      var t = e.element,
+        s = e.type,
+        n = e.classNames
+      ;((this.element = t),
+        (this.classNames = n),
+        (this.type = s),
+        (this.isActive = !1))
+    }
+    return (
+      (i.prototype.show = function () {
+        return (
+          _(this.element, this.classNames.activeState),
+          this.element.setAttribute('aria-expanded', 'true'),
+          (this.isActive = !0),
+          this
+        )
+      }),
+      (i.prototype.hide = function () {
+        return (
+          D(this.element, this.classNames.activeState),
+          this.element.setAttribute('aria-expanded', 'false'),
+          (this.isActive = !1),
+          this
+        )
+      }),
+      i
+    )
+  })(),
+  ke = (function () {
+    function i(e) {
+      var t = e.element,
+        s = e.type,
+        n = e.classNames,
+        r = e.position
+      ;((this.element = t),
+        (this.classNames = n),
+        (this.type = s),
+        (this.position = r),
+        (this.isOpen = !1),
+        (this.isFlipped = !1),
+        (this.isDisabled = !1),
+        (this.isLoading = !1))
+    }
+    return (
+      (i.prototype.shouldFlip = function (e, t) {
+        var s = !1
+        return (
+          this.position === 'auto'
+            ? (s =
+                this.element.getBoundingClientRect().top - t >= 0 &&
+                !window.matchMedia('(min-height: '.concat(e + 1, 'px)'))
+                  .matches)
+            : this.position === 'top' && (s = !0),
+          s
+        )
+      }),
+      (i.prototype.setActiveDescendant = function (e) {
+        this.element.setAttribute('aria-activedescendant', e)
+      }),
+      (i.prototype.removeActiveDescendant = function () {
+        this.element.removeAttribute('aria-activedescendant')
+      }),
+      (i.prototype.open = function (e, t) {
+        ;(_(this.element, this.classNames.openState),
+          this.element.setAttribute('aria-expanded', 'true'),
+          (this.isOpen = !0),
+          this.shouldFlip(e, t) &&
+            (_(this.element, this.classNames.flippedState),
+            (this.isFlipped = !0)))
+      }),
+      (i.prototype.close = function () {
+        ;(D(this.element, this.classNames.openState),
+          this.element.setAttribute('aria-expanded', 'false'),
+          this.removeActiveDescendant(),
+          (this.isOpen = !1),
+          this.isFlipped &&
+            (D(this.element, this.classNames.flippedState),
+            (this.isFlipped = !1)))
+      }),
+      (i.prototype.addFocusState = function () {
+        _(this.element, this.classNames.focusState)
+      }),
+      (i.prototype.removeFocusState = function () {
+        D(this.element, this.classNames.focusState)
+      }),
+      (i.prototype.addInvalidState = function () {
+        _(this.element, this.classNames.invalidState)
+      }),
+      (i.prototype.removeInvalidState = function () {
+        D(this.element, this.classNames.invalidState)
+      }),
+      (i.prototype.enable = function () {
+        ;(D(this.element, this.classNames.disabledState),
+          this.element.removeAttribute('aria-disabled'),
+          this.type === j.SelectOne &&
+            this.element.setAttribute('tabindex', '0'),
+          (this.isDisabled = !1))
+      }),
+      (i.prototype.disable = function () {
+        ;(_(this.element, this.classNames.disabledState),
+          this.element.setAttribute('aria-disabled', 'true'),
+          this.type === j.SelectOne &&
+            this.element.setAttribute('tabindex', '-1'),
+          (this.isDisabled = !0))
+      }),
+      (i.prototype.wrap = function (e) {
+        var t = this.element,
+          s = e.parentNode
+        ;(s &&
+          (e.nextSibling ? s.insertBefore(t, e.nextSibling) : s.appendChild(t)),
+          t.appendChild(e))
+      }),
+      (i.prototype.unwrap = function (e) {
+        var t = this.element,
+          s = t.parentNode
+        s && (s.insertBefore(e, t), s.removeChild(t))
+      }),
+      (i.prototype.addLoadingState = function () {
+        ;(_(this.element, this.classNames.loadingState),
+          this.element.setAttribute('aria-busy', 'true'),
+          (this.isLoading = !0))
+      }),
+      (i.prototype.removeLoadingState = function () {
+        ;(D(this.element, this.classNames.loadingState),
+          this.element.removeAttribute('aria-busy'),
+          (this.isLoading = !1))
+      }),
+      i
+    )
+  })(),
+  St = (function () {
+    function i(e) {
+      var t = e.element,
+        s = e.type,
+        n = e.classNames,
+        r = e.preventPaste
+      ;((this.element = t),
+        (this.type = s),
+        (this.classNames = n),
+        (this.preventPaste = r),
+        (this.isFocussed = this.element.isEqualNode(document.activeElement)),
+        (this.isDisabled = t.disabled),
+        (this._onPaste = this._onPaste.bind(this)),
+        (this._onInput = this._onInput.bind(this)),
+        (this._onFocus = this._onFocus.bind(this)),
+        (this._onBlur = this._onBlur.bind(this)))
+    }
+    return (
+      Object.defineProperty(i.prototype, 'placeholder', {
+        set: function (e) {
+          this.element.placeholder = e
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      Object.defineProperty(i.prototype, 'value', {
+        get: function () {
+          return this.element.value
+        },
+        set: function (e) {
+          this.element.value = e
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      (i.prototype.addEventListeners = function () {
+        var e = this.element
+        ;(e.addEventListener('paste', this._onPaste),
+          e.addEventListener('input', this._onInput, { passive: !0 }),
+          e.addEventListener('focus', this._onFocus, { passive: !0 }),
+          e.addEventListener('blur', this._onBlur, { passive: !0 }))
+      }),
+      (i.prototype.removeEventListeners = function () {
+        var e = this.element
+        ;(e.removeEventListener('input', this._onInput),
+          e.removeEventListener('paste', this._onPaste),
+          e.removeEventListener('focus', this._onFocus),
+          e.removeEventListener('blur', this._onBlur))
+      }),
+      (i.prototype.enable = function () {
+        var e = this.element
+        ;(e.removeAttribute('disabled'), (this.isDisabled = !1))
+      }),
+      (i.prototype.disable = function () {
+        var e = this.element
+        ;(e.setAttribute('disabled', ''), (this.isDisabled = !0))
+      }),
+      (i.prototype.focus = function () {
+        this.isFocussed || this.element.focus()
+      }),
+      (i.prototype.blur = function () {
+        this.isFocussed && this.element.blur()
+      }),
+      (i.prototype.clear = function (e) {
+        return (
+          e === void 0 && (e = !0),
+          (this.element.value = ''),
+          e && this.setWidth(),
+          this
+        )
+      }),
+      (i.prototype.setWidth = function () {
+        var e = this.element,
+          t = e.value,
+          s = e.placeholder,
+          n = 0,
+          r = 0
+        if (t || s) {
+          var o = document.createElement('span')
+          ;((o.style.position = 'absolute'),
+            (o.style.visibility = 'hidden'),
+            (o.style.whiteSpace = 'pre'),
+            (o.style.height = 'auto'),
+            (o.style.width = 'auto'),
+            (o.style.minWidth = '1ch'),
+            _(o, Array.from(e.classList)),
+            e.after(o))
+          var a = parseFloat(getComputedStyle(o).width)
+          ;(Number.isNaN(a)
+            ? ((n = s.length), (r = t.length))
+            : (s &&
+                ((o.innerText = s),
+                (n = parseFloat(getComputedStyle(o).width) / a)),
+              t &&
+                ((o.innerText = t),
+                (r = parseFloat(getComputedStyle(o).width) / a))),
+            o.remove())
+        }
+        ;((e.style.minWidth = ''.concat(Math.ceil(n) + 1, 'ch')),
+          (e.style.width = ''.concat(Math.ceil(r) + 1, 'ch')))
+      }),
+      (i.prototype.setActiveDescendant = function (e) {
+        this.element.setAttribute('aria-activedescendant', e)
+      }),
+      (i.prototype.removeActiveDescendant = function () {
+        this.element.removeAttribute('aria-activedescendant')
+      }),
+      (i.prototype._onInput = function () {
+        this.type !== j.SelectOne && this.setWidth()
+      }),
+      (i.prototype._onPaste = function (e) {
+        this.preventPaste && e.preventDefault()
+      }),
+      (i.prototype._onFocus = function () {
+        this.isFocussed = !0
+      }),
+      (i.prototype._onBlur = function () {
+        this.isFocussed = !1
+      }),
+      i
+    )
+  })(),
+  wt = 4,
+  Fe = (function () {
+    function i(e) {
+      var t = e.element
+      ;((this.element = t),
+        (this.scrollPos = this.element.scrollTop),
+        (this.height = this.element.offsetHeight))
+    }
+    return (
+      (i.prototype.prepend = function (e) {
+        var t = this.element.firstElementChild
+        t ? this.element.insertBefore(e, t) : this.element.append(e)
+      }),
+      (i.prototype.scrollToTop = function () {
+        this.element.scrollTop = 0
+      }),
+      (i.prototype.scrollToChildElement = function (e, t) {
+        var s = this
+        if (e) {
+          var n = this.element.offsetHeight,
+            r = this.element.scrollTop + n,
+            o = e.offsetHeight,
+            a = e.offsetTop + o,
+            l = t > 0 ? this.element.scrollTop + a - r : e.offsetTop
+          requestAnimationFrame(function () {
+            s._animateScroll(l, t)
+          })
+        }
+      }),
+      (i.prototype._scrollDown = function (e, t, s) {
+        var n = (s - e) / t,
+          r = n > 1 ? n : 1
+        this.element.scrollTop = e + r
+      }),
+      (i.prototype._scrollUp = function (e, t, s) {
+        var n = (e - s) / t,
+          r = n > 1 ? n : 1
+        this.element.scrollTop = e - r
+      }),
+      (i.prototype._animateScroll = function (e, t) {
+        var s = this,
+          n = wt,
+          r = this.element.scrollTop,
+          o = !1
+        ;(t > 0
+          ? (this._scrollDown(r, n, e), r < e && (o = !0))
+          : (this._scrollUp(r, n, e), r > e && (o = !0)),
+          o &&
+            requestAnimationFrame(function () {
+              s._animateScroll(e, t)
+            }))
+      }),
+      i
+    )
+  })(),
+  Xe = (function () {
+    function i(e) {
+      var t = e.element,
+        s = e.classNames
+      ;((this.element = t), (this.classNames = s), (this.isDisabled = !1))
+    }
+    return (
+      Object.defineProperty(i.prototype, 'isActive', {
+        get: function () {
+          return this.element.dataset.choice === 'active'
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      Object.defineProperty(i.prototype, 'dir', {
+        get: function () {
+          return this.element.dir
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      Object.defineProperty(i.prototype, 'value', {
+        get: function () {
+          return this.element.value
+        },
+        set: function (e) {
+          ;(this.element.setAttribute('value', e), (this.element.value = e))
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      (i.prototype.conceal = function () {
+        var e = this.element
+        ;(_(e, this.classNames.input), (e.hidden = !0), (e.tabIndex = -1))
+        var t = e.getAttribute('style')
+        ;(t && e.setAttribute('data-choice-orig-style', t),
+          e.setAttribute('data-choice', 'active'))
+      }),
+      (i.prototype.reveal = function () {
+        var e = this.element
+        ;(D(e, this.classNames.input),
+          (e.hidden = !1),
+          e.removeAttribute('tabindex'))
+        var t = e.getAttribute('data-choice-orig-style')
+        ;(t
+          ? (e.removeAttribute('data-choice-orig-style'),
+            e.setAttribute('style', t))
+          : e.removeAttribute('style'),
+          e.removeAttribute('data-choice'))
+      }),
+      (i.prototype.enable = function () {
+        ;(this.element.removeAttribute('disabled'),
+          (this.element.disabled = !1),
+          (this.isDisabled = !1))
+      }),
+      (i.prototype.disable = function () {
+        ;(this.element.setAttribute('disabled', ''),
+          (this.element.disabled = !0),
+          (this.isDisabled = !0))
+      }),
+      (i.prototype.triggerEvent = function (e, t) {
+        gt(this.element, e, t || {})
+      }),
+      i
+    )
+  })(),
+  It = (function (i) {
+    qe(e, i)
+    function e() {
+      return (i !== null && i.apply(this, arguments)) || this
+    }
+    return e
+  })(Xe),
+  z = function (i, e) {
+    return (e === void 0 && (e = !0), typeof i > 'u' ? e : !!i)
+  },
+  Je = function (i) {
+    if (
+      (typeof i == 'string' &&
+        (i = i.split(' ').filter(function (e) {
+          return e.length
+        })),
+      Array.isArray(i) && i.length)
+    )
+      return i
+  },
+  M = function (i, e, t) {
+    if ((t === void 0 && (t = !0), typeof i == 'string')) {
+      var s = Q(i),
+        n = t || s === i ? i : { escaped: s, raw: i },
+        r = M({ value: i, label: n, selected: !0 }, !1)
+      return r
+    }
+    var o = i
+    if ('choices' in o) {
+      if (!e) throw new TypeError('optGroup is not allowed')
+      var a = o,
+        l = a.choices.map(function (d) {
+          return M(d, !1)
+        }),
+        u = {
+          id: 0,
+          label: N(a.label) || a.value,
+          active: !!l.length,
+          disabled: !!a.disabled,
+          choices: l,
+        }
+      return u
+    }
+    var c = o,
+      h = {
+        id: 0,
+        group: null,
+        score: 0,
+        rank: 0,
+        value: c.value,
+        label: c.label || c.value,
+        active: z(c.active),
+        selected: z(c.selected, !1),
+        disabled: z(c.disabled, !1),
+        placeholder: z(c.placeholder, !1),
+        highlighted: !1,
+        labelClass: Je(c.labelClass),
+        labelDescription: c.labelDescription,
+        customProperties: c.customProperties,
+      }
+    return h
+  },
+  At = function (i) {
+    return i.tagName === 'INPUT'
+  },
+  Qe = function (i) {
+    return i.tagName === 'SELECT'
+  },
+  Ot = function (i) {
+    return i.tagName === 'OPTION'
+  },
+  Tt = function (i) {
+    return i.tagName === 'OPTGROUP'
+  },
+  Lt = (function (i) {
+    qe(e, i)
+    function e(t) {
+      var s = t.element,
+        n = t.classNames,
+        r = t.template,
+        o = t.extractPlaceholder,
+        a = i.call(this, { element: s, classNames: n }) || this
+      return ((a.template = r), (a.extractPlaceholder = o), a)
+    }
+    return (
+      Object.defineProperty(e.prototype, 'placeholderOption', {
+        get: function () {
+          return (
+            this.element.querySelector('option[value=""]') ||
+            this.element.querySelector('option[placeholder]')
+          )
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      (e.prototype.addOptions = function (t) {
+        var s = this,
+          n = document.createDocumentFragment()
+        ;(t.forEach(function (r) {
+          var o = r
+          if (!o.element) {
+            var a = s.template(o)
+            ;(n.appendChild(a), (o.element = a))
+          }
+        }),
+          this.element.appendChild(n))
+      }),
+      (e.prototype.optionsAsChoices = function () {
+        var t = this,
+          s = []
+        return (
+          this.element
+            .querySelectorAll(':scope > option, :scope > optgroup')
+            .forEach(function (n) {
+              Ot(n)
+                ? s.push(t._optionToChoice(n))
+                : Tt(n) && s.push(t._optgroupToChoice(n))
+            }),
+          s
+        )
+      }),
+      (e.prototype._optionToChoice = function (t) {
+        return (
+          !t.hasAttribute('value') &&
+            t.hasAttribute('placeholder') &&
+            (t.setAttribute('value', ''), (t.value = '')),
+          {
+            id: 0,
+            group: null,
+            score: 0,
+            rank: 0,
+            value: t.value,
+            label: t.label,
+            element: t,
+            active: !0,
+            selected: this.extractPlaceholder
+              ? t.selected
+              : t.hasAttribute('selected'),
+            disabled: t.disabled,
+            highlighted: !1,
+            placeholder:
+              this.extractPlaceholder &&
+              (!t.value || t.hasAttribute('placeholder')),
+            labelClass:
+              typeof t.dataset.labelClass < 'u'
+                ? Je(t.dataset.labelClass)
+                : void 0,
+            labelDescription:
+              typeof t.dataset.labelDescription < 'u'
+                ? { trusted: t.dataset.labelDescription }
+                : void 0,
+            customProperties: bt(t.dataset.customProperties),
+          }
+        )
+      }),
+      (e.prototype._optgroupToChoice = function (t) {
+        var s = this,
+          n = t.querySelectorAll('option'),
+          r = Array.from(n).map(function (o) {
+            return s._optionToChoice(o)
+          })
+        return {
+          id: 0,
+          label: t.label || '',
+          element: t,
+          active: !!r.length,
+          disabled: t.disabled,
+          choices: r,
+        }
+      }),
+      e
+    )
+  })(Xe),
+  Dt = {
+    containerOuter: ['choices'],
+    containerInner: ['choices__inner'],
+    input: ['choices__input'],
+    inputCloned: ['choices__input--cloned'],
+    list: ['choices__list'],
+    listItems: ['choices__list--multiple'],
+    listSingle: ['choices__list--single'],
+    listDropdown: ['choices__list--dropdown'],
+    item: ['choices__item'],
+    itemSelectable: ['choices__item--selectable'],
+    itemDisabled: ['choices__item--disabled'],
+    itemChoice: ['choices__item--choice'],
+    description: ['choices__description'],
+    placeholder: ['choices__placeholder'],
+    group: ['choices__group'],
+    groupHeading: ['choices__heading'],
+    button: ['choices__button'],
+    activeState: ['is-active'],
+    focusState: ['is-focused'],
+    openState: ['is-open'],
+    disabledState: ['is-disabled'],
+    highlightedState: ['is-highlighted'],
+    selectedState: ['is-selected'],
+    flippedState: ['is-flipped'],
+    loadingState: ['is-loading'],
+    invalidState: ['is-invalid'],
+    notice: ['choices__notice'],
+    addChoice: ['choices__item--selectable', 'add-choice'],
+    noResults: ['has-no-results'],
+    noChoices: ['has-no-choices'],
+  },
+  He = {
+    items: [],
+    choices: [],
+    silent: !1,
+    renderChoiceLimit: -1,
+    maxItemCount: -1,
+    closeDropdownOnSelect: 'auto',
+    singleModeForMultiSelect: !1,
+    addChoices: !1,
+    addItems: !0,
+    addItemFilter: function (i) {
+      return !!i && i !== ''
+    },
+    removeItems: !0,
+    removeItemButton: !1,
+    removeItemButtonAlignLeft: !1,
+    editItems: !1,
+    allowHTML: !1,
+    allowHtmlUserInput: !1,
+    duplicateItemsAllowed: !0,
+    delimiter: ',',
+    paste: !0,
+    searchEnabled: !0,
+    searchChoices: !0,
+    searchDisabledChoices: !1,
+    searchFloor: 1,
+    searchResultLimit: 4,
+    searchFields: ['label', 'value'],
+    position: 'auto',
+    resetScrollPosition: !0,
+    shouldSort: !0,
+    shouldSortItems: !1,
+    sorter: vt,
+    shadowRoot: null,
+    placeholder: !0,
+    placeholderValue: null,
+    searchPlaceholderValue: null,
+    prependValue: null,
+    appendValue: null,
+    renderSelectedChoices: 'auto',
+    searchRenderSelectedChoices: !0,
+    loadingText: 'Loading...',
+    noResultsText: 'No results found',
+    noChoicesText: 'No choices to choose from',
+    itemSelectText: 'Press to select',
+    uniqueItemText: 'Only unique values can be added',
+    customAddItemText: 'Only values matching specific conditions can be added',
+    addItemText: function (i) {
+      return 'Press Enter to add <b>"'.concat(i, '"</b>')
+    },
+    removeItemIconText: function () {
+      return 'Remove item'
+    },
+    removeItemLabelText: function (i, e, t) {
+      return 'Remove item: '.concat(t ? Q(t.label) : i)
+    },
+    maxItemText: function (i) {
+      return 'Only '.concat(i, ' values can be added')
+    },
+    valueComparer: function (i, e) {
+      return i === e
+    },
+    fuseOptions: { includeScore: !0 },
+    labelId: '',
+    callbackOnInit: null,
+    callbackOnCreateTemplates: null,
+    classNames: Dt,
+    appendGroupInSearch: !1,
+  },
+  Ke = function (i) {
+    var e = i.itemEl
+    e && (e.remove(), (i.itemEl = void 0))
+  }
+function xt(i, e, t) {
+  var s = i,
+    n = !0
+  switch (e.type) {
+    case E.ADD_ITEM: {
+      e.item.selected = !0
+      var r = e.item.element
+      ;(r && ((r.selected = !0), r.setAttribute('selected', '')),
+        s.push(e.item))
+      break
+    }
+    case E.REMOVE_ITEM: {
+      e.item.selected = !1
+      var r = e.item.element
+      if (r) {
+        ;((r.selected = !1), r.removeAttribute('selected'))
+        var o = r.parentElement
+        o && Qe(o) && o.type === j.SelectOne && (o.value = '')
+      }
+      ;(Ke(e.item),
+        (s = s.filter(function (c) {
+          return c.id !== e.item.id
+        })))
+      break
+    }
+    case E.REMOVE_CHOICE: {
+      ;(Ke(e.choice),
+        (s = s.filter(function (u) {
+          return u.id !== e.choice.id
+        })))
+      break
+    }
+    case E.HIGHLIGHT_ITEM: {
+      var a = e.highlighted,
+        l = s.find(function (u) {
+          return u.id === e.item.id
+        })
+      l &&
+        l.highlighted !== a &&
+        ((l.highlighted = a),
+        t &&
+          Et(
+            l,
+            a ? t.classNames.highlightedState : t.classNames.selectedState,
+            a ? t.classNames.selectedState : t.classNames.highlightedState,
+          ))
+      break
+    }
+    default: {
+      n = !1
+      break
+    }
+  }
+  return { state: s, update: n }
+}
+function Mt(i, e) {
+  var t = i,
+    s = !0
+  switch (e.type) {
+    case E.ADD_GROUP: {
+      t.push(e.group)
+      break
+    }
+    case E.CLEAR_CHOICES: {
+      t = []
+      break
+    }
+    default: {
+      s = !1
+      break
+    }
+  }
+  return { state: t, update: s }
+}
+function Nt(i, e, t) {
+  var s = i,
+    n = !0
+  switch (e.type) {
+    case E.ADD_CHOICE: {
+      s.push(e.choice)
+      break
+    }
+    case E.REMOVE_CHOICE: {
+      ;((e.choice.choiceEl = void 0),
+        e.choice.group &&
+          (e.choice.group.choices = e.choice.group.choices.filter(function (o) {
+            return o.id !== e.choice.id
+          })),
+        (s = s.filter(function (o) {
+          return o.id !== e.choice.id
+        })))
+      break
+    }
+    case E.ADD_ITEM:
+    case E.REMOVE_ITEM: {
+      e.item.choiceEl = void 0
+      break
+    }
+    case E.FILTER_CHOICES: {
+      var r = []
+      ;(e.results.forEach(function (o) {
+        r[o.item.id] = o
+      }),
+        s.forEach(function (o) {
+          var a = r[o.id]
+          ;(a !== void 0
+            ? ((o.score = a.score), (o.rank = a.rank), (o.active = !0))
+            : ((o.score = 0), (o.rank = 0), (o.active = !1)),
+            t && t.appendGroupInSearch && (o.choiceEl = void 0))
+        }))
+      break
+    }
+    case E.ACTIVATE_CHOICES: {
+      s.forEach(function (o) {
+        ;((o.active = e.active),
+          t && t.appendGroupInSearch && (o.choiceEl = void 0))
+      })
+      break
+    }
+    case E.CLEAR_CHOICES: {
+      s = []
+      break
+    }
+    default: {
+      n = !1
+      break
+    }
+  }
+  return { state: s, update: n }
+}
+var je = { groups: Mt, items: xt, choices: Nt },
+  Pt = (function () {
+    function i(e) {
+      ;((this._state = this.defaultState),
+        (this._listeners = []),
+        (this._txn = 0),
+        (this._context = e))
+    }
+    return (
+      Object.defineProperty(i.prototype, 'defaultState', {
+        get: function () {
+          return { groups: [], items: [], choices: [] }
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      (i.prototype.changeSet = function (e) {
+        return { groups: e, items: e, choices: e }
+      }),
+      (i.prototype.reset = function () {
+        this._state = this.defaultState
+        var e = this.changeSet(!0)
+        this._txn
+          ? (this._changeSet = e)
+          : this._listeners.forEach(function (t) {
+              return t(e)
+            })
+      }),
+      (i.prototype.subscribe = function (e) {
+        return (this._listeners.push(e), this)
+      }),
+      (i.prototype.dispatch = function (e) {
+        var t = this,
+          s = this._state,
+          n = !1,
+          r = this._changeSet || this.changeSet(!1)
+        ;(Object.keys(je).forEach(function (o) {
+          var a = je[o](s[o], e, t._context)
+          a.update && ((n = !0), (r[o] = !0), (s[o] = a.state))
+        }),
+          n &&
+            (this._txn
+              ? (this._changeSet = r)
+              : this._listeners.forEach(function (o) {
+                  return o(r)
+                })))
+      }),
+      (i.prototype.withTxn = function (e) {
+        this._txn++
+        try {
+          e()
+        } finally {
+          if (((this._txn = Math.max(0, this._txn - 1)), !this._txn)) {
+            var t = this._changeSet
+            t &&
+              ((this._changeSet = void 0),
+              this._listeners.forEach(function (s) {
+                return s(t)
+              }))
+          }
+        }
+      }),
+      Object.defineProperty(i.prototype, 'state', {
+        get: function () {
+          return this._state
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      Object.defineProperty(i.prototype, 'items', {
+        get: function () {
+          return this.state.items
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      Object.defineProperty(i.prototype, 'highlightedActiveItems', {
+        get: function () {
+          return this.items.filter(function (e) {
+            return e.active && e.highlighted
+          })
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      Object.defineProperty(i.prototype, 'choices', {
+        get: function () {
+          return this.state.choices
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      Object.defineProperty(i.prototype, 'activeChoices', {
+        get: function () {
+          return this.choices.filter(function (e) {
+            return e.active
+          })
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      Object.defineProperty(i.prototype, 'searchableChoices', {
+        get: function () {
+          var e = this._context
+          return this.choices.filter(function (t) {
+            return !t.placeholder && (e.searchDisabledChoices || !t.disabled)
+          })
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      Object.defineProperty(i.prototype, 'groups', {
+        get: function () {
+          return this.state.groups
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      Object.defineProperty(i.prototype, 'activeGroups', {
+        get: function () {
+          var e = this
+          return this.state.groups.filter(function (t) {
+            var s = t.active && !t.disabled,
+              n = e.state.choices.some(function (r) {
+                return r.active && !r.disabled
+              })
+            return s && n
+          }, [])
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      (i.prototype.inTxn = function () {
+        return this._txn > 0
+      }),
+      (i.prototype.getChoiceById = function (e) {
+        return this.activeChoices.find(function (t) {
+          return t.id === e
+        })
+      }),
+      (i.prototype.getGroupById = function (e) {
+        return this.groups.find(function (t) {
+          return t.id === e
+        })
+      }),
+      i
+    )
+  })(),
+  S = {
+    noChoices: 'no-choices',
+    noResults: 'no-results',
+    addChoice: 'add-choice',
+    generic: '',
+  }
+function Rt(i, e, t) {
+  return (
+    (e = Ft(e)) in i
+      ? Object.defineProperty(i, e, {
+          value: t,
+          enumerable: !0,
+          configurable: !0,
+          writable: !0,
+        })
+      : (i[e] = t),
+    i
+  )
+}
+function Ve(i, e) {
+  var t = Object.keys(i)
+  if (Object.getOwnPropertySymbols) {
+    var s = Object.getOwnPropertySymbols(i)
+    ;(e &&
+      (s = s.filter(function (n) {
+        return Object.getOwnPropertyDescriptor(i, n).enumerable
+      })),
+      t.push.apply(t, s))
+  }
+  return t
+}
+function U(i) {
+  for (var e = 1; e < arguments.length; e++) {
+    var t = arguments[e] != null ? arguments[e] : {}
+    e % 2
+      ? Ve(Object(t), !0).forEach(function (s) {
+          Rt(i, s, t[s])
+        })
+      : Object.getOwnPropertyDescriptors
+        ? Object.defineProperties(i, Object.getOwnPropertyDescriptors(t))
+        : Ve(Object(t)).forEach(function (s) {
+            Object.defineProperty(i, s, Object.getOwnPropertyDescriptor(t, s))
+          })
+  }
+  return i
+}
+function kt(i, e) {
+  if (typeof i != 'object' || !i) return i
+  var t = i[Symbol.toPrimitive]
+  if (t !== void 0) {
+    var s = t.call(i, e)
+    if (typeof s != 'object') return s
+    throw new TypeError('@@toPrimitive must return a primitive value.')
+  }
+  return (e === 'string' ? String : Number)(i)
+}
+function Ft(i) {
+  var e = kt(i, 'string')
+  return typeof e == 'symbol' ? e : e + ''
+}
+function F(i) {
+  return Array.isArray ? Array.isArray(i) : tt(i) === '[object Array]'
+}
+function Ht(i) {
+  if (typeof i == 'string') return i
+  let e = i + ''
+  return e == '0' && 1 / i == -1 / 0 ? '-0' : e
+}
+function Kt(i) {
+  return i == null ? '' : Ht(i)
+}
+function P(i) {
+  return typeof i == 'string'
+}
+function Ze(i) {
+  return typeof i == 'number'
+}
+function jt(i) {
+  return i === !0 || i === !1 || (Vt(i) && tt(i) == '[object Boolean]')
+}
+function et(i) {
+  return typeof i == 'object'
+}
+function Vt(i) {
+  return et(i) && i !== null
+}
+function O(i) {
+  return i != null
+}
+function ce(i) {
+  return !i.trim().length
+}
+function tt(i) {
+  return i == null
+    ? i === void 0
+      ? '[object Undefined]'
+      : '[object Null]'
+    : Object.prototype.toString.call(i)
+}
+var $t = "Incorrect 'index' type",
+  Bt = (i) => `Invalid value for key ${i}`,
+  Gt = (i) => `Pattern length exceeds max of ${i}.`,
+  Wt = (i) => `Missing ${i} property in key`,
+  Ut = (i) => `Property 'weight' in key '${i}' must be a positive integer`,
+  $e = Object.prototype.hasOwnProperty,
+  fe = class {
+    constructor(e) {
+      ;((this._keys = []), (this._keyMap = {}))
+      let t = 0
+      ;(e.forEach((s) => {
+        let n = it(s)
+        ;(this._keys.push(n), (this._keyMap[n.id] = n), (t += n.weight))
+      }),
+        this._keys.forEach((s) => {
+          s.weight /= t
+        }))
+    }
+    get(e) {
+      return this._keyMap[e]
+    }
+    keys() {
+      return this._keys
+    }
+    toJSON() {
+      return JSON.stringify(this._keys)
+    }
+  }
+function it(i) {
+  let e = null,
+    t = null,
+    s = null,
+    n = 1,
+    r = null
+  if (P(i) || F(i)) ((s = i), (e = Be(i)), (t = pe(i)))
+  else {
+    if (!$e.call(i, 'name')) throw new Error(Wt('name'))
+    let o = i.name
+    if (((s = o), $e.call(i, 'weight') && ((n = i.weight), n <= 0)))
+      throw new Error(Ut(o))
+    ;((e = Be(o)), (t = pe(o)), (r = i.getFn))
+  }
+  return { path: e, id: t, weight: n, src: s, getFn: r }
+}
+function Be(i) {
+  return F(i) ? i : i.split('.')
+}
+function pe(i) {
+  return F(i) ? i.join('.') : i
+}
+function Yt(i, e) {
+  let t = [],
+    s = !1,
+    n = (r, o, a) => {
+      if (O(r))
+        if (!o[a]) t.push(r)
+        else {
+          let l = o[a],
+            u = r[l]
+          if (!O(u)) return
+          if (a === o.length - 1 && (P(u) || Ze(u) || jt(u))) t.push(Kt(u))
+          else if (F(u)) {
+            s = !0
+            for (let c = 0, h = u.length; c < h; c += 1) n(u[c], o, a + 1)
+          } else o.length && n(u, o, a + 1)
+        }
+    }
+  return (n(i, P(e) ? e.split('.') : e, 0), s ? t : t[0])
+}
+var qt = { includeMatches: !1, findAllMatches: !1, minMatchCharLength: 1 },
+  zt = {
+    isCaseSensitive: !1,
+    includeScore: !1,
+    keys: [],
+    shouldSort: !0,
+    sortFn: (i, e) =>
+      i.score === e.score
+        ? i.idx < e.idx
+          ? -1
+          : 1
+        : i.score < e.score
+          ? -1
+          : 1,
+  },
+  Xt = { location: 0, threshold: 0.6, distance: 100 },
+  Jt = {
+    useExtendedSearch: !1,
+    getFn: Yt,
+    ignoreLocation: !1,
+    ignoreFieldNorm: !1,
+    fieldNormWeight: 1,
+  },
+  v = U(U(U(U({}, zt), qt), Xt), Jt),
+  Qt = /[^ ]+/g
+function Zt(i = 1, e = 3) {
+  let t = new Map(),
+    s = Math.pow(10, e)
+  return {
+    get(n) {
+      let r = n.match(Qt).length
+      if (t.has(r)) return t.get(r)
+      let o = 1 / Math.pow(r, 0.5 * i),
+        a = parseFloat(Math.round(o * s) / s)
+      return (t.set(r, a), a)
+    },
+    clear() {
+      t.clear()
+    },
   }
 }
-var pt = (se, te, z, pe) => {
-  if ((te && typeof te == 'object') || typeof te == 'function')
-    for (let N of ut(te))
-      !dt.call(se, N) &&
-        N !== z &&
-        Ge(se, N, {
-          get: () => te[N],
-          enumerable: !(pe = lt(te, N)) || pe.enumerable,
-        })
-  return se
+var J = class {
+  constructor({
+    getFn: e = v.getFn,
+    fieldNormWeight: t = v.fieldNormWeight,
+  } = {}) {
+    ;((this.norm = Zt(t, 3)),
+      (this.getFn = e),
+      (this.isCreated = !1),
+      this.setIndexRecords())
+  }
+  setSources(e = []) {
+    this.docs = e
+  }
+  setIndexRecords(e = []) {
+    this.records = e
+  }
+  setKeys(e = []) {
+    ;((this.keys = e),
+      (this._keysMap = {}),
+      e.forEach((t, s) => {
+        this._keysMap[t.id] = s
+      }))
+  }
+  create() {
+    this.isCreated ||
+      !this.docs.length ||
+      ((this.isCreated = !0),
+      P(this.docs[0])
+        ? this.docs.forEach((e, t) => {
+            this._addString(e, t)
+          })
+        : this.docs.forEach((e, t) => {
+            this._addObject(e, t)
+          }),
+      this.norm.clear())
+  }
+  add(e) {
+    let t = this.size()
+    P(e) ? this._addString(e, t) : this._addObject(e, t)
+  }
+  removeAt(e) {
+    this.records.splice(e, 1)
+    for (let t = e, s = this.size(); t < s; t += 1) this.records[t].i -= 1
+  }
+  getValueForItemAtKeyId(e, t) {
+    return e[this._keysMap[t]]
+  }
+  size() {
+    return this.records.length
+  }
+  _addString(e, t) {
+    if (!O(e) || ce(e)) return
+    let s = { v: e, i: t, n: this.norm.get(e) }
+    this.records.push(s)
+  }
+  _addObject(e, t) {
+    let s = { i: t, $: {} }
+    ;(this.keys.forEach((n, r) => {
+      let o = n.getFn ? n.getFn(e) : this.getFn(e, n.path)
+      if (O(o)) {
+        if (F(o)) {
+          let a = [],
+            l = [{ nestedArrIndex: -1, value: o }]
+          for (; l.length;) {
+            let { nestedArrIndex: u, value: c } = l.pop()
+            if (O(c))
+              if (P(c) && !ce(c)) {
+                let h = { v: c, i: u, n: this.norm.get(c) }
+                a.push(h)
+              } else
+                F(c) &&
+                  c.forEach((h, d) => {
+                    l.push({ nestedArrIndex: d, value: h })
+                  })
+          }
+          s.$[r] = a
+        } else if (P(o) && !ce(o)) {
+          let a = { v: o, n: this.norm.get(o) }
+          s.$[r] = a
+        }
+      }
+    }),
+      this.records.push(s))
+  }
+  toJSON() {
+    return { keys: this.keys, records: this.records }
+  }
 }
-var mt = (se, te, z) => (
-  (z = se != null ? ct(ht(se)) : {}),
-  pt(
-    te || !se || !se.__esModule
-      ? Ge(z, 'default', { value: se, enumerable: !0 })
-      : z,
-    se,
+function st(
+  i,
+  e,
+  { getFn: t = v.getFn, fieldNormWeight: s = v.fieldNormWeight } = {},
+) {
+  let n = new J({ getFn: t, fieldNormWeight: s })
+  return (n.setKeys(i.map(it)), n.setSources(e), n.create(), n)
+}
+function ei(
+  i,
+  { getFn: e = v.getFn, fieldNormWeight: t = v.fieldNormWeight } = {},
+) {
+  let { keys: s, records: n } = i,
+    r = new J({ getFn: e, fieldNormWeight: t })
+  return (r.setKeys(s), r.setIndexRecords(n), r)
+}
+function te(
+  i,
+  {
+    errors: e = 0,
+    currentLocation: t = 0,
+    expectedLocation: s = 0,
+    distance: n = v.distance,
+    ignoreLocation: r = v.ignoreLocation,
+  } = {},
+) {
+  let o = e / i.length
+  if (r) return o
+  let a = Math.abs(s - t)
+  return n ? o + a / n : a ? 1 : o
+}
+function ti(i = [], e = v.minMatchCharLength) {
+  let t = [],
+    s = -1,
+    n = -1,
+    r = 0
+  for (let o = i.length; r < o; r += 1) {
+    let a = i[r]
+    a && s === -1
+      ? (s = r)
+      : !a &&
+        s !== -1 &&
+        ((n = r - 1), n - s + 1 >= e && t.push([s, n]), (s = -1))
+  }
+  return (i[r - 1] && r - s >= e && t.push([s, r - 1]), t)
+}
+var $ = 32
+function ii(
+  i,
+  e,
+  t,
+  {
+    location: s = v.location,
+    distance: n = v.distance,
+    threshold: r = v.threshold,
+    findAllMatches: o = v.findAllMatches,
+    minMatchCharLength: a = v.minMatchCharLength,
+    includeMatches: l = v.includeMatches,
+    ignoreLocation: u = v.ignoreLocation,
+  } = {},
+) {
+  if (e.length > $) throw new Error(Gt($))
+  let c = e.length,
+    h = i.length,
+    d = Math.max(0, Math.min(s, h)),
+    p = r,
+    f = d,
+    m = a > 1 || l,
+    g = m ? Array(h) : [],
+    y
+  for (; (y = i.indexOf(e, f)) > -1;) {
+    let T = te(e, {
+      currentLocation: y,
+      expectedLocation: d,
+      distance: n,
+      ignoreLocation: u,
+    })
+    if (((p = Math.min(T, p)), (f = y + c), m)) {
+      let H = 0
+      for (; H < c;) ((g[y + H] = 1), (H += 1))
+    }
+  }
+  f = -1
+  let b = [],
+    C = 1,
+    B = c + h,
+    Y = 1 << (c - 1)
+  for (let T = 0; T < c; T += 1) {
+    let H = 0,
+      K = B
+    for (; H < K;)
+      (te(e, {
+        errors: T,
+        currentLocation: d + K,
+        expectedLocation: d,
+        distance: n,
+        ignoreLocation: u,
+      }) <= p
+        ? (H = K)
+        : (B = K),
+        (K = Math.floor((B - H) / 2 + H)))
+    B = K
+    let Te = Math.max(1, d - K + 1),
+      le = o ? h : Math.min(d + K, h) + c,
+      G = Array(le + 2)
+    G[le + 1] = (1 << T) - 1
+    for (let L = le; L >= Te; L -= 1) {
+      let Z = L - 1,
+        Le = t[i.charAt(Z)]
+      if (
+        (m && (g[Z] = +!!Le),
+        (G[L] = ((G[L + 1] << 1) | 1) & Le),
+        T && (G[L] |= ((b[L + 1] | b[L]) << 1) | 1 | b[L + 1]),
+        G[L] & Y &&
+          ((C = te(e, {
+            errors: T,
+            currentLocation: Z,
+            expectedLocation: d,
+            distance: n,
+            ignoreLocation: u,
+          })),
+          C <= p))
+      ) {
+        if (((p = C), (f = Z), f <= d)) break
+        Te = Math.max(1, 2 * d - f)
+      }
+    }
+    if (
+      te(e, {
+        errors: T + 1,
+        currentLocation: d,
+        expectedLocation: d,
+        distance: n,
+        ignoreLocation: u,
+      }) > p
+    )
+      break
+    b = G
+  }
+  let ae = { isMatch: f >= 0, score: Math.max(0.001, C) }
+  if (m) {
+    let T = ti(g, a)
+    T.length ? l && (ae.indices = T) : (ae.isMatch = !1)
+  }
+  return ae
+}
+function si(i) {
+  let e = {}
+  for (let t = 0, s = i.length; t < s; t += 1) {
+    let n = i.charAt(t)
+    e[n] = (e[n] || 0) | (1 << (s - t - 1))
+  }
+  return e
+}
+var ie = class {
+    constructor(
+      e,
+      {
+        location: t = v.location,
+        threshold: s = v.threshold,
+        distance: n = v.distance,
+        includeMatches: r = v.includeMatches,
+        findAllMatches: o = v.findAllMatches,
+        minMatchCharLength: a = v.minMatchCharLength,
+        isCaseSensitive: l = v.isCaseSensitive,
+        ignoreLocation: u = v.ignoreLocation,
+      } = {},
+    ) {
+      if (
+        ((this.options = {
+          location: t,
+          threshold: s,
+          distance: n,
+          includeMatches: r,
+          findAllMatches: o,
+          minMatchCharLength: a,
+          isCaseSensitive: l,
+          ignoreLocation: u,
+        }),
+        (this.pattern = l ? e : e.toLowerCase()),
+        (this.chunks = []),
+        !this.pattern.length)
+      )
+        return
+      let c = (d, p) => {
+          this.chunks.push({ pattern: d, alphabet: si(d), startIndex: p })
+        },
+        h = this.pattern.length
+      if (h > $) {
+        let d = 0,
+          p = h % $,
+          f = h - p
+        for (; d < f;) (c(this.pattern.substr(d, $), d), (d += $))
+        if (p) {
+          let m = h - $
+          c(this.pattern.substr(m), m)
+        }
+      } else c(this.pattern, 0)
+    }
+    searchIn(e) {
+      let { isCaseSensitive: t, includeMatches: s } = this.options
+      if ((t || (e = e.toLowerCase()), this.pattern === e)) {
+        let f = { isMatch: !0, score: 0 }
+        return (s && (f.indices = [[0, e.length - 1]]), f)
+      }
+      let {
+          location: n,
+          distance: r,
+          threshold: o,
+          findAllMatches: a,
+          minMatchCharLength: l,
+          ignoreLocation: u,
+        } = this.options,
+        c = [],
+        h = 0,
+        d = !1
+      this.chunks.forEach(({ pattern: f, alphabet: m, startIndex: g }) => {
+        let {
+          isMatch: y,
+          score: b,
+          indices: C,
+        } = ii(e, f, m, {
+          location: n + g,
+          distance: r,
+          threshold: o,
+          findAllMatches: a,
+          minMatchCharLength: l,
+          includeMatches: s,
+          ignoreLocation: u,
+        })
+        ;(y && (d = !0), (h += b), y && C && (c = [...c, ...C]))
+      })
+      let p = { isMatch: d, score: d ? h / this.chunks.length : 1 }
+      return (d && s && (p.indices = c), p)
+    }
+  },
+  R = class {
+    constructor(e) {
+      this.pattern = e
+    }
+    static isMultiMatch(e) {
+      return Ge(e, this.multiRegex)
+    }
+    static isSingleMatch(e) {
+      return Ge(e, this.singleRegex)
+    }
+    search() {}
+  }
+function Ge(i, e) {
+  let t = i.match(e)
+  return t ? t[1] : null
+}
+var me = class extends R {
+    constructor(e) {
+      super(e)
+    }
+    static get type() {
+      return 'exact'
+    }
+    static get multiRegex() {
+      return /^="(.*)"$/
+    }
+    static get singleRegex() {
+      return /^=(.*)$/
+    }
+    search(e) {
+      let t = e === this.pattern
+      return {
+        isMatch: t,
+        score: t ? 0 : 1,
+        indices: [0, this.pattern.length - 1],
+      }
+    }
+  },
+  ve = class extends R {
+    constructor(e) {
+      super(e)
+    }
+    static get type() {
+      return 'inverse-exact'
+    }
+    static get multiRegex() {
+      return /^!"(.*)"$/
+    }
+    static get singleRegex() {
+      return /^!(.*)$/
+    }
+    search(e) {
+      let s = e.indexOf(this.pattern) === -1
+      return { isMatch: s, score: s ? 0 : 1, indices: [0, e.length - 1] }
+    }
+  },
+  _e = class extends R {
+    constructor(e) {
+      super(e)
+    }
+    static get type() {
+      return 'prefix-exact'
+    }
+    static get multiRegex() {
+      return /^\^"(.*)"$/
+    }
+    static get singleRegex() {
+      return /^\^(.*)$/
+    }
+    search(e) {
+      let t = e.startsWith(this.pattern)
+      return {
+        isMatch: t,
+        score: t ? 0 : 1,
+        indices: [0, this.pattern.length - 1],
+      }
+    }
+  },
+  ge = class extends R {
+    constructor(e) {
+      super(e)
+    }
+    static get type() {
+      return 'inverse-prefix-exact'
+    }
+    static get multiRegex() {
+      return /^!\^"(.*)"$/
+    }
+    static get singleRegex() {
+      return /^!\^(.*)$/
+    }
+    search(e) {
+      let t = !e.startsWith(this.pattern)
+      return { isMatch: t, score: t ? 0 : 1, indices: [0, e.length - 1] }
+    }
+  },
+  ye = class extends R {
+    constructor(e) {
+      super(e)
+    }
+    static get type() {
+      return 'suffix-exact'
+    }
+    static get multiRegex() {
+      return /^"(.*)"\$$/
+    }
+    static get singleRegex() {
+      return /^(.*)\$$/
+    }
+    search(e) {
+      let t = e.endsWith(this.pattern)
+      return {
+        isMatch: t,
+        score: t ? 0 : 1,
+        indices: [e.length - this.pattern.length, e.length - 1],
+      }
+    }
+  },
+  be = class extends R {
+    constructor(e) {
+      super(e)
+    }
+    static get type() {
+      return 'inverse-suffix-exact'
+    }
+    static get multiRegex() {
+      return /^!"(.*)"\$$/
+    }
+    static get singleRegex() {
+      return /^!(.*)\$$/
+    }
+    search(e) {
+      let t = !e.endsWith(this.pattern)
+      return { isMatch: t, score: t ? 0 : 1, indices: [0, e.length - 1] }
+    }
+  },
+  se = class extends R {
+    constructor(
+      e,
+      {
+        location: t = v.location,
+        threshold: s = v.threshold,
+        distance: n = v.distance,
+        includeMatches: r = v.includeMatches,
+        findAllMatches: o = v.findAllMatches,
+        minMatchCharLength: a = v.minMatchCharLength,
+        isCaseSensitive: l = v.isCaseSensitive,
+        ignoreLocation: u = v.ignoreLocation,
+      } = {},
+    ) {
+      ;(super(e),
+        (this._bitapSearch = new ie(e, {
+          location: t,
+          threshold: s,
+          distance: n,
+          includeMatches: r,
+          findAllMatches: o,
+          minMatchCharLength: a,
+          isCaseSensitive: l,
+          ignoreLocation: u,
+        })))
+    }
+    static get type() {
+      return 'fuzzy'
+    }
+    static get multiRegex() {
+      return /^"(.*)"$/
+    }
+    static get singleRegex() {
+      return /^(.*)$/
+    }
+    search(e) {
+      return this._bitapSearch.searchIn(e)
+    }
+  },
+  ne = class extends R {
+    constructor(e) {
+      super(e)
+    }
+    static get type() {
+      return 'include'
+    }
+    static get multiRegex() {
+      return /^'"(.*)"$/
+    }
+    static get singleRegex() {
+      return /^'(.*)$/
+    }
+    search(e) {
+      let t = 0,
+        s,
+        n = [],
+        r = this.pattern.length
+      for (; (s = e.indexOf(this.pattern, t)) > -1;)
+        ((t = s + r), n.push([s, t - 1]))
+      let o = !!n.length
+      return { isMatch: o, score: o ? 0 : 1, indices: n }
+    }
+  },
+  Ee = [me, ne, _e, ge, be, ye, ve, se],
+  We = Ee.length,
+  ni = / +(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/,
+  ri = '|'
+function oi(i, e = {}) {
+  return i.split(ri).map((t) => {
+    let s = t
+        .trim()
+        .split(ni)
+        .filter((r) => r && !!r.trim()),
+      n = []
+    for (let r = 0, o = s.length; r < o; r += 1) {
+      let a = s[r],
+        l = !1,
+        u = -1
+      for (; !l && ++u < We;) {
+        let c = Ee[u],
+          h = c.isMultiMatch(a)
+        h && (n.push(new c(h, e)), (l = !0))
+      }
+      if (!l)
+        for (u = -1; ++u < We;) {
+          let c = Ee[u],
+            h = c.isSingleMatch(a)
+          if (h) {
+            n.push(new c(h, e))
+            break
+          }
+        }
+    }
+    return n
+  })
+}
+var ai = new Set([se.type, ne.type]),
+  Ce = class {
+    constructor(
+      e,
+      {
+        isCaseSensitive: t = v.isCaseSensitive,
+        includeMatches: s = v.includeMatches,
+        minMatchCharLength: n = v.minMatchCharLength,
+        ignoreLocation: r = v.ignoreLocation,
+        findAllMatches: o = v.findAllMatches,
+        location: a = v.location,
+        threshold: l = v.threshold,
+        distance: u = v.distance,
+      } = {},
+    ) {
+      ;((this.query = null),
+        (this.options = {
+          isCaseSensitive: t,
+          includeMatches: s,
+          minMatchCharLength: n,
+          findAllMatches: o,
+          ignoreLocation: r,
+          location: a,
+          threshold: l,
+          distance: u,
+        }),
+        (this.pattern = t ? e : e.toLowerCase()),
+        (this.query = oi(this.pattern, this.options)))
+    }
+    static condition(e, t) {
+      return t.useExtendedSearch
+    }
+    searchIn(e) {
+      let t = this.query
+      if (!t) return { isMatch: !1, score: 1 }
+      let { includeMatches: s, isCaseSensitive: n } = this.options
+      e = n ? e : e.toLowerCase()
+      let r = 0,
+        o = [],
+        a = 0
+      for (let l = 0, u = t.length; l < u; l += 1) {
+        let c = t[l]
+        ;((o.length = 0), (r = 0))
+        for (let h = 0, d = c.length; h < d; h += 1) {
+          let p = c[h],
+            { isMatch: f, indices: m, score: g } = p.search(e)
+          if (f) {
+            if (((r += 1), (a += g), s)) {
+              let y = p.constructor.type
+              ai.has(y) ? (o = [...o, ...m]) : o.push(m)
+            }
+          } else {
+            ;((a = 0), (r = 0), (o.length = 0))
+            break
+          }
+        }
+        if (r) {
+          let h = { isMatch: !0, score: a / r }
+          return (s && (h.indices = o), h)
+        }
+      }
+      return { isMatch: !1, score: 1 }
+    }
+  },
+  Se = []
+function li(...i) {
+  Se.push(...i)
+}
+function we(i, e) {
+  for (let t = 0, s = Se.length; t < s; t += 1) {
+    let n = Se[t]
+    if (n.condition(i, e)) return new n(i, e)
+  }
+  return new ie(i, e)
+}
+var re = { AND: '$and', OR: '$or' },
+  Ie = { PATH: '$path', PATTERN: '$val' },
+  Ae = (i) => !!(i[re.AND] || i[re.OR]),
+  ci = (i) => !!i[Ie.PATH],
+  hi = (i) => !F(i) && et(i) && !Ae(i),
+  Ue = (i) => ({ [re.AND]: Object.keys(i).map((e) => ({ [e]: i[e] })) })
+function nt(i, e, { auto: t = !0 } = {}) {
+  let s = (n) => {
+    let r = Object.keys(n),
+      o = ci(n)
+    if (!o && r.length > 1 && !Ae(n)) return s(Ue(n))
+    if (hi(n)) {
+      let l = o ? n[Ie.PATH] : r[0],
+        u = o ? n[Ie.PATTERN] : n[l]
+      if (!P(u)) throw new Error(Bt(l))
+      let c = { keyId: pe(l), pattern: u }
+      return (t && (c.searcher = we(u, e)), c)
+    }
+    let a = { children: [], operator: r[0] }
+    return (
+      r.forEach((l) => {
+        let u = n[l]
+        F(u) &&
+          u.forEach((c) => {
+            a.children.push(s(c))
+          })
+      }),
+      a
+    )
+  }
+  return (Ae(i) || (i = Ue(i)), s(i))
+}
+function ui(i, { ignoreFieldNorm: e = v.ignoreFieldNorm }) {
+  i.forEach((t) => {
+    let s = 1
+    ;(t.matches.forEach(({ key: n, norm: r, score: o }) => {
+      let a = n ? n.weight : null
+      s *= Math.pow(o === 0 && a ? Number.EPSILON : o, (a || 1) * (e ? 1 : r))
+    }),
+      (t.score = s))
+  })
+}
+function di(i, e) {
+  let t = i.matches
+  ;((e.matches = []),
+    O(t) &&
+      t.forEach((s) => {
+        if (!O(s.indices) || !s.indices.length) return
+        let { indices: n, value: r } = s,
+          o = { indices: n, value: r }
+        ;(s.key && (o.key = s.key.src),
+          s.idx > -1 && (o.refIndex = s.idx),
+          e.matches.push(o))
+      }))
+}
+function fi(i, e) {
+  e.score = i.score
+}
+function pi(
+  i,
+  e,
+  {
+    includeMatches: t = v.includeMatches,
+    includeScore: s = v.includeScore,
+  } = {},
+) {
+  let n = []
+  return (
+    t && n.push(di),
+    s && n.push(fi),
+    i.map((r) => {
+      let { idx: o } = r,
+        a = { item: e[o], refIndex: o }
+      return (
+        n.length &&
+          n.forEach((l) => {
+            l(r, a)
+          }),
+        a
+      )
+    })
   )
-)
-var $e = ft((Ae, He) => {
-  /*! choices.js v10.2.0 | © 2022 Josh Johnson | https://github.com/jshjohnson/Choices#readme */ ;(function (
-    te,
-    z,
-  ) {
-    typeof Ae == 'object' && typeof He == 'object'
-      ? (He.exports = z())
-      : typeof define == 'function' && define.amd
-        ? define([], z)
-        : typeof Ae == 'object'
-          ? (Ae.Choices = z())
-          : (te.Choices = z())
-  })(window, function () {
-    return (function () {
-      'use strict'
-      var se = {
-          282: function (N, i, y) {
-            ;(Object.defineProperty(i, '__esModule', { value: !0 }),
-              (i.clearChoices =
-                i.activateChoices =
-                i.filterChoices =
-                i.addChoice =
-                  void 0))
-            var v = y(883),
-              h = function (r) {
-                var a = r.value,
-                  I = r.label,
-                  L = r.id,
-                  E = r.groupId,
-                  D = r.disabled,
-                  B = r.elementId,
-                  Q = r.customProperties,
-                  Z = r.placeholder,
-                  re = r.keyCode
-                return {
-                  type: v.ACTION_TYPES.ADD_CHOICE,
-                  value: a,
-                  label: I,
-                  id: L,
-                  groupId: E,
-                  disabled: D,
-                  elementId: B,
-                  customProperties: Q,
-                  placeholder: Z,
-                  keyCode: re,
-                }
-              }
-            i.addChoice = h
-            var d = function (r) {
-              return { type: v.ACTION_TYPES.FILTER_CHOICES, results: r }
-            }
-            i.filterChoices = d
-            var c = function (r) {
-              return (
-                r === void 0 && (r = !0),
-                { type: v.ACTION_TYPES.ACTIVATE_CHOICES, active: r }
+}
+var V = class {
+  constructor(e, t = {}, s) {
+    ;((this.options = U(U({}, v), t)),
+      this.options.useExtendedSearch,
+      (this._keyStore = new fe(this.options.keys)),
+      this.setCollection(e, s))
+  }
+  setCollection(e, t) {
+    if (((this._docs = e), t && !(t instanceof J))) throw new Error($t)
+    this._myIndex =
+      t ||
+      st(this.options.keys, this._docs, {
+        getFn: this.options.getFn,
+        fieldNormWeight: this.options.fieldNormWeight,
+      })
+  }
+  add(e) {
+    O(e) && (this._docs.push(e), this._myIndex.add(e))
+  }
+  remove(e = () => !1) {
+    let t = []
+    for (let s = 0, n = this._docs.length; s < n; s += 1) {
+      let r = this._docs[s]
+      e(r, s) && (this.removeAt(s), (s -= 1), (n -= 1), t.push(r))
+    }
+    return t
+  }
+  removeAt(e) {
+    ;(this._docs.splice(e, 1), this._myIndex.removeAt(e))
+  }
+  getIndex() {
+    return this._myIndex
+  }
+  search(e, { limit: t = -1 } = {}) {
+    let {
+        includeMatches: s,
+        includeScore: n,
+        shouldSort: r,
+        sortFn: o,
+        ignoreFieldNorm: a,
+      } = this.options,
+      l = P(e)
+        ? P(this._docs[0])
+          ? this._searchStringList(e)
+          : this._searchObjectList(e)
+        : this._searchLogical(e)
+    return (
+      ui(l, { ignoreFieldNorm: a }),
+      r && l.sort(o),
+      Ze(t) && t > -1 && (l = l.slice(0, t)),
+      pi(l, this._docs, { includeMatches: s, includeScore: n })
+    )
+  }
+  _searchStringList(e) {
+    let t = we(e, this.options),
+      { records: s } = this._myIndex,
+      n = []
+    return (
+      s.forEach(({ v: r, i: o, n: a }) => {
+        if (!O(r)) return
+        let { isMatch: l, score: u, indices: c } = t.searchIn(r)
+        l &&
+          n.push({
+            item: r,
+            idx: o,
+            matches: [{ score: u, value: r, norm: a, indices: c }],
+          })
+      }),
+      n
+    )
+  }
+  _searchLogical(e) {
+    let t = nt(e, this.options),
+      s = (a, l, u) => {
+        if (!a.children) {
+          let { keyId: h, searcher: d } = a,
+            p = this._findMatches({
+              key: this._keyStore.get(h),
+              value: this._myIndex.getValueForItemAtKeyId(l, h),
+              searcher: d,
+            })
+          return p && p.length ? [{ idx: u, item: l, matches: p }] : []
+        }
+        let c = []
+        for (let h = 0, d = a.children.length; h < d; h += 1) {
+          let p = a.children[h],
+            f = s(p, l, u)
+          if (f.length) c.push(...f)
+          else if (a.operator === re.AND) return []
+        }
+        return c
+      },
+      n = this._myIndex.records,
+      r = {},
+      o = []
+    return (
+      n.forEach(({ $: a, i: l }) => {
+        if (O(a)) {
+          let u = s(t, a, l)
+          u.length &&
+            (r[l] || ((r[l] = { idx: l, item: a, matches: [] }), o.push(r[l])),
+            u.forEach(({ matches: c }) => {
+              r[l].matches.push(...c)
+            }))
+        }
+      }),
+      o
+    )
+  }
+  _searchObjectList(e) {
+    let t = we(e, this.options),
+      { keys: s, records: n } = this._myIndex,
+      r = []
+    return (
+      n.forEach(({ $: o, i: a }) => {
+        if (!O(o)) return
+        let l = []
+        ;(s.forEach((u, c) => {
+          l.push(...this._findMatches({ key: u, value: o[c], searcher: t }))
+        }),
+          l.length && r.push({ idx: a, item: o, matches: l }))
+      }),
+      r
+    )
+  }
+  _findMatches({ key: e, value: t, searcher: s }) {
+    if (!O(t)) return []
+    let n = []
+    if (F(t))
+      t.forEach(({ v: r, i: o, n: a }) => {
+        if (!O(r)) return
+        let { isMatch: l, score: u, indices: c } = s.searchIn(r)
+        l && n.push({ score: u, key: e, value: r, idx: o, norm: a, indices: c })
+      })
+    else {
+      let { v: r, n: o } = t,
+        { isMatch: a, score: l, indices: u } = s.searchIn(r)
+      a && n.push({ score: l, key: e, value: r, norm: o, indices: u })
+    }
+    return n
+  }
+}
+V.version = '7.0.0'
+V.createIndex = st
+V.parseIndex = ei
+V.config = v
+V.parseQuery = nt
+li(Ce)
+var mi = (function () {
+  function i(e) {
+    ;((this._haystack = []),
+      (this._fuseOptions = A(A({}, e.fuseOptions), {
+        keys: ot([], e.searchFields, !0),
+        includeMatches: !0,
+      })))
+  }
+  return (
+    (i.prototype.index = function (e) {
+      ;((this._haystack = e), this._fuse && this._fuse.setCollection(e))
+    }),
+    (i.prototype.reset = function () {
+      ;((this._haystack = []), (this._fuse = void 0))
+    }),
+    (i.prototype.isEmptyIndex = function () {
+      return !this._haystack.length
+    }),
+    (i.prototype.search = function (e) {
+      this._fuse || (this._fuse = new V(this._haystack, this._fuseOptions))
+      var t = this._fuse.search(e)
+      return t.map(function (s, n) {
+        return { item: s.item, score: s.score || 0, rank: n + 1 }
+      })
+    }),
+    i
+  )
+})()
+function vi(i) {
+  return new mi(i)
+}
+var _i = function (i) {
+    for (var e in i) if (Object.prototype.hasOwnProperty.call(i, e)) return !1
+    return !0
+  },
+  he = function (i, e, t) {
+    var s = i.dataset,
+      n = e.customProperties,
+      r = e.labelClass,
+      o = e.labelDescription
+    ;(r && (s.labelClass = oe(r).join(' ')),
+      o && (s.labelDescription = N(o)),
+      t &&
+        n &&
+        (typeof n == 'string'
+          ? (s.customProperties = n)
+          : typeof n == 'object' &&
+            !_i(n) &&
+            (s.customProperties = JSON.stringify(n))))
+  },
+  Ye = function (i, e, t) {
+    var s = e && i.querySelector("label[for='".concat(e, "']")),
+      n = s && s.innerText
+    n && t.setAttribute('aria-label', n)
+  },
+  gi = {
+    containerOuter: function (i, e, t, s, n, r, o) {
+      var a = i.classNames.containerOuter,
+        l = document.createElement('div')
+      return (
+        _(l, a),
+        (l.dataset.type = r),
+        e && (l.dir = e),
+        s && (l.tabIndex = 0),
+        t &&
+          (l.setAttribute('role', n ? 'combobox' : 'listbox'),
+          n
+            ? l.setAttribute('aria-autocomplete', 'list')
+            : o || Ye(this._docRoot, this.passedElement.element.id, l),
+          l.setAttribute('aria-haspopup', 'true'),
+          l.setAttribute('aria-expanded', 'false')),
+        o && l.setAttribute('aria-labelledby', o),
+        l
+      )
+    },
+    containerInner: function (i) {
+      var e = i.classNames.containerInner,
+        t = document.createElement('div')
+      return (_(t, e), t)
+    },
+    itemList: function (i, e) {
+      var t = i.searchEnabled,
+        s = i.classNames,
+        n = s.list,
+        r = s.listSingle,
+        o = s.listItems,
+        a = document.createElement('div')
+      return (
+        _(a, n),
+        _(a, e ? r : o),
+        this._isSelectElement && t && a.setAttribute('role', 'listbox'),
+        a
+      )
+    },
+    placeholder: function (i, e) {
+      var t = i.allowHTML,
+        s = i.classNames.placeholder,
+        n = document.createElement('div')
+      return (_(n, s), k(n, t, e), n)
+    },
+    item: function (i, e, t) {
+      var s = i.allowHTML,
+        n = i.removeItemButtonAlignLeft,
+        r = i.removeItemIconText,
+        o = i.removeItemLabelText,
+        a = i.classNames,
+        l = a.item,
+        u = a.button,
+        c = a.highlightedState,
+        h = a.itemSelectable,
+        d = a.placeholder,
+        p = N(e.value),
+        f = document.createElement('div')
+      if ((_(f, l), e.labelClass)) {
+        var m = document.createElement('span')
+        ;(k(m, s, e.label), _(m, e.labelClass), f.appendChild(m))
+      } else k(f, s, e.label)
+      if (
+        ((f.dataset.item = ''),
+        (f.dataset.id = e.id),
+        (f.dataset.value = p),
+        he(f, e, !0),
+        (e.disabled || this.containerOuter.isDisabled) &&
+          f.setAttribute('aria-disabled', 'true'),
+        this._isSelectElement &&
+          (f.setAttribute('aria-selected', 'true'),
+          f.setAttribute('role', 'option')),
+        e.placeholder && (_(f, d), (f.dataset.placeholder = '')),
+        _(f, e.highlighted ? c : h),
+        t)
+      ) {
+        ;(e.disabled && D(f, h), (f.dataset.deletable = ''))
+        var g = document.createElement('button')
+        ;((g.type = 'button'), _(g, u))
+        var y = x(e)
+        k(g, !0, X(r, e.value, y))
+        var b = X(o, e.value, y)
+        ;(b && g.setAttribute('aria-label', b),
+          (g.dataset.button = ''),
+          n ? f.insertAdjacentElement('afterbegin', g) : f.appendChild(g))
+      }
+      return f
+    },
+    choiceList: function (i, e) {
+      var t = i.classNames.list,
+        s = document.createElement('div')
+      return (
+        _(s, t),
+        e || s.setAttribute('aria-multiselectable', 'true'),
+        s.setAttribute('role', 'listbox'),
+        s
+      )
+    },
+    choiceGroup: function (i, e) {
+      var t = i.allowHTML,
+        s = i.classNames,
+        n = s.group,
+        r = s.groupHeading,
+        o = s.itemDisabled,
+        a = e.id,
+        l = e.label,
+        u = e.disabled,
+        c = N(l),
+        h = document.createElement('div')
+      ;(_(h, n),
+        u && _(h, o),
+        h.setAttribute('role', 'group'),
+        (h.dataset.group = ''),
+        (h.dataset.id = a),
+        (h.dataset.value = c),
+        u && h.setAttribute('aria-disabled', 'true'))
+      var d = document.createElement('div')
+      return (_(d, r), k(d, t, l || ''), h.appendChild(d), h)
+    },
+    choice: function (i, e, t, s) {
+      var n = i.allowHTML,
+        r = i.classNames,
+        o = r.item,
+        a = r.itemChoice,
+        l = r.itemSelectable,
+        u = r.selectedState,
+        c = r.itemDisabled,
+        h = r.description,
+        d = r.placeholder,
+        p = e.label,
+        f = N(e.value),
+        m = document.createElement('div')
+      ;((m.id = e.elementId),
+        _(m, o),
+        _(m, a),
+        s &&
+          typeof p == 'string' &&
+          ((p = Oe(n, p)), (p += ' ('.concat(s, ')')), (p = { trusted: p })))
+      var g = m
+      if (e.labelClass) {
+        var y = document.createElement('span')
+        ;(k(y, n, p), _(y, e.labelClass), (g = y), m.appendChild(y))
+      } else k(m, n, p)
+      if (e.labelDescription) {
+        var b = ''.concat(e.elementId, '-description')
+        g.setAttribute('aria-describedby', b)
+        var C = document.createElement('span')
+        ;(k(C, n, e.labelDescription), (C.id = b), _(C, h), m.appendChild(C))
+      }
+      return (
+        e.selected && _(m, u),
+        e.placeholder && _(m, d),
+        m.setAttribute('role', e.group ? 'treeitem' : 'option'),
+        (m.dataset.choice = ''),
+        (m.dataset.id = e.id),
+        (m.dataset.value = f),
+        t && (m.dataset.selectText = t),
+        e.group && (m.dataset.groupId = ''.concat(e.group.id)),
+        he(m, e, !1),
+        e.disabled
+          ? (_(m, c),
+            (m.dataset.choiceDisabled = ''),
+            m.setAttribute('aria-disabled', 'true'))
+          : (_(m, l),
+            (m.dataset.choiceSelectable = ''),
+            m.setAttribute('aria-selected', e.selected ? 'true' : 'false')),
+        m
+      )
+    },
+    input: function (i, e) {
+      var t = i.classNames,
+        s = t.input,
+        n = t.inputCloned,
+        r = i.labelId,
+        o = document.createElement('input')
+      return (
+        (o.type = 'search'),
+        _(o, s),
+        _(o, n),
+        (o.autocomplete = 'off'),
+        (o.autocapitalize = 'off'),
+        (o.spellcheck = !1),
+        o.setAttribute('aria-autocomplete', 'list'),
+        e
+          ? o.setAttribute('aria-label', e)
+          : r || Ye(this._docRoot, this.passedElement.element.id, o),
+        o
+      )
+    },
+    dropdown: function (i) {
+      var e = i.classNames,
+        t = e.list,
+        s = e.listDropdown,
+        n = document.createElement('div')
+      return (_(n, t), _(n, s), n.setAttribute('aria-expanded', 'false'), n)
+    },
+    notice: function (i, e, t) {
+      var s = i.classNames,
+        n = s.item,
+        r = s.itemChoice,
+        o = s.addChoice,
+        a = s.noResults,
+        l = s.noChoices,
+        u = s.notice
+      t === void 0 && (t = S.generic)
+      var c = document.createElement('div')
+      switch ((k(c, !0, e), _(c, n), _(c, r), _(c, u), t)) {
+        case S.addChoice:
+          _(c, o)
+          break
+        case S.noResults:
+          _(c, a)
+          break
+        case S.noChoices:
+          _(c, l)
+          break
+      }
+      return (
+        t === S.addChoice &&
+          ((c.dataset.choiceSelectable = ''), (c.dataset.choice = '')),
+        c
+      )
+    },
+    option: function (i) {
+      var e = N(i.label),
+        t = new Option(e, i.value, !1, i.selected)
+      return (
+        he(t, i, !0),
+        (t.disabled = i.disabled),
+        i.selected && t.setAttribute('selected', ''),
+        t
+      )
+    },
+  },
+  yi =
+    '-ms-scroll-limit' in document.documentElement.style &&
+    '-ms-ime-align' in document.documentElement.style,
+  bi = {},
+  ue = function (i) {
+    if (i) return i.dataset.id ? parseInt(i.dataset.id, 10) : void 0
+  },
+  q = '[data-choice-selectable]',
+  rt = (function () {
+    function i(e, t) {
+      ;(e === void 0 && (e = '[data-choice]'), t === void 0 && (t = {}))
+      var s = this
+      ;((this.initialisedOK = void 0),
+        (this._hasNonChoicePlaceholder = !1),
+        (this._lastAddedChoiceId = 0),
+        (this._lastAddedGroupId = 0))
+      var n = i.defaults
+      ;((this.config = A(A(A({}, n.allOptions), n.options), t)),
+        at.forEach(function (y) {
+          s.config[y] = A(A(A({}, n.allOptions[y]), n.options[y]), t[y])
+        }))
+      var r = this.config
+      r.silent || this._validateConfig()
+      var o = r.shadowRoot || document.documentElement
+      this._docRoot = o
+      var a = typeof e == 'string' ? o.querySelector(e) : e
+      if (!a || typeof a != 'object' || !(At(a) || Qe(a)))
+        throw TypeError(
+          !a && typeof e == 'string'
+            ? 'Selector '.concat(e, ' failed to find an element')
+            : 'Expected one of the following types text|select-one|select-multiple',
+        )
+      var l = a.type,
+        u = l === j.Text
+      ;((u || r.maxItemCount !== 1) && (r.singleModeForMultiSelect = !1),
+        r.singleModeForMultiSelect && (l = j.SelectMultiple))
+      var c = l === j.SelectOne,
+        h = l === j.SelectMultiple,
+        d = c || h
+      if (
+        ((this._elementType = l),
+        (this._isTextElement = u),
+        (this._isSelectOneElement = c),
+        (this._isSelectMultipleElement = h),
+        (this._isSelectElement = c || h),
+        (this._canAddUserChoices = (u && r.addItems) || (d && r.addChoices)),
+        typeof r.renderSelectedChoices != 'boolean' &&
+          (r.renderSelectedChoices = r.renderSelectedChoices === 'always' || c),
+        r.closeDropdownOnSelect === 'auto'
+          ? (r.closeDropdownOnSelect = u || c || r.singleModeForMultiSelect)
+          : (r.closeDropdownOnSelect = z(r.closeDropdownOnSelect)),
+        r.placeholder &&
+          (r.placeholderValue
+            ? (this._hasNonChoicePlaceholder = !0)
+            : a.dataset.placeholder &&
+              ((this._hasNonChoicePlaceholder = !0),
+              (r.placeholderValue = a.dataset.placeholder))),
+        t.addItemFilter && typeof t.addItemFilter != 'function')
+      ) {
+        var p =
+          t.addItemFilter instanceof RegExp
+            ? t.addItemFilter
+            : new RegExp(t.addItemFilter)
+        r.addItemFilter = p.test.bind(p)
+      }
+      if (this._isTextElement)
+        this.passedElement = new It({ element: a, classNames: r.classNames })
+      else {
+        var f = a
+        this.passedElement = new Lt({
+          element: f,
+          classNames: r.classNames,
+          template: function (y) {
+            return s._templates.option(y)
+          },
+          extractPlaceholder: r.placeholder && !this._hasNonChoicePlaceholder,
+        })
+      }
+      if (
+        ((this.initialised = !1),
+        (this._store = new Pt(r)),
+        (this._currentValue = ''),
+        (r.searchEnabled = !u && r.searchEnabled),
+        (this._canSearch = r.searchEnabled),
+        (this._isScrollingOnIe = !1),
+        (this._highlightPosition = 0),
+        (this._wasTap = !0),
+        (this._placeholderValue = this._generatePlaceholderValue()),
+        (this._baseId = ft(a, 'choices-')),
+        (this._direction = a.dir),
+        !this._direction)
+      ) {
+        var m = window.getComputedStyle(a).direction,
+          g = window.getComputedStyle(document.documentElement).direction
+        m !== g && (this._direction = m)
+      }
+      if (
+        ((this._idNames = { itemChoice: 'item-choice' }),
+        (this._templates = n.templates),
+        (this._render = this._render.bind(this)),
+        (this._onFocus = this._onFocus.bind(this)),
+        (this._onBlur = this._onBlur.bind(this)),
+        (this._onKeyUp = this._onKeyUp.bind(this)),
+        (this._onKeyDown = this._onKeyDown.bind(this)),
+        (this._onInput = this._onInput.bind(this)),
+        (this._onClick = this._onClick.bind(this)),
+        (this._onTouchMove = this._onTouchMove.bind(this)),
+        (this._onTouchEnd = this._onTouchEnd.bind(this)),
+        (this._onMouseDown = this._onMouseDown.bind(this)),
+        (this._onMouseOver = this._onMouseOver.bind(this)),
+        (this._onFormReset = this._onFormReset.bind(this)),
+        (this._onSelectKey = this._onSelectKey.bind(this)),
+        (this._onEnterKey = this._onEnterKey.bind(this)),
+        (this._onEscapeKey = this._onEscapeKey.bind(this)),
+        (this._onDirectionKey = this._onDirectionKey.bind(this)),
+        (this._onDeleteKey = this._onDeleteKey.bind(this)),
+        (this._onChange = this._onChange.bind(this)),
+        (this._onInvalid = this._onInvalid.bind(this)),
+        this.passedElement.isActive)
+      ) {
+        ;(r.silent ||
+          console.warn(
+            'Trying to initialise Choices on element already initialised',
+            { element: e },
+          ),
+          (this.initialised = !0),
+          (this.initialisedOK = !1))
+        return
+      }
+      ;(this.init(),
+        (this._initialItems = this._store.items.map(function (y) {
+          return y.value
+        })))
+    }
+    return (
+      Object.defineProperty(i, 'defaults', {
+        get: function () {
+          return Object.preventExtensions({
+            get options() {
+              return bi
+            },
+            get allOptions() {
+              return He
+            },
+            get templates() {
+              return gi
+            },
+          })
+        },
+        enumerable: !1,
+        configurable: !0,
+      }),
+      (i.prototype.init = function () {
+        if (!(this.initialised || this.initialisedOK !== void 0)) {
+          ;((this._searcher = vi(this.config)),
+            this._loadChoices(),
+            this._createTemplates(),
+            this._createElements(),
+            this._createStructure(),
+            (this._isTextElement && !this.config.addItems) ||
+            this.passedElement.element.hasAttribute('disabled') ||
+            this.passedElement.element.closest('fieldset:disabled')
+              ? this.disable()
+              : (this.enable(), this._addEventListeners()),
+            this._initStore(),
+            (this.initialised = !0),
+            (this.initialisedOK = !0))
+          var e = this.config.callbackOnInit
+          typeof e == 'function' && e.call(this)
+        }
+      }),
+      (i.prototype.destroy = function () {
+        this.initialised &&
+          (this._removeEventListeners(),
+          this.passedElement.reveal(),
+          this.containerOuter.unwrap(this.passedElement.element),
+          (this._store._listeners = []),
+          this.clearStore(!1),
+          this._stopSearch(),
+          (this._templates = i.defaults.templates),
+          (this.initialised = !1),
+          (this.initialisedOK = void 0))
+      }),
+      (i.prototype.enable = function () {
+        return (
+          this.passedElement.isDisabled && this.passedElement.enable(),
+          this.containerOuter.isDisabled &&
+            (this._addEventListeners(),
+            this.input.enable(),
+            this.containerOuter.enable()),
+          this
+        )
+      }),
+      (i.prototype.disable = function () {
+        return (
+          this.passedElement.isDisabled || this.passedElement.disable(),
+          this.containerOuter.isDisabled ||
+            (this._removeEventListeners(),
+            this.input.disable(),
+            this.containerOuter.disable()),
+          this
+        )
+      }),
+      (i.prototype.highlightItem = function (e, t) {
+        if ((t === void 0 && (t = !0), !e || !e.id)) return this
+        var s = this._store.items.find(function (n) {
+          return n.id === e.id
+        })
+        return !s || s.highlighted
+          ? this
+          : (this._store.dispatch(ee(s, !0)),
+            t && this.passedElement.triggerEvent(I.highlightItem, x(s)),
+            this)
+      }),
+      (i.prototype.unhighlightItem = function (e, t) {
+        if ((t === void 0 && (t = !0), !e || !e.id)) return this
+        var s = this._store.items.find(function (n) {
+          return n.id === e.id
+        })
+        return !s || !s.highlighted
+          ? this
+          : (this._store.dispatch(ee(s, !1)),
+            t && this.passedElement.triggerEvent(I.unhighlightItem, x(s)),
+            this)
+      }),
+      (i.prototype.highlightAll = function () {
+        var e = this
+        return (
+          this._store.withTxn(function () {
+            e._store.items.forEach(function (t) {
+              t.highlighted ||
+                (e._store.dispatch(ee(t, !0)),
+                e.passedElement.triggerEvent(I.highlightItem, x(t)))
+            })
+          }),
+          this
+        )
+      }),
+      (i.prototype.unhighlightAll = function () {
+        var e = this
+        return (
+          this._store.withTxn(function () {
+            e._store.items.forEach(function (t) {
+              t.highlighted &&
+                (e._store.dispatch(ee(t, !1)),
+                e.passedElement.triggerEvent(I.highlightItem, x(t)))
+            })
+          }),
+          this
+        )
+      }),
+      (i.prototype.removeActiveItemsByValue = function (e) {
+        var t = this
+        return (
+          this._store.withTxn(function () {
+            t._store.items
+              .filter(function (s) {
+                return s.value === e
+              })
+              .forEach(function (s) {
+                return t._removeItem(s)
+              })
+          }),
+          this
+        )
+      }),
+      (i.prototype.removeActiveItems = function (e) {
+        var t = this
+        return (
+          this._store.withTxn(function () {
+            t._store.items
+              .filter(function (s) {
+                var n = s.id
+                return n !== e
+              })
+              .forEach(function (s) {
+                return t._removeItem(s)
+              })
+          }),
+          this
+        )
+      }),
+      (i.prototype.removeHighlightedItems = function (e) {
+        var t = this
+        return (
+          e === void 0 && (e = !1),
+          this._store.withTxn(function () {
+            t._store.highlightedActiveItems.forEach(function (s) {
+              ;(t._removeItem(s), e && t._triggerChange(s.value))
+            })
+          }),
+          this
+        )
+      }),
+      (i.prototype.showDropdown = function (e) {
+        var t = this
+        return this.dropdown.isActive
+          ? this
+          : (e === void 0 && (e = !this._canSearch),
+            requestAnimationFrame(function () {
+              t.dropdown.show()
+              var s = t.dropdown.element.getBoundingClientRect()
+              ;(t.containerOuter.open(s.bottom, s.height),
+                e || t.input.focus(),
+                t.passedElement.triggerEvent(I.showDropdown))
+              var n = t.choiceList.element.querySelector(
+                W(t.config.classNames.selectedState),
               )
-            }
-            i.activateChoices = c
-            var n = function () {
-              return { type: v.ACTION_TYPES.CLEAR_CHOICES }
-            }
-            i.clearChoices = n
-          },
-          783: function (N, i, y) {
-            ;(Object.defineProperty(i, '__esModule', { value: !0 }),
-              (i.addGroup = void 0))
-            var v = y(883),
-              h = function (d) {
-                var c = d.value,
-                  n = d.id,
-                  r = d.active,
-                  a = d.disabled
-                return {
-                  type: v.ACTION_TYPES.ADD_GROUP,
-                  value: c,
-                  id: n,
-                  active: r,
-                  disabled: a,
+              n !== null &&
+                !Pe(n, t.choiceList.element) &&
+                (t.choiceList.element.scrollTop = n.offsetTop)
+            }),
+            this)
+      }),
+      (i.prototype.hideDropdown = function (e) {
+        var t = this
+        return this.dropdown.isActive
+          ? (this._removeHighlightedChoices(),
+            requestAnimationFrame(function () {
+              ;(t.dropdown.hide(),
+                t.containerOuter.close(),
+                !e &&
+                  t._canSearch &&
+                  (t.input.removeActiveDescendant(), t.input.blur()),
+                t.passedElement.triggerEvent(I.hideDropdown))
+            }),
+            this)
+          : this
+      }),
+      (i.prototype.getValue = function (e) {
+        var t = this._store.items.map(function (s) {
+          return e ? s.value : x(s)
+        })
+        return this._isSelectOneElement || this.config.singleModeForMultiSelect
+          ? t[0]
+          : t
+      }),
+      (i.prototype.setValue = function (e) {
+        var t = this
+        return this.initialisedOK
+          ? (this._store.withTxn(function () {
+              e.forEach(function (s) {
+                s && t._addChoice(M(s, !1))
+              })
+            }),
+            this._searcher.reset(),
+            this)
+          : (this._warnChoicesInitFailed('setValue'), this)
+      }),
+      (i.prototype.setChoiceByValue = function (e) {
+        var t = this
+        return this.initialisedOK
+          ? this._isTextElement
+            ? this
+            : (this._store.withTxn(function () {
+                var s = Array.isArray(e) ? e : [e]
+                ;(s.forEach(function (n) {
+                  return t._findAndSelectChoiceByValue(n)
+                }),
+                  t.unhighlightAll())
+              }),
+              this._searcher.reset(),
+              this)
+          : (this._warnChoicesInitFailed('setChoiceByValue'), this)
+      }),
+      (i.prototype.setChoices = function (e, t, s, n, r, o) {
+        var a = this
+        if (
+          (e === void 0 && (e = []),
+          t === void 0 && (t = 'value'),
+          s === void 0 && (s = 'label'),
+          n === void 0 && (n = !1),
+          r === void 0 && (r = !0),
+          o === void 0 && (o = !1),
+          !this.initialisedOK)
+        )
+          return (this._warnChoicesInitFailed('setChoices'), this)
+        if (!this._isSelectElement)
+          throw new TypeError(
+            "setChoices can't be used with INPUT based Choices",
+          )
+        if (typeof t != 'string' || !t)
+          throw new TypeError(
+            "value parameter must be a name of 'value' field in passed objects",
+          )
+        if (typeof e == 'function') {
+          var l = e(this)
+          if (typeof Promise == 'function' && l instanceof Promise)
+            return new Promise(function (u) {
+              return requestAnimationFrame(u)
+            })
+              .then(function () {
+                return a._handleLoadingState(!0)
+              })
+              .then(function () {
+                return l
+              })
+              .then(function (u) {
+                return a.setChoices(u, t, s, n, r, o)
+              })
+              .catch(function (u) {
+                a.config.silent || console.error(u)
+              })
+              .then(function () {
+                return a._handleLoadingState(!1)
+              })
+              .then(function () {
+                return a
+              })
+          if (!Array.isArray(l))
+            throw new TypeError(
+              '.setChoices first argument function must return either array of choices or Promise, got: '.concat(
+                typeof l,
+              ),
+            )
+          e = l
+        }
+        if (!Array.isArray(e))
+          throw new TypeError(
+            '.setChoices must be called either with array of choices with a function resulting into Promise of array of choices',
+          )
+        return (
+          this.containerOuter.removeLoadingState(),
+          this._store.withTxn(function () {
+            ;(r && (a._isSearching = !1), n && a.clearChoices(!0, o))
+            var u = t === 'value',
+              c = s === 'label'
+            ;(e.forEach(function (h) {
+              if ('choices' in h) {
+                var d = h
+                ;(c || (d = A(A({}, d), { label: d[s] })),
+                  a._addGroup(M(d, !0)))
+              } else {
+                var p = h
+                ;(!c || !u) && (p = A(A({}, p), { value: p[t], label: p[s] }))
+                var f = M(p, !1)
+                ;(a._addChoice(f),
+                  f.placeholder &&
+                    !a._hasNonChoicePlaceholder &&
+                    (a._placeholderValue = ze(f.label)))
+              }
+            }),
+              a.unhighlightAll())
+          }),
+          this.dropdown.isActive &&
+            this._canAddUserChoices &&
+            this._canCreateItem(this.input.value),
+          this._searcher.reset(),
+          this
+        )
+      }),
+      (i.prototype.refresh = function (e, t, s) {
+        var n = this
+        return (
+          e === void 0 && (e = !1),
+          t === void 0 && (t = !1),
+          s === void 0 && (s = !1),
+          this._isSelectElement
+            ? (this._store.withTxn(function () {
+                var r = n.passedElement.optionsAsChoices(),
+                  o = {}
+                ;(s ||
+                  n._store.items.forEach(function (l) {
+                    l.id && l.active && l.selected && (o[l.value] = !0)
+                  }),
+                  n.clearStore(!1))
+                var a = function (l) {
+                  s ? n._store.dispatch(Me(l)) : o[l.value] && (l.selected = !0)
                 }
-              }
-            i.addGroup = h
-          },
-          464: function (N, i, y) {
-            ;(Object.defineProperty(i, '__esModule', { value: !0 }),
-              (i.highlightItem = i.removeItem = i.addItem = void 0))
-            var v = y(883),
-              h = function (n) {
-                var r = n.value,
-                  a = n.label,
-                  I = n.id,
-                  L = n.choiceId,
-                  E = n.groupId,
-                  D = n.customProperties,
-                  B = n.placeholder,
-                  Q = n.keyCode
-                return {
-                  type: v.ACTION_TYPES.ADD_ITEM,
-                  value: r,
-                  label: a,
-                  id: I,
-                  choiceId: L,
-                  groupId: E,
-                  customProperties: D,
-                  placeholder: B,
-                  keyCode: Q,
-                }
-              }
-            i.addItem = h
-            var d = function (n, r) {
-              return { type: v.ACTION_TYPES.REMOVE_ITEM, id: n, choiceId: r }
-            }
-            i.removeItem = d
-            var c = function (n, r) {
-              return {
-                type: v.ACTION_TYPES.HIGHLIGHT_ITEM,
-                id: n,
-                highlighted: r,
-              }
-            }
-            i.highlightItem = c
-          },
-          137: function (N, i, y) {
-            ;(Object.defineProperty(i, '__esModule', { value: !0 }),
-              (i.setIsLoading = i.resetTo = i.clearAll = void 0))
-            var v = y(883),
-              h = function () {
-                return { type: v.ACTION_TYPES.CLEAR_ALL }
-              }
-            i.clearAll = h
-            var d = function (n) {
-              return { type: v.ACTION_TYPES.RESET_TO, state: n }
-            }
-            i.resetTo = d
-            var c = function (n) {
-              return { type: v.ACTION_TYPES.SET_IS_LOADING, isLoading: n }
-            }
-            i.setIsLoading = c
-          },
-          373: function (N, i, y) {
-            var v =
-                (this && this.__spreadArray) ||
-                function (g, e, t) {
-                  if (t || arguments.length === 2)
-                    for (var s = 0, l = e.length, _; s < l; s++)
-                      (_ || !(s in e)) &&
-                        (_ || (_ = Array.prototype.slice.call(e, 0, s)),
-                        (_[s] = e[s]))
-                  return g.concat(_ || Array.prototype.slice.call(e))
-                },
-              h =
-                (this && this.__importDefault) ||
-                function (g) {
-                  return g && g.__esModule ? g : { default: g }
-                }
-            Object.defineProperty(i, '__esModule', { value: !0 })
-            var d = h(y(996)),
-              c = h(y(221)),
-              n = y(282),
-              r = y(783),
-              a = y(464),
-              I = y(137),
-              L = y(520),
-              E = y(883),
-              D = y(789),
-              B = y(799),
-              Q = y(655),
-              Z = h(y(744)),
-              re = h(y(686)),
-              b =
-                '-ms-scroll-limit' in document.documentElement.style &&
-                '-ms-ime-align' in document.documentElement.style,
-              w = {},
-              j = (function () {
-                function g(e, t) {
-                  ;(e === void 0 && (e = '[data-choice]'),
-                    t === void 0 && (t = {}))
-                  var s = this
-                  ;(t.allowHTML === void 0 &&
-                    console.warn(
-                      'Deprecation warning: allowHTML will default to false in a future release. To render HTML in Choices, you will need to set it to true. Setting allowHTML will suppress this message.',
-                    ),
-                    (this.config = d.default.all(
-                      [D.DEFAULT_CONFIG, g.defaults.options, t],
-                      {
-                        arrayMerge: function (u, T) {
-                          return v([], T, !0)
-                        },
-                      },
-                    )))
-                  var l = (0, B.diff)(this.config, D.DEFAULT_CONFIG)
-                  l.length &&
-                    console.warn(
-                      'Unknown config option(s) passed',
-                      l.join(', '),
-                    )
-                  var _ = typeof e == 'string' ? document.querySelector(e) : e
-                  if (!(
-                    _ instanceof HTMLInputElement ||
-                    _ instanceof HTMLSelectElement
-                  ))
-                    throw TypeError(
-                      'Expected one of the following types text|select-one|select-multiple',
-                    )
-                  if (
-                    ((this._isTextElement = _.type === E.TEXT_TYPE),
-                    (this._isSelectOneElement = _.type === E.SELECT_ONE_TYPE),
-                    (this._isSelectMultipleElement =
-                      _.type === E.SELECT_MULTIPLE_TYPE),
-                    (this._isSelectElement =
-                      this._isSelectOneElement ||
-                      this._isSelectMultipleElement),
-                    (this.config.searchEnabled =
-                      this._isSelectMultipleElement ||
-                      this.config.searchEnabled),
-                    ['auto', 'always'].includes(
-                      ''.concat(this.config.renderSelectedChoices),
-                    ) || (this.config.renderSelectedChoices = 'auto'),
-                    t.addItemFilter && typeof t.addItemFilter != 'function')
-                  ) {
-                    var P =
-                      t.addItemFilter instanceof RegExp
-                        ? t.addItemFilter
-                        : new RegExp(t.addItemFilter)
-                    this.config.addItemFilter = P.test.bind(P)
-                  }
-                  if (
-                    (this._isTextElement
-                      ? (this.passedElement = new L.WrappedInput({
-                          element: _,
-                          classNames: this.config.classNames,
-                          delimiter: this.config.delimiter,
-                        }))
-                      : (this.passedElement = new L.WrappedSelect({
-                          element: _,
-                          classNames: this.config.classNames,
-                          template: function (u) {
-                            return s._templates.option(u)
-                          },
-                        })),
-                    (this.initialised = !1),
-                    (this._store = new Z.default()),
-                    (this._initialState = Q.defaultState),
-                    (this._currentState = Q.defaultState),
-                    (this._prevState = Q.defaultState),
-                    (this._currentValue = ''),
-                    (this._canSearch = !!this.config.searchEnabled),
-                    (this._isScrollingOnIe = !1),
-                    (this._highlightPosition = 0),
-                    (this._wasTap = !0),
-                    (this._placeholderValue = this._generatePlaceholderValue()),
-                    (this._baseId = (0, B.generateId)(
-                      this.passedElement.element,
-                      'choices-',
-                    )),
-                    (this._direction = this.passedElement.dir),
-                    !this._direction)
-                  ) {
-                    var M = window.getComputedStyle(
-                        this.passedElement.element,
-                      ).direction,
-                      K = window.getComputedStyle(
-                        document.documentElement,
-                      ).direction
-                    M !== K && (this._direction = M)
-                  }
-                  if (
-                    ((this._idNames = { itemChoice: 'item-choice' }),
-                    this._isSelectElement &&
-                      ((this._presetGroups = this.passedElement.optionGroups),
-                      (this._presetOptions = this.passedElement.options)),
-                    (this._presetChoices = this.config.choices),
-                    (this._presetItems = this.config.items),
-                    this.passedElement.value && this._isTextElement)
-                  ) {
-                    var f = this.passedElement.value.split(
-                      this.config.delimiter,
-                    )
-                    this._presetItems = this._presetItems.concat(f)
-                  }
-                  if (
-                    (this.passedElement.options &&
-                      this.passedElement.options.forEach(function (u) {
-                        s._presetChoices.push({
-                          value: u.value,
-                          label: u.innerHTML,
-                          selected: !!u.selected,
-                          disabled: u.disabled || u.parentNode.disabled,
-                          placeholder:
-                            u.value === '' || u.hasAttribute('placeholder'),
-                          customProperties: (0, B.parseCustomProperties)(
-                            u.dataset.customProperties,
-                          ),
-                        })
-                      }),
-                    (this._render = this._render.bind(this)),
-                    (this._onFocus = this._onFocus.bind(this)),
-                    (this._onBlur = this._onBlur.bind(this)),
-                    (this._onKeyUp = this._onKeyUp.bind(this)),
-                    (this._onKeyDown = this._onKeyDown.bind(this)),
-                    (this._onClick = this._onClick.bind(this)),
-                    (this._onTouchMove = this._onTouchMove.bind(this)),
-                    (this._onTouchEnd = this._onTouchEnd.bind(this)),
-                    (this._onMouseDown = this._onMouseDown.bind(this)),
-                    (this._onMouseOver = this._onMouseOver.bind(this)),
-                    (this._onFormReset = this._onFormReset.bind(this)),
-                    (this._onSelectKey = this._onSelectKey.bind(this)),
-                    (this._onEnterKey = this._onEnterKey.bind(this)),
-                    (this._onEscapeKey = this._onEscapeKey.bind(this)),
-                    (this._onDirectionKey = this._onDirectionKey.bind(this)),
-                    (this._onDeleteKey = this._onDeleteKey.bind(this)),
-                    this.passedElement.isActive)
-                  ) {
-                    ;(this.config.silent ||
-                      console.warn(
-                        'Trying to initialise Choices on element already initialised',
-                        { element: e },
-                      ),
-                      (this.initialised = !0))
+                ;(r.forEach(function (l) {
+                  if ('choices' in l) {
+                    l.choices.forEach(a)
                     return
                   }
-                  this.init()
-                }
-                return (
-                  Object.defineProperty(g, 'defaults', {
-                    get: function () {
-                      return Object.preventExtensions({
-                        get options() {
-                          return w
-                        },
-                        get templates() {
-                          return re.default
-                        },
-                      })
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  (g.prototype.init = function () {
-                    if (!this.initialised) {
-                      ;(this._createTemplates(),
-                        this._createElements(),
-                        this._createStructure(),
-                        this._store.subscribe(this._render),
-                        this._render(),
-                        this._addEventListeners())
-                      var e =
-                        !this.config.addItems ||
-                        this.passedElement.element.hasAttribute('disabled')
-                      ;(e && this.disable(), (this.initialised = !0))
-                      var t = this.config.callbackOnInit
-                      t && typeof t == 'function' && t.call(this)
-                    }
-                  }),
-                  (g.prototype.destroy = function () {
-                    this.initialised &&
-                      (this._removeEventListeners(),
-                      this.passedElement.reveal(),
-                      this.containerOuter.unwrap(this.passedElement.element),
-                      this.clearStore(),
-                      this._isSelectElement &&
-                        (this.passedElement.options = this._presetOptions),
-                      (this._templates = re.default),
-                      (this.initialised = !1))
-                  }),
-                  (g.prototype.enable = function () {
-                    return (
-                      this.passedElement.isDisabled &&
-                        this.passedElement.enable(),
-                      this.containerOuter.isDisabled &&
-                        (this._addEventListeners(),
-                        this.input.enable(),
-                        this.containerOuter.enable()),
-                      this
-                    )
-                  }),
-                  (g.prototype.disable = function () {
-                    return (
-                      this.passedElement.isDisabled ||
-                        this.passedElement.disable(),
-                      this.containerOuter.isDisabled ||
-                        (this._removeEventListeners(),
-                        this.input.disable(),
-                        this.containerOuter.disable()),
-                      this
-                    )
-                  }),
-                  (g.prototype.highlightItem = function (e, t) {
-                    if ((t === void 0 && (t = !0), !e || !e.id)) return this
-                    var s = e.id,
-                      l = e.groupId,
-                      _ = l === void 0 ? -1 : l,
-                      P = e.value,
-                      M = P === void 0 ? '' : P,
-                      K = e.label,
-                      f = K === void 0 ? '' : K,
-                      u = _ >= 0 ? this._store.getGroupById(_) : null
-                    return (
-                      this._store.dispatch((0, a.highlightItem)(s, !0)),
-                      t &&
-                        this.passedElement.triggerEvent(
-                          E.EVENTS.highlightItem,
-                          {
-                            id: s,
-                            value: M,
-                            label: f,
-                            groupValue: u && u.value ? u.value : null,
-                          },
-                        ),
-                      this
-                    )
-                  }),
-                  (g.prototype.unhighlightItem = function (e) {
-                    if (!e || !e.id) return this
-                    var t = e.id,
-                      s = e.groupId,
-                      l = s === void 0 ? -1 : s,
-                      _ = e.value,
-                      P = _ === void 0 ? '' : _,
-                      M = e.label,
-                      K = M === void 0 ? '' : M,
-                      f = l >= 0 ? this._store.getGroupById(l) : null
-                    return (
-                      this._store.dispatch((0, a.highlightItem)(t, !1)),
-                      this.passedElement.triggerEvent(E.EVENTS.highlightItem, {
-                        id: t,
-                        value: P,
-                        label: K,
-                        groupValue: f && f.value ? f.value : null,
-                      }),
-                      this
-                    )
-                  }),
-                  (g.prototype.highlightAll = function () {
-                    var e = this
-                    return (
-                      this._store.items.forEach(function (t) {
-                        return e.highlightItem(t)
-                      }),
-                      this
-                    )
-                  }),
-                  (g.prototype.unhighlightAll = function () {
-                    var e = this
-                    return (
-                      this._store.items.forEach(function (t) {
-                        return e.unhighlightItem(t)
-                      }),
-                      this
-                    )
-                  }),
-                  (g.prototype.removeActiveItemsByValue = function (e) {
-                    var t = this
-                    return (
-                      this._store.activeItems
-                        .filter(function (s) {
-                          return s.value === e
-                        })
-                        .forEach(function (s) {
-                          return t._removeItem(s)
-                        }),
-                      this
-                    )
-                  }),
-                  (g.prototype.removeActiveItems = function (e) {
-                    var t = this
-                    return (
-                      this._store.activeItems
-                        .filter(function (s) {
-                          var l = s.id
-                          return l !== e
-                        })
-                        .forEach(function (s) {
-                          return t._removeItem(s)
-                        }),
-                      this
-                    )
-                  }),
-                  (g.prototype.removeHighlightedItems = function (e) {
-                    var t = this
-                    return (
-                      e === void 0 && (e = !1),
-                      this._store.highlightedActiveItems.forEach(function (s) {
-                        ;(t._removeItem(s), e && t._triggerChange(s.value))
-                      }),
-                      this
-                    )
-                  }),
-                  (g.prototype.showDropdown = function (e) {
-                    var t = this
-                    return this.dropdown.isActive
-                      ? this
-                      : (requestAnimationFrame(function () {
-                          ;(t.dropdown.show(),
-                            t.containerOuter.open(
-                              t.dropdown.distanceFromTopWindow,
-                            ),
-                            !e && t._canSearch && t.input.focus(),
-                            t.passedElement.triggerEvent(
-                              E.EVENTS.showDropdown,
-                              {},
-                            ))
-                        }),
-                        this)
-                  }),
-                  (g.prototype.hideDropdown = function (e) {
-                    var t = this
-                    return this.dropdown.isActive
-                      ? (requestAnimationFrame(function () {
-                          ;(t.dropdown.hide(),
-                            t.containerOuter.close(),
-                            !e &&
-                              t._canSearch &&
-                              (t.input.removeActiveDescendant(),
-                              t.input.blur()),
-                            t.passedElement.triggerEvent(
-                              E.EVENTS.hideDropdown,
-                              {},
-                            ))
-                        }),
-                        this)
-                      : this
-                  }),
-                  (g.prototype.getValue = function (e) {
-                    e === void 0 && (e = !1)
-                    var t = this._store.activeItems.reduce(function (s, l) {
-                      var _ = e ? l.value : l
-                      return (s.push(_), s)
-                    }, [])
-                    return this._isSelectOneElement ? t[0] : t
-                  }),
-                  (g.prototype.setValue = function (e) {
-                    var t = this
-                    return this.initialised
-                      ? (e.forEach(function (s) {
-                          return t._setChoiceOrItem(s)
-                        }),
-                        this)
-                      : this
-                  }),
-                  (g.prototype.setChoiceByValue = function (e) {
-                    var t = this
-                    if (!this.initialised || this._isTextElement) return this
-                    var s = Array.isArray(e) ? e : [e]
-                    return (
-                      s.forEach(function (l) {
-                        return t._findAndSelectChoiceByValue(l)
-                      }),
-                      this
-                    )
-                  }),
-                  (g.prototype.setChoices = function (e, t, s, l) {
-                    var _ = this
-                    if (
-                      (e === void 0 && (e = []),
-                      t === void 0 && (t = 'value'),
-                      s === void 0 && (s = 'label'),
-                      l === void 0 && (l = !1),
-                      !this.initialised)
-                    )
-                      throw new ReferenceError(
-                        'setChoices was called on a non-initialized instance of Choices',
-                      )
-                    if (!this._isSelectElement)
-                      throw new TypeError(
-                        "setChoices can't be used with INPUT based Choices",
-                      )
-                    if (typeof t != 'string' || !t)
-                      throw new TypeError(
-                        "value parameter must be a name of 'value' field in passed objects",
-                      )
-                    if ((l && this.clearChoices(), typeof e == 'function')) {
-                      var P = e(this)
-                      if (typeof Promise == 'function' && P instanceof Promise)
-                        return new Promise(function (M) {
-                          return requestAnimationFrame(M)
-                        })
-                          .then(function () {
-                            return _._handleLoadingState(!0)
-                          })
-                          .then(function () {
-                            return P
-                          })
-                          .then(function (M) {
-                            return _.setChoices(M, t, s, l)
-                          })
-                          .catch(function (M) {
-                            _.config.silent || console.error(M)
-                          })
-                          .then(function () {
-                            return _._handleLoadingState(!1)
-                          })
-                          .then(function () {
-                            return _
-                          })
-                      if (!Array.isArray(P))
-                        throw new TypeError(
-                          '.setChoices first argument function must return either array of choices or Promise, got: '.concat(
-                            typeof P,
-                          ),
-                        )
-                      return this.setChoices(P, t, s, !1)
-                    }
-                    if (!Array.isArray(e))
-                      throw new TypeError(
-                        '.setChoices must be called either with array of choices with a function resulting into Promise of array of choices',
-                      )
-                    return (
-                      this.containerOuter.removeLoadingState(),
-                      this._startLoading(),
-                      e.forEach(function (M) {
-                        if (M.choices)
-                          _._addGroup({
-                            id: M.id ? parseInt(''.concat(M.id), 10) : null,
-                            group: M,
-                            valueKey: t,
-                            labelKey: s,
-                          })
-                        else {
-                          var K = M
-                          _._addChoice({
-                            value: K[t],
-                            label: K[s],
-                            isSelected: !!K.selected,
-                            isDisabled: !!K.disabled,
-                            placeholder: !!K.placeholder,
-                            customProperties: K.customProperties,
-                          })
-                        }
-                      }),
-                      this._stopLoading(),
-                      this
-                    )
-                  }),
-                  (g.prototype.clearChoices = function () {
-                    return (this._store.dispatch((0, n.clearChoices)()), this)
-                  }),
-                  (g.prototype.clearStore = function () {
-                    return (this._store.dispatch((0, I.clearAll)()), this)
-                  }),
-                  (g.prototype.clearInput = function () {
-                    var e = !this._isSelectOneElement
-                    return (
-                      this.input.clear(e),
-                      !this._isTextElement &&
-                        this._canSearch &&
-                        ((this._isSearching = !1),
-                        this._store.dispatch((0, n.activateChoices)(!0))),
-                      this
-                    )
-                  }),
-                  (g.prototype._render = function () {
-                    if (!this._store.isLoading()) {
-                      this._currentState = this._store.state
-                      var e =
-                          this._currentState.choices !==
-                            this._prevState.choices ||
-                          this._currentState.groups !==
-                            this._prevState.groups ||
-                          this._currentState.items !== this._prevState.items,
-                        t = this._isSelectElement,
-                        s = this._currentState.items !== this._prevState.items
-                      e &&
-                        (t && this._renderChoices(),
-                        s && this._renderItems(),
-                        (this._prevState = this._currentState))
-                    }
-                  }),
-                  (g.prototype._renderChoices = function () {
-                    var e = this,
-                      t = this._store,
-                      s = t.activeGroups,
-                      l = t.activeChoices,
-                      _ = document.createDocumentFragment()
-                    if (
-                      (this.choiceList.clear(),
-                      this.config.resetScrollPosition &&
-                        requestAnimationFrame(function () {
-                          return e.choiceList.scrollToTop()
-                        }),
-                      s.length >= 1 && !this._isSearching)
-                    ) {
-                      var P = l.filter(function (T) {
-                        return T.placeholder === !0 && T.groupId === -1
-                      })
-                      ;(P.length >= 1 &&
-                        (_ = this._createChoicesFragment(P, _)),
-                        (_ = this._createGroupsFragment(s, l, _)))
-                    } else
-                      l.length >= 1 && (_ = this._createChoicesFragment(l, _))
-                    if (_.childNodes && _.childNodes.length > 0) {
-                      var M = this._store.activeItems,
-                        K = this._canAddItem(M, this.input.value)
-                      if (K.response)
-                        (this.choiceList.append(_), this._highlightChoice())
-                      else {
-                        var f = this._getTemplate('notice', K.notice)
-                        this.choiceList.append(f)
-                      }
-                    } else {
-                      var u = void 0,
-                        f = void 0
-                      ;(this._isSearching
-                        ? ((f =
-                            typeof this.config.noResultsText == 'function'
-                              ? this.config.noResultsText()
-                              : this.config.noResultsText),
-                          (u = this._getTemplate('notice', f, 'no-results')))
-                        : ((f =
-                            typeof this.config.noChoicesText == 'function'
-                              ? this.config.noChoicesText()
-                              : this.config.noChoicesText),
-                          (u = this._getTemplate('notice', f, 'no-choices'))),
-                        this.choiceList.append(u))
-                    }
-                  }),
-                  (g.prototype._renderItems = function () {
-                    var e = this._store.activeItems || []
-                    this.itemList.clear()
-                    var t = this._createItemsFragment(e)
-                    t.childNodes && this.itemList.append(t)
-                  }),
-                  (g.prototype._createGroupsFragment = function (e, t, s) {
-                    var l = this
-                    s === void 0 && (s = document.createDocumentFragment())
-                    var _ = function (P) {
-                      return t.filter(function (M) {
-                        return l._isSelectOneElement
-                          ? M.groupId === P.id
-                          : M.groupId === P.id &&
-                              (l.config.renderSelectedChoices === 'always' ||
-                                !M.selected)
-                      })
-                    }
-                    return (
-                      this.config.shouldSort && e.sort(this.config.sorter),
-                      e.forEach(function (P) {
-                        var M = _(P)
-                        if (M.length >= 1) {
-                          var K = l._getTemplate('choiceGroup', P)
-                          ;(s.appendChild(K),
-                            l._createChoicesFragment(M, s, !0))
-                        }
-                      }),
-                      s
-                    )
-                  }),
-                  (g.prototype._createChoicesFragment = function (e, t, s) {
-                    var l = this
-                    ;(t === void 0 && (t = document.createDocumentFragment()),
-                      s === void 0 && (s = !1))
-                    var _ = this.config,
-                      P = _.renderSelectedChoices,
-                      M = _.searchResultLimit,
-                      K = _.renderChoiceLimit,
-                      f = this._isSearching
-                        ? B.sortByScore
-                        : this.config.sorter,
-                      u = function (X) {
-                        var ee =
-                          P === 'auto'
-                            ? l._isSelectOneElement || !X.selected
-                            : !0
-                        if (ee) {
-                          var ae = l._getTemplate(
-                            'choice',
-                            X,
-                            l.config.itemSelectText,
-                          )
-                          t.appendChild(ae)
-                        }
-                      },
-                      T = e
-                    P === 'auto' &&
-                      !this._isSelectOneElement &&
-                      (T = e.filter(function (X) {
-                        return !X.selected
-                      }))
-                    var H = T.reduce(
-                        function (X, ee) {
-                          return (
-                            ee.placeholder
-                              ? X.placeholderChoices.push(ee)
-                              : X.normalChoices.push(ee),
-                            X
-                          )
-                        },
-                        { placeholderChoices: [], normalChoices: [] },
-                      ),
-                      k = H.placeholderChoices,
-                      U = H.normalChoices
-                    ;(this.config.shouldSort || this._isSearching) && U.sort(f)
-                    var $ = T.length,
-                      W = this._isSelectOneElement ? v(v([], k, !0), U, !0) : U
-                    this._isSearching ? ($ = M) : K && K > 0 && !s && ($ = K)
-                    for (var J = 0; J < $; J += 1) W[J] && u(W[J])
-                    return t
-                  }),
-                  (g.prototype._createItemsFragment = function (e, t) {
-                    var s = this
-                    t === void 0 && (t = document.createDocumentFragment())
-                    var l = this.config,
-                      _ = l.shouldSortItems,
-                      P = l.sorter,
-                      M = l.removeItemButton
-                    ;(_ && !this._isSelectOneElement && e.sort(P),
-                      this._isTextElement
-                        ? (this.passedElement.value = e
-                            .map(function (f) {
-                              var u = f.value
-                              return u
-                            })
-                            .join(this.config.delimiter))
-                        : (this.passedElement.options = e))
-                    var K = function (f) {
-                      var u = s._getTemplate('item', f, M)
-                      t.appendChild(u)
-                    }
-                    return (e.forEach(K), t)
-                  }),
-                  (g.prototype._triggerChange = function (e) {
-                    e != null &&
-                      this.passedElement.triggerEvent(E.EVENTS.change, {
-                        value: e,
-                      })
-                  }),
-                  (g.prototype._selectPlaceholderChoice = function (e) {
-                    ;(this._addItem({
-                      value: e.value,
-                      label: e.label,
-                      choiceId: e.id,
-                      groupId: e.groupId,
-                      placeholder: e.placeholder,
-                    }),
-                      this._triggerChange(e.value))
-                  }),
-                  (g.prototype._handleButtonAction = function (e, t) {
-                    if (!(
-                      !e ||
-                      !t ||
-                      !this.config.removeItems ||
-                      !this.config.removeItemButton
-                    )) {
-                      var s = t.parentNode && t.parentNode.dataset.id,
-                        l =
-                          s &&
-                          e.find(function (_) {
-                            return _.id === parseInt(s, 10)
-                          })
-                      l &&
-                        (this._removeItem(l),
-                        this._triggerChange(l.value),
-                        this._isSelectOneElement &&
-                          this._store.placeholderChoice &&
-                          this._selectPlaceholderChoice(
-                            this._store.placeholderChoice,
-                          ))
-                    }
-                  }),
-                  (g.prototype._handleItemAction = function (e, t, s) {
-                    var l = this
-                    if (
-                      (s === void 0 && (s = !1),
-                      !(
-                        !e ||
-                        !t ||
-                        !this.config.removeItems ||
-                        this._isSelectOneElement
-                      ))
-                    ) {
-                      var _ = t.dataset.id
-                      ;(e.forEach(function (P) {
-                        P.id === parseInt(''.concat(_), 10) && !P.highlighted
-                          ? l.highlightItem(P)
-                          : !s && P.highlighted && l.unhighlightItem(P)
-                      }),
-                        this.input.focus())
-                    }
-                  }),
-                  (g.prototype._handleChoiceAction = function (e, t) {
-                    if (!(!e || !t)) {
-                      var s = t.dataset.id,
-                        l = s && this._store.getChoiceById(s)
-                      if (l) {
-                        var _ = e[0] && e[0].keyCode ? e[0].keyCode : void 0,
-                          P = this.dropdown.isActive
-                        if (
-                          ((l.keyCode = _),
-                          this.passedElement.triggerEvent(E.EVENTS.choice, {
-                            choice: l,
-                          }),
-                          !l.selected && !l.disabled)
-                        ) {
-                          var M = this._canAddItem(e, l.value)
-                          M.response &&
-                            (this._addItem({
-                              value: l.value,
-                              label: l.label,
-                              choiceId: l.id,
-                              groupId: l.groupId,
-                              customProperties: l.customProperties,
-                              placeholder: l.placeholder,
-                              keyCode: l.keyCode,
-                            }),
-                            this._triggerChange(l.value))
-                        }
-                        ;(this.clearInput(),
-                          P &&
-                            this._isSelectOneElement &&
-                            (this.hideDropdown(!0),
-                            this.containerOuter.focus()))
-                      }
-                    }
-                  }),
-                  (g.prototype._handleBackspace = function (e) {
-                    if (!(!this.config.removeItems || !e)) {
-                      var t = e[e.length - 1],
-                        s = e.some(function (l) {
-                          return l.highlighted
-                        })
-                      this.config.editItems && !s && t
-                        ? ((this.input.value = t.value),
-                          this.input.setWidth(),
-                          this._removeItem(t),
-                          this._triggerChange(t.value))
-                        : (s || this.highlightItem(t, !1),
-                          this.removeHighlightedItems(!0))
-                    }
-                  }),
-                  (g.prototype._startLoading = function () {
-                    this._store.dispatch((0, I.setIsLoading)(!0))
-                  }),
-                  (g.prototype._stopLoading = function () {
-                    this._store.dispatch((0, I.setIsLoading)(!1))
-                  }),
-                  (g.prototype._handleLoadingState = function (e) {
-                    e === void 0 && (e = !0)
-                    var t = this.itemList.getChild(
-                      '.'.concat(this.config.classNames.placeholder),
-                    )
-                    e
-                      ? (this.disable(),
-                        this.containerOuter.addLoadingState(),
-                        this._isSelectOneElement
-                          ? t
-                            ? (t.innerHTML = this.config.loadingText)
-                            : ((t = this._getTemplate(
-                                'placeholder',
-                                this.config.loadingText,
-                              )),
-                              t && this.itemList.append(t))
-                          : (this.input.placeholder = this.config.loadingText))
-                      : (this.enable(),
-                        this.containerOuter.removeLoadingState(),
-                        this._isSelectOneElement
-                          ? t && (t.innerHTML = this._placeholderValue || '')
-                          : (this.input.placeholder =
-                              this._placeholderValue || ''))
-                  }),
-                  (g.prototype._handleSearch = function (e) {
-                    if (this.input.isFocussed) {
-                      var t = this._store.choices,
-                        s = this.config,
-                        l = s.searchFloor,
-                        _ = s.searchChoices,
-                        P = t.some(function (K) {
-                          return !K.active
-                        })
-                      if (e !== null && typeof e < 'u' && e.length >= l) {
-                        var M = _ ? this._searchChoices(e) : 0
-                        this.passedElement.triggerEvent(E.EVENTS.search, {
-                          value: e,
-                          resultCount: M,
-                        })
-                      } else
-                        P &&
-                          ((this._isSearching = !1),
-                          this._store.dispatch((0, n.activateChoices)(!0)))
-                    }
-                  }),
-                  (g.prototype._canAddItem = function (e, t) {
-                    var s = !0,
-                      l =
-                        typeof this.config.addItemText == 'function'
-                          ? this.config.addItemText(t)
-                          : this.config.addItemText
-                    if (!this._isSelectOneElement) {
-                      var _ = (0, B.existsInArray)(e, t)
-                      ;(this.config.maxItemCount > 0 &&
-                        this.config.maxItemCount <= e.length &&
-                        ((s = !1),
-                        (l =
-                          typeof this.config.maxItemText == 'function'
-                            ? this.config.maxItemText(this.config.maxItemCount)
-                            : this.config.maxItemText)),
-                        !this.config.duplicateItemsAllowed &&
-                          _ &&
-                          s &&
-                          ((s = !1),
-                          (l =
-                            typeof this.config.uniqueItemText == 'function'
-                              ? this.config.uniqueItemText(t)
-                              : this.config.uniqueItemText)),
-                        this._isTextElement &&
-                          this.config.addItems &&
-                          s &&
-                          typeof this.config.addItemFilter == 'function' &&
-                          !this.config.addItemFilter(t) &&
-                          ((s = !1),
-                          (l =
-                            typeof this.config.customAddItemText == 'function'
-                              ? this.config.customAddItemText(t)
-                              : this.config.customAddItemText)))
-                    }
-                    return { response: s, notice: l }
-                  }),
-                  (g.prototype._searchChoices = function (e) {
-                    var t = typeof e == 'string' ? e.trim() : e,
-                      s =
-                        typeof this._currentValue == 'string'
-                          ? this._currentValue.trim()
-                          : this._currentValue
-                    if (t.length < 1 && t === ''.concat(s, ' ')) return 0
-                    var l = this._store.searchableChoices,
-                      _ = t,
-                      P = Object.assign(this.config.fuseOptions, {
-                        keys: v([], this.config.searchFields, !0),
-                        includeMatches: !0,
-                      }),
-                      M = new c.default(l, P),
-                      K = M.search(_)
-                    return (
-                      (this._currentValue = t),
-                      (this._highlightPosition = 0),
-                      (this._isSearching = !0),
-                      this._store.dispatch((0, n.filterChoices)(K)),
-                      K.length
-                    )
-                  }),
-                  (g.prototype._addEventListeners = function () {
-                    var e = document.documentElement
-                    ;(e.addEventListener('touchend', this._onTouchEnd, !0),
-                      this.containerOuter.element.addEventListener(
-                        'keydown',
-                        this._onKeyDown,
-                        !0,
-                      ),
-                      this.containerOuter.element.addEventListener(
-                        'mousedown',
-                        this._onMouseDown,
-                        !0,
-                      ),
-                      e.addEventListener('click', this._onClick, {
-                        passive: !0,
-                      }),
-                      e.addEventListener('touchmove', this._onTouchMove, {
-                        passive: !0,
-                      }),
-                      this.dropdown.element.addEventListener(
-                        'mouseover',
-                        this._onMouseOver,
-                        { passive: !0 },
-                      ),
-                      this._isSelectOneElement &&
-                        (this.containerOuter.element.addEventListener(
-                          'focus',
-                          this._onFocus,
-                          { passive: !0 },
-                        ),
-                        this.containerOuter.element.addEventListener(
-                          'blur',
-                          this._onBlur,
-                          { passive: !0 },
-                        )),
-                      this.input.element.addEventListener(
-                        'keyup',
-                        this._onKeyUp,
-                        { passive: !0 },
-                      ),
-                      this.input.element.addEventListener(
-                        'focus',
-                        this._onFocus,
-                        { passive: !0 },
-                      ),
-                      this.input.element.addEventListener(
-                        'blur',
-                        this._onBlur,
-                        { passive: !0 },
-                      ),
-                      this.input.element.form &&
-                        this.input.element.form.addEventListener(
-                          'reset',
-                          this._onFormReset,
-                          { passive: !0 },
-                        ),
-                      this.input.addEventListeners())
-                  }),
-                  (g.prototype._removeEventListeners = function () {
-                    var e = document.documentElement
-                    ;(e.removeEventListener('touchend', this._onTouchEnd, !0),
-                      this.containerOuter.element.removeEventListener(
-                        'keydown',
-                        this._onKeyDown,
-                        !0,
-                      ),
-                      this.containerOuter.element.removeEventListener(
-                        'mousedown',
-                        this._onMouseDown,
-                        !0,
-                      ),
-                      e.removeEventListener('click', this._onClick),
-                      e.removeEventListener('touchmove', this._onTouchMove),
-                      this.dropdown.element.removeEventListener(
-                        'mouseover',
-                        this._onMouseOver,
-                      ),
-                      this._isSelectOneElement &&
-                        (this.containerOuter.element.removeEventListener(
-                          'focus',
-                          this._onFocus,
-                        ),
-                        this.containerOuter.element.removeEventListener(
-                          'blur',
-                          this._onBlur,
-                        )),
-                      this.input.element.removeEventListener(
-                        'keyup',
-                        this._onKeyUp,
-                      ),
-                      this.input.element.removeEventListener(
-                        'focus',
-                        this._onFocus,
-                      ),
-                      this.input.element.removeEventListener(
-                        'blur',
-                        this._onBlur,
-                      ),
-                      this.input.element.form &&
-                        this.input.element.form.removeEventListener(
-                          'reset',
-                          this._onFormReset,
-                        ),
-                      this.input.removeEventListeners())
-                  }),
-                  (g.prototype._onKeyDown = function (e) {
-                    var t = e.keyCode,
-                      s = this._store.activeItems,
-                      l = this.input.isFocussed,
-                      _ = this.dropdown.isActive,
-                      P = this.itemList.hasChildren(),
-                      M = String.fromCharCode(t),
-                      K = /[^\x00-\x1F]/.test(M),
-                      f = E.KEY_CODES.BACK_KEY,
-                      u = E.KEY_CODES.DELETE_KEY,
-                      T = E.KEY_CODES.ENTER_KEY,
-                      H = E.KEY_CODES.A_KEY,
-                      k = E.KEY_CODES.ESC_KEY,
-                      U = E.KEY_CODES.UP_KEY,
-                      $ = E.KEY_CODES.DOWN_KEY,
-                      W = E.KEY_CODES.PAGE_UP_KEY,
-                      J = E.KEY_CODES.PAGE_DOWN_KEY
-                    switch (
-                      (!this._isTextElement &&
-                        !_ &&
-                        K &&
-                        (this.showDropdown(),
-                        this.input.isFocussed ||
-                          (this.input.value += e.key.toLowerCase())),
-                      t)
-                    ) {
-                      case H:
-                        return this._onSelectKey(e, P)
-                      case T:
-                        return this._onEnterKey(e, s, _)
-                      case k:
-                        return this._onEscapeKey(_)
-                      case U:
-                      case W:
-                      case $:
-                      case J:
-                        return this._onDirectionKey(e, _)
-                      case u:
-                      case f:
-                        return this._onDeleteKey(e, s, l)
-                      default:
-                    }
-                  }),
-                  (g.prototype._onKeyUp = function (e) {
-                    var t = e.target,
-                      s = e.keyCode,
-                      l = this.input.value,
-                      _ = this._store.activeItems,
-                      P = this._canAddItem(_, l),
-                      M = E.KEY_CODES.BACK_KEY,
-                      K = E.KEY_CODES.DELETE_KEY
-                    if (this._isTextElement) {
-                      var f = P.notice && l
-                      if (f) {
-                        var u = this._getTemplate('notice', P.notice)
-                        ;((this.dropdown.element.innerHTML = u.outerHTML),
-                          this.showDropdown(!0))
-                      } else this.hideDropdown(!0)
-                    } else {
-                      var T = s === M || s === K,
-                        H = T && t && !t.value,
-                        k = !this._isTextElement && this._isSearching,
-                        U = this._canSearch && P.response
-                      H && k
-                        ? ((this._isSearching = !1),
-                          this._store.dispatch((0, n.activateChoices)(!0)))
-                        : U && this._handleSearch(this.input.rawValue)
-                    }
-                    this._canSearch = this.config.searchEnabled
-                  }),
-                  (g.prototype._onSelectKey = function (e, t) {
-                    var s = e.ctrlKey,
-                      l = e.metaKey,
-                      _ = s || l
-                    if (_ && t) {
-                      this._canSearch = !1
-                      var P =
-                        this.config.removeItems &&
-                        !this.input.value &&
-                        this.input.element === document.activeElement
-                      P && this.highlightAll()
-                    }
-                  }),
-                  (g.prototype._onEnterKey = function (e, t, s) {
-                    var l = e.target,
-                      _ = E.KEY_CODES.ENTER_KEY,
-                      P = l && l.hasAttribute('data-button')
-                    if (this._isTextElement && l && l.value) {
-                      var M = this.input.value,
-                        K = this._canAddItem(t, M)
-                      K.response &&
-                        (this.hideDropdown(!0),
-                        this._addItem({ value: M }),
-                        this._triggerChange(M),
-                        this.clearInput())
-                    }
-                    if (
-                      (P &&
-                        (this._handleButtonAction(t, l), e.preventDefault()),
-                      s)
-                    ) {
-                      var f = this.dropdown.getChild(
-                        '.'.concat(this.config.classNames.highlightedState),
-                      )
-                      ;(f &&
-                        (t[0] && (t[0].keyCode = _),
-                        this._handleChoiceAction(t, f)),
-                        e.preventDefault())
-                    } else
-                      this._isSelectOneElement &&
-                        (this.showDropdown(), e.preventDefault())
-                  }),
-                  (g.prototype._onEscapeKey = function (e) {
-                    e && (this.hideDropdown(!0), this.containerOuter.focus())
-                  }),
-                  (g.prototype._onDirectionKey = function (e, t) {
-                    var s = e.keyCode,
-                      l = e.metaKey,
-                      _ = E.KEY_CODES.DOWN_KEY,
-                      P = E.KEY_CODES.PAGE_UP_KEY,
-                      M = E.KEY_CODES.PAGE_DOWN_KEY
-                    if (t || this._isSelectOneElement) {
-                      ;(this.showDropdown(), (this._canSearch = !1))
-                      var K = s === _ || s === M ? 1 : -1,
-                        f = l || s === M || s === P,
-                        u = '[data-choice-selectable]',
-                        T = void 0
-                      if (f)
-                        K > 0
-                          ? (T = this.dropdown.element.querySelector(
-                              ''.concat(u, ':last-of-type'),
-                            ))
-                          : (T = this.dropdown.element.querySelector(u))
-                      else {
-                        var H = this.dropdown.element.querySelector(
-                          '.'.concat(this.config.classNames.highlightedState),
-                        )
-                        H
-                          ? (T = (0, B.getAdjacentEl)(H, u, K))
-                          : (T = this.dropdown.element.querySelector(u))
-                      }
-                      ;(T &&
-                        ((0, B.isScrolledIntoView)(
-                          T,
-                          this.choiceList.element,
-                          K,
-                        ) || this.choiceList.scrollToChildElement(T, K),
-                        this._highlightChoice(T)),
-                        e.preventDefault())
-                    }
-                  }),
-                  (g.prototype._onDeleteKey = function (e, t, s) {
-                    var l = e.target
-                    !this._isSelectOneElement &&
-                      !l.value &&
-                      s &&
-                      (this._handleBackspace(t), e.preventDefault())
-                  }),
-                  (g.prototype._onTouchMove = function () {
-                    this._wasTap && (this._wasTap = !1)
-                  }),
-                  (g.prototype._onTouchEnd = function (e) {
-                    var t = (e || e.touches[0]).target,
-                      s =
-                        this._wasTap && this.containerOuter.element.contains(t)
-                    if (s) {
-                      var l =
-                        t === this.containerOuter.element ||
-                        t === this.containerInner.element
-                      ;(l &&
-                        (this._isTextElement
-                          ? this.input.focus()
-                          : this._isSelectMultipleElement &&
-                            this.showDropdown()),
-                        e.stopPropagation())
-                    }
-                    this._wasTap = !0
-                  }),
-                  (g.prototype._onMouseDown = function (e) {
-                    var t = e.target
-                    if (t instanceof HTMLElement) {
-                      if (b && this.choiceList.element.contains(t)) {
-                        var s = this.choiceList.element.firstElementChild,
-                          l =
-                            this._direction === 'ltr'
-                              ? e.offsetX >= s.offsetWidth
-                              : e.offsetX < s.offsetLeft
-                        this._isScrollingOnIe = l
-                      }
-                      if (t !== this.input.element) {
-                        var _ = t.closest(
-                          '[data-button],[data-item],[data-choice]',
-                        )
-                        if (_ instanceof HTMLElement) {
-                          var P = e.shiftKey,
-                            M = this._store.activeItems,
-                            K = _.dataset
-                          'button' in K
-                            ? this._handleButtonAction(M, _)
-                            : 'item' in K
-                              ? this._handleItemAction(M, _, P)
-                              : 'choice' in K && this._handleChoiceAction(M, _)
-                        }
-                        e.preventDefault()
-                      }
-                    }
-                  }),
-                  (g.prototype._onMouseOver = function (e) {
-                    var t = e.target
-                    t instanceof HTMLElement &&
-                      'choice' in t.dataset &&
-                      this._highlightChoice(t)
-                  }),
-                  (g.prototype._onClick = function (e) {
-                    var t = e.target,
-                      s = this.containerOuter.element.contains(t)
-                    if (s)
-                      !this.dropdown.isActive && !this.containerOuter.isDisabled
-                        ? this._isTextElement
-                          ? document.activeElement !== this.input.element &&
-                            this.input.focus()
-                          : (this.showDropdown(), this.containerOuter.focus())
-                        : this._isSelectOneElement &&
-                          t !== this.input.element &&
-                          !this.dropdown.element.contains(t) &&
-                          this.hideDropdown()
-                    else {
-                      var l = this._store.highlightedActiveItems.length > 0
-                      ;(l && this.unhighlightAll(),
-                        this.containerOuter.removeFocusState(),
-                        this.hideDropdown(!0))
-                    }
-                  }),
-                  (g.prototype._onFocus = function (e) {
-                    var t,
-                      s = this,
-                      l = e.target,
-                      _ = l && this.containerOuter.element.contains(l)
-                    if (_) {
-                      var P =
-                        ((t = {}),
-                        (t[E.TEXT_TYPE] = function () {
-                          l === s.input.element &&
-                            s.containerOuter.addFocusState()
-                        }),
-                        (t[E.SELECT_ONE_TYPE] = function () {
-                          ;(s.containerOuter.addFocusState(),
-                            l === s.input.element && s.showDropdown(!0))
-                        }),
-                        (t[E.SELECT_MULTIPLE_TYPE] = function () {
-                          l === s.input.element &&
-                            (s.showDropdown(!0),
-                            s.containerOuter.addFocusState())
-                        }),
-                        t)
-                      P[this.passedElement.element.type]()
-                    }
-                  }),
-                  (g.prototype._onBlur = function (e) {
-                    var t,
-                      s = this,
-                      l = e.target,
-                      _ = l && this.containerOuter.element.contains(l)
-                    if (_ && !this._isScrollingOnIe) {
-                      var P = this._store.activeItems,
-                        M = P.some(function (f) {
-                          return f.highlighted
-                        }),
-                        K =
-                          ((t = {}),
-                          (t[E.TEXT_TYPE] = function () {
-                            l === s.input.element &&
-                              (s.containerOuter.removeFocusState(),
-                              M && s.unhighlightAll(),
-                              s.hideDropdown(!0))
-                          }),
-                          (t[E.SELECT_ONE_TYPE] = function () {
-                            ;(s.containerOuter.removeFocusState(),
-                              (l === s.input.element ||
-                                (l === s.containerOuter.element &&
-                                  !s._canSearch)) &&
-                                s.hideDropdown(!0))
-                          }),
-                          (t[E.SELECT_MULTIPLE_TYPE] = function () {
-                            l === s.input.element &&
-                              (s.containerOuter.removeFocusState(),
-                              s.hideDropdown(!0),
-                              M && s.unhighlightAll())
-                          }),
-                          t)
-                      K[this.passedElement.element.type]()
-                    } else
-                      ((this._isScrollingOnIe = !1), this.input.element.focus())
-                  }),
-                  (g.prototype._onFormReset = function () {
-                    this._store.dispatch((0, I.resetTo)(this._initialState))
-                  }),
-                  (g.prototype._highlightChoice = function (e) {
-                    var t = this
-                    e === void 0 && (e = null)
-                    var s = Array.from(
-                      this.dropdown.element.querySelectorAll(
-                        '[data-choice-selectable]',
-                      ),
-                    )
-                    if (s.length) {
-                      var l = e,
-                        _ = Array.from(
-                          this.dropdown.element.querySelectorAll(
-                            '.'.concat(this.config.classNames.highlightedState),
-                          ),
-                        )
-                      ;(_.forEach(function (P) {
-                        ;(P.classList.remove(
-                          t.config.classNames.highlightedState,
-                        ),
-                          P.setAttribute('aria-selected', 'false'))
-                      }),
-                        l
-                          ? (this._highlightPosition = s.indexOf(l))
-                          : (s.length > this._highlightPosition
-                              ? (l = s[this._highlightPosition])
-                              : (l = s[s.length - 1]),
-                            l || (l = s[0])),
-                        l.classList.add(
-                          this.config.classNames.highlightedState,
-                        ),
-                        l.setAttribute('aria-selected', 'true'),
-                        this.passedElement.triggerEvent(
-                          E.EVENTS.highlightChoice,
-                          { el: l },
-                        ),
-                        this.dropdown.isActive &&
-                          (this.input.setActiveDescendant(l.id),
-                          this.containerOuter.setActiveDescendant(l.id)))
-                    }
-                  }),
-                  (g.prototype._addItem = function (e) {
-                    var t = e.value,
-                      s = e.label,
-                      l = s === void 0 ? null : s,
-                      _ = e.choiceId,
-                      P = _ === void 0 ? -1 : _,
-                      M = e.groupId,
-                      K = M === void 0 ? -1 : M,
-                      f = e.customProperties,
-                      u = f === void 0 ? {} : f,
-                      T = e.placeholder,
-                      H = T === void 0 ? !1 : T,
-                      k = e.keyCode,
-                      U = k === void 0 ? -1 : k,
-                      $ = typeof t == 'string' ? t.trim() : t,
-                      W = this._store.items,
-                      J = l || $,
-                      X = P || -1,
-                      ee = K >= 0 ? this._store.getGroupById(K) : null,
-                      ae = W ? W.length + 1 : 1
-                    ;(this.config.prependValue &&
-                      ($ = this.config.prependValue + $.toString()),
-                      this.config.appendValue &&
-                        ($ += this.config.appendValue.toString()),
-                      this._store.dispatch(
-                        (0, a.addItem)({
-                          value: $,
-                          label: J,
-                          id: ae,
-                          choiceId: X,
-                          groupId: K,
-                          customProperties: u,
-                          placeholder: H,
-                          keyCode: U,
-                        }),
-                      ),
-                      this._isSelectOneElement && this.removeActiveItems(ae),
-                      this.passedElement.triggerEvent(E.EVENTS.addItem, {
-                        id: ae,
-                        value: $,
-                        label: J,
-                        customProperties: u,
-                        groupValue: ee && ee.value ? ee.value : null,
-                        keyCode: U,
-                      }))
-                  }),
-                  (g.prototype._removeItem = function (e) {
-                    var t = e.id,
-                      s = e.value,
-                      l = e.label,
-                      _ = e.customProperties,
-                      P = e.choiceId,
-                      M = e.groupId,
-                      K = M && M >= 0 ? this._store.getGroupById(M) : null
-                    !t ||
-                      !P ||
-                      (this._store.dispatch((0, a.removeItem)(t, P)),
-                      this.passedElement.triggerEvent(E.EVENTS.removeItem, {
-                        id: t,
-                        value: s,
-                        label: l,
-                        customProperties: _,
-                        groupValue: K && K.value ? K.value : null,
-                      }))
-                  }),
-                  (g.prototype._addChoice = function (e) {
-                    var t = e.value,
-                      s = e.label,
-                      l = s === void 0 ? null : s,
-                      _ = e.isSelected,
-                      P = _ === void 0 ? !1 : _,
-                      M = e.isDisabled,
-                      K = M === void 0 ? !1 : M,
-                      f = e.groupId,
-                      u = f === void 0 ? -1 : f,
-                      T = e.customProperties,
-                      H = T === void 0 ? {} : T,
-                      k = e.placeholder,
-                      U = k === void 0 ? !1 : k,
-                      $ = e.keyCode,
-                      W = $ === void 0 ? -1 : $
-                    if (!(typeof t > 'u' || t === null)) {
-                      var J = this._store.choices,
-                        X = l || t,
-                        ee = J ? J.length + 1 : 1,
-                        ae = ''
-                          .concat(this._baseId, '-')
-                          .concat(this._idNames.itemChoice, '-')
-                          .concat(ee)
-                      ;(this._store.dispatch(
-                        (0, n.addChoice)({
-                          id: ee,
-                          groupId: u,
-                          elementId: ae,
-                          value: t,
-                          label: X,
-                          disabled: K,
-                          customProperties: H,
-                          placeholder: U,
-                          keyCode: W,
-                        }),
-                      ),
-                        P &&
-                          this._addItem({
-                            value: t,
-                            label: X,
-                            choiceId: ee,
-                            customProperties: H,
-                            placeholder: U,
-                            keyCode: W,
-                          }))
-                    }
-                  }),
-                  (g.prototype._addGroup = function (e) {
-                    var t = this,
-                      s = e.group,
-                      l = e.id,
-                      _ = e.valueKey,
-                      P = _ === void 0 ? 'value' : _,
-                      M = e.labelKey,
-                      K = M === void 0 ? 'label' : M,
-                      f = (0, B.isType)('Object', s)
-                        ? s.choices
-                        : Array.from(s.getElementsByTagName('OPTION')),
-                      u = l || Math.floor(new Date().valueOf() * Math.random()),
-                      T = s.disabled ? s.disabled : !1
-                    if (f) {
-                      this._store.dispatch(
-                        (0, r.addGroup)({
-                          value: s.label,
-                          id: u,
-                          active: !0,
-                          disabled: T,
-                        }),
-                      )
-                      var H = function (k) {
-                        var U =
-                          k.disabled || (k.parentNode && k.parentNode.disabled)
-                        t._addChoice({
-                          value: k[P],
-                          label: (0, B.isType)('Object', k)
-                            ? k[K]
-                            : k.innerHTML,
-                          isSelected: k.selected,
-                          isDisabled: U,
-                          groupId: u,
-                          customProperties: k.customProperties,
-                          placeholder: k.placeholder,
-                        })
-                      }
-                      f.forEach(H)
-                    } else
-                      this._store.dispatch(
-                        (0, r.addGroup)({
-                          value: s.label,
-                          id: s.id,
-                          active: !1,
-                          disabled: s.disabled,
-                        }),
-                      )
-                  }),
-                  (g.prototype._getTemplate = function (e) {
-                    for (var t, s = [], l = 1; l < arguments.length; l++)
-                      s[l - 1] = arguments[l]
-                    return (t = this._templates[e]).call.apply(
-                      t,
-                      v([this, this.config], s, !1),
-                    )
-                  }),
-                  (g.prototype._createTemplates = function () {
-                    var e = this.config.callbackOnCreateTemplates,
-                      t = {}
-                    ;(e &&
-                      typeof e == 'function' &&
-                      (t = e.call(this, B.strToEl)),
-                      (this._templates = (0, d.default)(re.default, t)))
-                  }),
-                  (g.prototype._createElements = function () {
-                    ;((this.containerOuter = new L.Container({
-                      element: this._getTemplate(
-                        'containerOuter',
-                        this._direction,
-                        this._isSelectElement,
-                        this._isSelectOneElement,
-                        this.config.searchEnabled,
-                        this.passedElement.element.type,
-                        this.config.labelId,
-                      ),
-                      classNames: this.config.classNames,
-                      type: this.passedElement.element.type,
-                      position: this.config.position,
-                    })),
-                      (this.containerInner = new L.Container({
-                        element: this._getTemplate('containerInner'),
-                        classNames: this.config.classNames,
-                        type: this.passedElement.element.type,
-                        position: this.config.position,
-                      })),
-                      (this.input = new L.Input({
-                        element: this._getTemplate(
-                          'input',
-                          this._placeholderValue,
-                        ),
-                        classNames: this.config.classNames,
-                        type: this.passedElement.element.type,
-                        preventPaste: !this.config.paste,
-                      })),
-                      (this.choiceList = new L.List({
-                        element: this._getTemplate(
-                          'choiceList',
-                          this._isSelectOneElement,
-                        ),
-                      })),
-                      (this.itemList = new L.List({
-                        element: this._getTemplate(
-                          'itemList',
-                          this._isSelectOneElement,
-                        ),
-                      })),
-                      (this.dropdown = new L.Dropdown({
-                        element: this._getTemplate('dropdown'),
-                        classNames: this.config.classNames,
-                        type: this.passedElement.element.type,
-                      })))
-                  }),
-                  (g.prototype._createStructure = function () {
-                    ;(this.passedElement.conceal(),
-                      this.containerInner.wrap(this.passedElement.element),
-                      this.containerOuter.wrap(this.containerInner.element),
-                      this._isSelectOneElement
-                        ? (this.input.placeholder =
-                            this.config.searchPlaceholderValue || '')
-                        : this._placeholderValue &&
-                          ((this.input.placeholder = this._placeholderValue),
-                          this.input.setWidth()),
-                      this.containerOuter.element.appendChild(
-                        this.containerInner.element,
-                      ),
-                      this.containerOuter.element.appendChild(
-                        this.dropdown.element,
-                      ),
-                      this.containerInner.element.appendChild(
-                        this.itemList.element,
-                      ),
-                      this._isTextElement ||
-                        this.dropdown.element.appendChild(
-                          this.choiceList.element,
-                        ),
-                      this._isSelectOneElement
-                        ? this.config.searchEnabled &&
-                          this.dropdown.element.insertBefore(
-                            this.input.element,
-                            this.dropdown.element.firstChild,
-                          )
-                        : this.containerInner.element.appendChild(
-                            this.input.element,
-                          ),
-                      this._isSelectElement &&
-                        ((this._highlightPosition = 0),
-                        (this._isSearching = !1),
-                        this._startLoading(),
-                        this._presetGroups.length
-                          ? this._addPredefinedGroups(this._presetGroups)
-                          : this._addPredefinedChoices(this._presetChoices),
-                        this._stopLoading()),
-                      this._isTextElement &&
-                        this._addPredefinedItems(this._presetItems))
-                  }),
-                  (g.prototype._addPredefinedGroups = function (e) {
-                    var t = this,
-                      s = this.passedElement.placeholderOption
-                    ;(s &&
-                      s.parentNode &&
-                      s.parentNode.tagName === 'SELECT' &&
-                      this._addChoice({
-                        value: s.value,
-                        label: s.innerHTML,
-                        isSelected: s.selected,
-                        isDisabled: s.disabled,
-                        placeholder: !0,
-                      }),
-                      e.forEach(function (l) {
-                        return t._addGroup({ group: l, id: l.id || null })
-                      }))
-                  }),
-                  (g.prototype._addPredefinedChoices = function (e) {
-                    var t = this
-                    this.config.shouldSort && e.sort(this.config.sorter)
-                    var s = e.some(function (_) {
-                        return _.selected
-                      }),
-                      l = e.findIndex(function (_) {
-                        return _.disabled === void 0 || !_.disabled
-                      })
-                    e.forEach(function (_, P) {
-                      var M = _.value,
-                        K = M === void 0 ? '' : M,
-                        f = _.label,
-                        u = _.customProperties,
-                        T = _.placeholder
-                      if (t._isSelectElement)
-                        if (_.choices)
-                          t._addGroup({ group: _, id: _.id || null })
-                        else {
-                          var H = t._isSelectOneElement && !s && P === l,
-                            k = H ? !0 : _.selected,
-                            U = _.disabled
-                          t._addChoice({
-                            value: K,
-                            label: f,
-                            isSelected: !!k,
-                            isDisabled: !!U,
-                            placeholder: !!T,
-                            customProperties: u,
-                          })
-                        }
-                      else
-                        t._addChoice({
-                          value: K,
-                          label: f,
-                          isSelected: !!_.selected,
-                          isDisabled: !!_.disabled,
-                          placeholder: !!_.placeholder,
-                          customProperties: u,
-                        })
-                    })
-                  }),
-                  (g.prototype._addPredefinedItems = function (e) {
-                    var t = this
-                    e.forEach(function (s) {
-                      ;(typeof s == 'object' &&
-                        s.value &&
-                        t._addItem({
-                          value: s.value,
-                          label: s.label,
-                          choiceId: s.id,
-                          customProperties: s.customProperties,
-                          placeholder: s.placeholder,
-                        }),
-                        typeof s == 'string' && t._addItem({ value: s }))
-                    })
-                  }),
-                  (g.prototype._setChoiceOrItem = function (e) {
-                    var t = this,
-                      s = (0, B.getType)(e).toLowerCase(),
-                      l = {
-                        object: function () {
-                          e.value &&
-                            (t._isTextElement
-                              ? t._addItem({
-                                  value: e.value,
-                                  label: e.label,
-                                  choiceId: e.id,
-                                  customProperties: e.customProperties,
-                                  placeholder: e.placeholder,
-                                })
-                              : t._addChoice({
-                                  value: e.value,
-                                  label: e.label,
-                                  isSelected: !0,
-                                  isDisabled: !1,
-                                  customProperties: e.customProperties,
-                                  placeholder: e.placeholder,
-                                }))
-                        },
-                        string: function () {
-                          t._isTextElement
-                            ? t._addItem({ value: e })
-                            : t._addChoice({
-                                value: e,
-                                label: e,
-                                isSelected: !0,
-                                isDisabled: !1,
-                              })
-                        },
-                      }
-                    l[s]()
-                  }),
-                  (g.prototype._findAndSelectChoiceByValue = function (e) {
-                    var t = this,
-                      s = this._store.choices,
-                      l = s.find(function (_) {
-                        return t.config.valueComparer(_.value, e)
-                      })
-                    l &&
-                      !l.selected &&
-                      this._addItem({
-                        value: l.value,
-                        label: l.label,
-                        choiceId: l.id,
-                        groupId: l.groupId,
-                        customProperties: l.customProperties,
-                        placeholder: l.placeholder,
-                        keyCode: l.keyCode,
-                      })
-                  }),
-                  (g.prototype._generatePlaceholderValue = function () {
-                    if (
-                      this._isSelectElement &&
-                      this.passedElement.placeholderOption
-                    ) {
-                      var e = this.passedElement.placeholderOption
-                      return e ? e.text : null
-                    }
-                    var t = this.config,
-                      s = t.placeholder,
-                      l = t.placeholderValue,
-                      _ = this.passedElement.element.dataset
-                    if (s) {
-                      if (l) return l
-                      if (_.placeholder) return _.placeholder
-                    }
-                    return null
-                  }),
-                  g
-                )
-              })()
-            i.default = j
-          },
-          613: function (N, i, y) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-            var v = y(799),
-              h = y(883),
-              d = (function () {
-                function c(n) {
-                  var r = n.element,
-                    a = n.type,
-                    I = n.classNames,
-                    L = n.position
-                  ;((this.element = r),
-                    (this.classNames = I),
-                    (this.type = a),
-                    (this.position = L),
-                    (this.isOpen = !1),
-                    (this.isFlipped = !1),
-                    (this.isFocussed = !1),
-                    (this.isDisabled = !1),
-                    (this.isLoading = !1),
-                    (this._onFocus = this._onFocus.bind(this)),
-                    (this._onBlur = this._onBlur.bind(this)))
-                }
-                return (
-                  (c.prototype.addEventListeners = function () {
-                    ;(this.element.addEventListener('focus', this._onFocus),
-                      this.element.addEventListener('blur', this._onBlur))
-                  }),
-                  (c.prototype.removeEventListeners = function () {
-                    ;(this.element.removeEventListener('focus', this._onFocus),
-                      this.element.removeEventListener('blur', this._onBlur))
-                  }),
-                  (c.prototype.shouldFlip = function (n) {
-                    if (typeof n != 'number') return !1
-                    var r = !1
-                    return (
-                      this.position === 'auto'
-                        ? (r = !window.matchMedia(
-                            '(min-height: '.concat(n + 1, 'px)'),
-                          ).matches)
-                        : this.position === 'top' && (r = !0),
-                      r
-                    )
-                  }),
-                  (c.prototype.setActiveDescendant = function (n) {
-                    this.element.setAttribute('aria-activedescendant', n)
-                  }),
-                  (c.prototype.removeActiveDescendant = function () {
-                    this.element.removeAttribute('aria-activedescendant')
-                  }),
-                  (c.prototype.open = function (n) {
-                    ;(this.element.classList.add(this.classNames.openState),
-                      this.element.setAttribute('aria-expanded', 'true'),
-                      (this.isOpen = !0),
-                      this.shouldFlip(n) &&
-                        (this.element.classList.add(
-                          this.classNames.flippedState,
-                        ),
-                        (this.isFlipped = !0)))
-                  }),
-                  (c.prototype.close = function () {
-                    ;(this.element.classList.remove(this.classNames.openState),
-                      this.element.setAttribute('aria-expanded', 'false'),
-                      this.removeActiveDescendant(),
-                      (this.isOpen = !1),
-                      this.isFlipped &&
-                        (this.element.classList.remove(
-                          this.classNames.flippedState,
-                        ),
-                        (this.isFlipped = !1)))
-                  }),
-                  (c.prototype.focus = function () {
-                    this.isFocussed || this.element.focus()
-                  }),
-                  (c.prototype.addFocusState = function () {
-                    this.element.classList.add(this.classNames.focusState)
-                  }),
-                  (c.prototype.removeFocusState = function () {
-                    this.element.classList.remove(this.classNames.focusState)
-                  }),
-                  (c.prototype.enable = function () {
-                    ;(this.element.classList.remove(
-                      this.classNames.disabledState,
-                    ),
-                      this.element.removeAttribute('aria-disabled'),
-                      this.type === h.SELECT_ONE_TYPE &&
-                        this.element.setAttribute('tabindex', '0'),
-                      (this.isDisabled = !1))
-                  }),
-                  (c.prototype.disable = function () {
-                    ;(this.element.classList.add(this.classNames.disabledState),
-                      this.element.setAttribute('aria-disabled', 'true'),
-                      this.type === h.SELECT_ONE_TYPE &&
-                        this.element.setAttribute('tabindex', '-1'),
-                      (this.isDisabled = !0))
-                  }),
-                  (c.prototype.wrap = function (n) {
-                    ;(0, v.wrap)(n, this.element)
-                  }),
-                  (c.prototype.unwrap = function (n) {
-                    this.element.parentNode &&
-                      (this.element.parentNode.insertBefore(n, this.element),
-                      this.element.parentNode.removeChild(this.element))
-                  }),
-                  (c.prototype.addLoadingState = function () {
-                    ;(this.element.classList.add(this.classNames.loadingState),
-                      this.element.setAttribute('aria-busy', 'true'),
-                      (this.isLoading = !0))
-                  }),
-                  (c.prototype.removeLoadingState = function () {
-                    ;(this.element.classList.remove(
-                      this.classNames.loadingState,
-                    ),
-                      this.element.removeAttribute('aria-busy'),
-                      (this.isLoading = !1))
-                  }),
-                  (c.prototype._onFocus = function () {
-                    this.isFocussed = !0
-                  }),
-                  (c.prototype._onBlur = function () {
-                    this.isFocussed = !1
-                  }),
-                  c
-                )
-              })()
-            i.default = d
-          },
-          217: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-            var y = (function () {
-              function v(h) {
-                var d = h.element,
-                  c = h.type,
-                  n = h.classNames
-                ;((this.element = d),
-                  (this.classNames = n),
-                  (this.type = c),
-                  (this.isActive = !1))
-              }
-              return (
-                Object.defineProperty(v.prototype, 'distanceFromTopWindow', {
-                  get: function () {
-                    return this.element.getBoundingClientRect().bottom
-                  },
-                  enumerable: !1,
-                  configurable: !0,
+                  a(l)
                 }),
-                (v.prototype.getChild = function (h) {
-                  return this.element.querySelector(h)
-                }),
-                (v.prototype.show = function () {
-                  return (
-                    this.element.classList.add(this.classNames.activeState),
-                    this.element.setAttribute('aria-expanded', 'true'),
-                    (this.isActive = !0),
-                    this
-                  )
-                }),
-                (v.prototype.hide = function () {
-                  return (
-                    this.element.classList.remove(this.classNames.activeState),
-                    this.element.setAttribute('aria-expanded', 'false'),
-                    (this.isActive = !1),
-                    this
-                  )
-                }),
-                v
-              )
-            })()
-            i.default = y
-          },
-          520: function (N, i, y) {
-            var v =
-              (this && this.__importDefault) ||
-              function (I) {
-                return I && I.__esModule ? I : { default: I }
-              }
-            ;(Object.defineProperty(i, '__esModule', { value: !0 }),
-              (i.WrappedSelect =
-                i.WrappedInput =
-                i.List =
-                i.Input =
-                i.Container =
-                i.Dropdown =
-                  void 0))
-            var h = v(y(217))
-            i.Dropdown = h.default
-            var d = v(y(613))
-            i.Container = d.default
-            var c = v(y(11))
-            i.Input = c.default
-            var n = v(y(624))
-            i.List = n.default
-            var r = v(y(541))
-            i.WrappedInput = r.default
-            var a = v(y(982))
-            i.WrappedSelect = a.default
-          },
-          11: function (N, i, y) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-            var v = y(799),
-              h = y(883),
-              d = (function () {
-                function c(n) {
-                  var r = n.element,
-                    a = n.type,
-                    I = n.classNames,
-                    L = n.preventPaste
-                  ;((this.element = r),
-                    (this.type = a),
-                    (this.classNames = I),
-                    (this.preventPaste = L),
-                    (this.isFocussed = this.element.isEqualNode(
-                      document.activeElement,
-                    )),
-                    (this.isDisabled = r.disabled),
-                    (this._onPaste = this._onPaste.bind(this)),
-                    (this._onInput = this._onInput.bind(this)),
-                    (this._onFocus = this._onFocus.bind(this)),
-                    (this._onBlur = this._onBlur.bind(this)))
-                }
-                return (
-                  Object.defineProperty(c.prototype, 'placeholder', {
-                    set: function (n) {
-                      this.element.placeholder = n
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(c.prototype, 'value', {
-                    get: function () {
-                      return (0, v.sanitise)(this.element.value)
-                    },
-                    set: function (n) {
-                      this.element.value = n
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(c.prototype, 'rawValue', {
-                    get: function () {
-                      return this.element.value
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  (c.prototype.addEventListeners = function () {
-                    ;(this.element.addEventListener('paste', this._onPaste),
-                      this.element.addEventListener('input', this._onInput, {
-                        passive: !0,
-                      }),
-                      this.element.addEventListener('focus', this._onFocus, {
-                        passive: !0,
-                      }),
-                      this.element.addEventListener('blur', this._onBlur, {
-                        passive: !0,
-                      }))
-                  }),
-                  (c.prototype.removeEventListeners = function () {
-                    ;(this.element.removeEventListener('input', this._onInput),
-                      this.element.removeEventListener('paste', this._onPaste),
-                      this.element.removeEventListener('focus', this._onFocus),
-                      this.element.removeEventListener('blur', this._onBlur))
-                  }),
-                  (c.prototype.enable = function () {
-                    ;(this.element.removeAttribute('disabled'),
-                      (this.isDisabled = !1))
-                  }),
-                  (c.prototype.disable = function () {
-                    ;(this.element.setAttribute('disabled', ''),
-                      (this.isDisabled = !0))
-                  }),
-                  (c.prototype.focus = function () {
-                    this.isFocussed || this.element.focus()
-                  }),
-                  (c.prototype.blur = function () {
-                    this.isFocussed && this.element.blur()
-                  }),
-                  (c.prototype.clear = function (n) {
-                    return (
-                      n === void 0 && (n = !0),
-                      this.element.value && (this.element.value = ''),
-                      n && this.setWidth(),
-                      this
-                    )
-                  }),
-                  (c.prototype.setWidth = function () {
-                    var n = this.element,
-                      r = n.style,
-                      a = n.value,
-                      I = n.placeholder
-                    ;((r.minWidth = ''.concat(I.length + 1, 'ch')),
-                      (r.width = ''.concat(a.length + 1, 'ch')))
-                  }),
-                  (c.prototype.setActiveDescendant = function (n) {
-                    this.element.setAttribute('aria-activedescendant', n)
-                  }),
-                  (c.prototype.removeActiveDescendant = function () {
-                    this.element.removeAttribute('aria-activedescendant')
-                  }),
-                  (c.prototype._onInput = function () {
-                    this.type !== h.SELECT_ONE_TYPE && this.setWidth()
-                  }),
-                  (c.prototype._onPaste = function (n) {
-                    this.preventPaste && n.preventDefault()
-                  }),
-                  (c.prototype._onFocus = function () {
-                    this.isFocussed = !0
-                  }),
-                  (c.prototype._onBlur = function () {
-                    this.isFocussed = !1
-                  }),
-                  c
-                )
-              })()
-            i.default = d
-          },
-          624: function (N, i, y) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-            var v = y(883),
-              h = (function () {
-                function d(c) {
-                  var n = c.element
-                  ;((this.element = n),
-                    (this.scrollPos = this.element.scrollTop),
-                    (this.height = this.element.offsetHeight))
-                }
-                return (
-                  (d.prototype.clear = function () {
-                    this.element.innerHTML = ''
-                  }),
-                  (d.prototype.append = function (c) {
-                    this.element.appendChild(c)
-                  }),
-                  (d.prototype.getChild = function (c) {
-                    return this.element.querySelector(c)
-                  }),
-                  (d.prototype.hasChildren = function () {
-                    return this.element.hasChildNodes()
-                  }),
-                  (d.prototype.scrollToTop = function () {
-                    this.element.scrollTop = 0
-                  }),
-                  (d.prototype.scrollToChildElement = function (c, n) {
-                    var r = this
-                    if (c) {
-                      var a = this.element.offsetHeight,
-                        I = this.element.scrollTop + a,
-                        L = c.offsetHeight,
-                        E = c.offsetTop + L,
-                        D = n > 0 ? this.element.scrollTop + E - I : c.offsetTop
-                      requestAnimationFrame(function () {
-                        r._animateScroll(D, n)
-                      })
-                    }
-                  }),
-                  (d.prototype._scrollDown = function (c, n, r) {
-                    var a = (r - c) / n,
-                      I = a > 1 ? a : 1
-                    this.element.scrollTop = c + I
-                  }),
-                  (d.prototype._scrollUp = function (c, n, r) {
-                    var a = (c - r) / n,
-                      I = a > 1 ? a : 1
-                    this.element.scrollTop = c - I
-                  }),
-                  (d.prototype._animateScroll = function (c, n) {
-                    var r = this,
-                      a = v.SCROLLING_SPEED,
-                      I = this.element.scrollTop,
-                      L = !1
-                    ;(n > 0
-                      ? (this._scrollDown(I, a, c), I < c && (L = !0))
-                      : (this._scrollUp(I, a, c), I > c && (L = !0)),
-                      L &&
-                        requestAnimationFrame(function () {
-                          r._animateScroll(c, n)
-                        }))
-                  }),
-                  d
-                )
-              })()
-            i.default = h
-          },
-          730: function (N, i, y) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-            var v = y(799),
-              h = (function () {
-                function d(c) {
-                  var n = c.element,
-                    r = c.classNames
-                  if (
-                    ((this.element = n),
-                    (this.classNames = r),
-                    !(n instanceof HTMLInputElement) &&
-                      !(n instanceof HTMLSelectElement))
-                  )
-                    throw new TypeError('Invalid element passed')
-                  this.isDisabled = !1
-                }
-                return (
-                  Object.defineProperty(d.prototype, 'isActive', {
-                    get: function () {
-                      return this.element.dataset.choice === 'active'
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(d.prototype, 'dir', {
-                    get: function () {
-                      return this.element.dir
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(d.prototype, 'value', {
-                    get: function () {
-                      return this.element.value
-                    },
-                    set: function (c) {
-                      this.element.value = c
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  (d.prototype.conceal = function () {
-                    ;(this.element.classList.add(this.classNames.input),
-                      (this.element.hidden = !0),
-                      (this.element.tabIndex = -1))
-                    var c = this.element.getAttribute('style')
-                    ;(c &&
-                      this.element.setAttribute('data-choice-orig-style', c),
-                      this.element.setAttribute('data-choice', 'active'))
-                  }),
-                  (d.prototype.reveal = function () {
-                    ;(this.element.classList.remove(this.classNames.input),
-                      (this.element.hidden = !1),
-                      this.element.removeAttribute('tabindex'))
-                    var c = this.element.getAttribute('data-choice-orig-style')
-                    ;(c
-                      ? (this.element.removeAttribute('data-choice-orig-style'),
-                        this.element.setAttribute('style', c))
-                      : this.element.removeAttribute('style'),
-                      this.element.removeAttribute('data-choice'),
-                      (this.element.value = this.element.value))
-                  }),
-                  (d.prototype.enable = function () {
-                    ;(this.element.removeAttribute('disabled'),
-                      (this.element.disabled = !1),
-                      (this.isDisabled = !1))
-                  }),
-                  (d.prototype.disable = function () {
-                    ;(this.element.setAttribute('disabled', ''),
-                      (this.element.disabled = !0),
-                      (this.isDisabled = !0))
-                  }),
-                  (d.prototype.triggerEvent = function (c, n) {
-                    ;(0, v.dispatchEvent)(this.element, c, n)
-                  }),
-                  d
-                )
-              })()
-            i.default = h
-          },
-          541: function (N, i, y) {
-            var v =
-                (this && this.__extends) ||
-                (function () {
-                  var n = function (r, a) {
-                    return (
-                      (n =
-                        Object.setPrototypeOf ||
-                        ({ __proto__: [] } instanceof Array &&
-                          function (I, L) {
-                            I.__proto__ = L
-                          }) ||
-                        function (I, L) {
-                          for (var E in L)
-                            Object.prototype.hasOwnProperty.call(L, E) &&
-                              (I[E] = L[E])
-                        }),
-                      n(r, a)
-                    )
-                  }
-                  return function (r, a) {
-                    if (typeof a != 'function' && a !== null)
-                      throw new TypeError(
-                        'Class extends value ' +
-                          String(a) +
-                          ' is not a constructor or null',
-                      )
-                    n(r, a)
-                    function I() {
-                      this.constructor = r
-                    }
-                    r.prototype =
-                      a === null
-                        ? Object.create(a)
-                        : ((I.prototype = a.prototype), new I())
-                  }
-                })(),
-              h =
-                (this && this.__importDefault) ||
-                function (n) {
-                  return n && n.__esModule ? n : { default: n }
-                }
-            Object.defineProperty(i, '__esModule', { value: !0 })
-            var d = h(y(730)),
-              c = (function (n) {
-                v(r, n)
-                function r(a) {
-                  var I = a.element,
-                    L = a.classNames,
-                    E = a.delimiter,
-                    D = n.call(this, { element: I, classNames: L }) || this
-                  return ((D.delimiter = E), D)
-                }
-                return (
-                  Object.defineProperty(r.prototype, 'value', {
-                    get: function () {
-                      return this.element.value
-                    },
-                    set: function (a) {
-                      ;(this.element.setAttribute('value', a),
-                        (this.element.value = a))
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  r
-                )
-              })(d.default)
-            i.default = c
-          },
-          982: function (N, i, y) {
-            var v =
-                (this && this.__extends) ||
-                (function () {
-                  var n = function (r, a) {
-                    return (
-                      (n =
-                        Object.setPrototypeOf ||
-                        ({ __proto__: [] } instanceof Array &&
-                          function (I, L) {
-                            I.__proto__ = L
-                          }) ||
-                        function (I, L) {
-                          for (var E in L)
-                            Object.prototype.hasOwnProperty.call(L, E) &&
-                              (I[E] = L[E])
-                        }),
-                      n(r, a)
-                    )
-                  }
-                  return function (r, a) {
-                    if (typeof a != 'function' && a !== null)
-                      throw new TypeError(
-                        'Class extends value ' +
-                          String(a) +
-                          ' is not a constructor or null',
-                      )
-                    n(r, a)
-                    function I() {
-                      this.constructor = r
-                    }
-                    r.prototype =
-                      a === null
-                        ? Object.create(a)
-                        : ((I.prototype = a.prototype), new I())
-                  }
-                })(),
-              h =
-                (this && this.__importDefault) ||
-                function (n) {
-                  return n && n.__esModule ? n : { default: n }
-                }
-            Object.defineProperty(i, '__esModule', { value: !0 })
-            var d = h(y(730)),
-              c = (function (n) {
-                v(r, n)
-                function r(a) {
-                  var I = a.element,
-                    L = a.classNames,
-                    E = a.template,
-                    D = n.call(this, { element: I, classNames: L }) || this
-                  return ((D.template = E), D)
-                }
-                return (
-                  Object.defineProperty(r.prototype, 'placeholderOption', {
-                    get: function () {
-                      return (
-                        this.element.querySelector('option[value=""]') ||
-                        this.element.querySelector('option[placeholder]')
-                      )
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(r.prototype, 'optionGroups', {
-                    get: function () {
-                      return Array.from(
-                        this.element.getElementsByTagName('OPTGROUP'),
-                      )
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(r.prototype, 'options', {
-                    get: function () {
-                      return Array.from(this.element.options)
-                    },
-                    set: function (a) {
-                      var I = this,
-                        L = document.createDocumentFragment(),
-                        E = function (D) {
-                          var B = I.template(D)
-                          L.appendChild(B)
-                        }
-                      ;(a.forEach(function (D) {
-                        return E(D)
-                      }),
-                        this.appendDocFragment(L))
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  (r.prototype.appendDocFragment = function (a) {
-                    ;((this.element.innerHTML = ''),
-                      this.element.appendChild(a))
-                  }),
-                  r
-                )
-              })(d.default)
-            i.default = c
-          },
-          883: function (N, i) {
-            ;(Object.defineProperty(i, '__esModule', { value: !0 }),
-              (i.SCROLLING_SPEED =
-                i.SELECT_MULTIPLE_TYPE =
-                i.SELECT_ONE_TYPE =
-                i.TEXT_TYPE =
-                i.KEY_CODES =
-                i.ACTION_TYPES =
-                i.EVENTS =
-                  void 0),
-              (i.EVENTS = {
-                showDropdown: 'showDropdown',
-                hideDropdown: 'hideDropdown',
-                change: 'change',
-                choice: 'choice',
-                search: 'search',
-                addItem: 'addItem',
-                removeItem: 'removeItem',
-                highlightItem: 'highlightItem',
-                highlightChoice: 'highlightChoice',
-                unhighlightItem: 'unhighlightItem',
+                  n._addPredefinedChoices(r, t, e),
+                  n._isSearching && n._searchChoices(n.input.value))
               }),
-              (i.ACTION_TYPES = {
-                ADD_CHOICE: 'ADD_CHOICE',
-                FILTER_CHOICES: 'FILTER_CHOICES',
-                ACTIVATE_CHOICES: 'ACTIVATE_CHOICES',
-                CLEAR_CHOICES: 'CLEAR_CHOICES',
-                ADD_GROUP: 'ADD_GROUP',
-                ADD_ITEM: 'ADD_ITEM',
-                REMOVE_ITEM: 'REMOVE_ITEM',
-                HIGHLIGHT_ITEM: 'HIGHLIGHT_ITEM',
-                CLEAR_ALL: 'CLEAR_ALL',
-                RESET_TO: 'RESET_TO',
-                SET_IS_LOADING: 'SET_IS_LOADING',
-              }),
-              (i.KEY_CODES = {
-                BACK_KEY: 46,
-                DELETE_KEY: 8,
-                ENTER_KEY: 13,
-                A_KEY: 65,
-                ESC_KEY: 27,
-                UP_KEY: 38,
-                DOWN_KEY: 40,
-                PAGE_UP_KEY: 33,
-                PAGE_DOWN_KEY: 34,
-              }),
-              (i.TEXT_TYPE = 'text'),
-              (i.SELECT_ONE_TYPE = 'select-one'),
-              (i.SELECT_MULTIPLE_TYPE = 'select-multiple'),
-              (i.SCROLLING_SPEED = 4))
-          },
-          789: function (N, i, y) {
-            ;(Object.defineProperty(i, '__esModule', { value: !0 }),
-              (i.DEFAULT_CONFIG = i.DEFAULT_CLASSNAMES = void 0))
-            var v = y(799)
-            ;((i.DEFAULT_CLASSNAMES = {
-              containerOuter: 'choices',
-              containerInner: 'choices__inner',
-              input: 'choices__input',
-              inputCloned: 'choices__input--cloned',
-              list: 'choices__list',
-              listItems: 'choices__list--multiple',
-              listSingle: 'choices__list--single',
-              listDropdown: 'choices__list--dropdown',
-              item: 'choices__item',
-              itemSelectable: 'choices__item--selectable',
-              itemDisabled: 'choices__item--disabled',
-              itemChoice: 'choices__item--choice',
-              placeholder: 'choices__placeholder',
-              group: 'choices__group',
-              groupHeading: 'choices__heading',
-              button: 'choices__button',
-              activeState: 'is-active',
-              focusState: 'is-focused',
-              openState: 'is-open',
-              disabledState: 'is-disabled',
-              highlightedState: 'is-highlighted',
-              selectedState: 'is-selected',
-              flippedState: 'is-flipped',
-              loadingState: 'is-loading',
-              noResults: 'has-no-results',
-              noChoices: 'has-no-choices',
-            }),
-              (i.DEFAULT_CONFIG = {
-                items: [],
-                choices: [],
-                silent: !1,
-                renderChoiceLimit: -1,
-                maxItemCount: -1,
-                addItems: !0,
-                addItemFilter: null,
-                removeItems: !0,
-                removeItemButton: !1,
-                editItems: !1,
-                allowHTML: !0,
-                duplicateItemsAllowed: !0,
-                delimiter: ',',
-                paste: !0,
-                searchEnabled: !0,
-                searchChoices: !0,
-                searchFloor: 1,
-                searchResultLimit: 4,
-                searchFields: ['label', 'value'],
-                position: 'auto',
-                resetScrollPosition: !0,
-                shouldSort: !0,
-                shouldSortItems: !1,
-                sorter: v.sortByAlpha,
-                placeholder: !0,
-                placeholderValue: null,
-                searchPlaceholderValue: null,
-                prependValue: null,
-                appendValue: null,
-                renderSelectedChoices: 'auto',
-                loadingText: 'Loading...',
-                noResultsText: 'No results found',
-                noChoicesText: 'No choices to choose from',
-                itemSelectText: 'Press to select',
-                uniqueItemText: 'Only unique values can be added',
-                customAddItemText:
-                  'Only values matching specific conditions can be added',
-                addItemText: function (h) {
-                  return 'Press Enter to add <b>"'.concat(
-                    (0, v.sanitise)(h),
-                    '"</b>',
-                  )
-                },
-                maxItemText: function (h) {
-                  return 'Only '.concat(h, ' values can be added')
-                },
-                valueComparer: function (h, d) {
-                  return h === d
-                },
-                fuseOptions: { includeScore: !0 },
-                labelId: '',
-                callbackOnInit: null,
-                callbackOnCreateTemplates: null,
-                classNames: i.DEFAULT_CLASSNAMES,
-              }))
-          },
-          18: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          978: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          948: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          359: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          285: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          533: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          187: function (N, i, y) {
-            var v =
-                (this && this.__createBinding) ||
-                (Object.create
-                  ? function (d, c, n, r) {
-                      r === void 0 && (r = n)
-                      var a = Object.getOwnPropertyDescriptor(c, n)
-                      ;((!a ||
-                        ('get' in a
-                          ? !c.__esModule
-                          : a.writable || a.configurable)) &&
-                        (a = {
-                          enumerable: !0,
-                          get: function () {
-                            return c[n]
-                          },
-                        }),
-                        Object.defineProperty(d, r, a))
-                    }
-                  : function (d, c, n, r) {
-                      ;(r === void 0 && (r = n), (d[r] = c[n]))
-                    }),
-              h =
-                (this && this.__exportStar) ||
-                function (d, c) {
-                  for (var n in d)
-                    n !== 'default' &&
-                      !Object.prototype.hasOwnProperty.call(c, n) &&
-                      v(c, d, n)
-                }
-            ;(Object.defineProperty(i, '__esModule', { value: !0 }),
-              h(y(18), i),
-              h(y(978), i),
-              h(y(948), i),
-              h(y(359), i),
-              h(y(285), i),
-              h(y(533), i),
-              h(y(287), i),
-              h(y(132), i),
-              h(y(837), i),
-              h(y(598), i),
-              h(y(369), i),
-              h(y(37), i),
-              h(y(47), i),
-              h(y(923), i),
-              h(y(876), i))
-          },
-          287: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          132: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          837: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          598: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          37: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          369: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          47: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          923: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          876: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-          },
-          799: function (N, i) {
-            ;(Object.defineProperty(i, '__esModule', { value: !0 }),
-              (i.parseCustomProperties =
-                i.diff =
-                i.cloneObject =
-                i.existsInArray =
-                i.dispatchEvent =
-                i.sortByScore =
-                i.sortByAlpha =
-                i.strToEl =
-                i.sanitise =
-                i.isScrolledIntoView =
-                i.getAdjacentEl =
-                i.wrap =
-                i.isType =
-                i.getType =
-                i.generateId =
-                i.generateChars =
-                i.getRandomNumber =
-                  void 0))
-            var y = function (b, w) {
-              return Math.floor(Math.random() * (w - b) + b)
-            }
-            i.getRandomNumber = y
-            var v = function (b) {
-              return Array.from({ length: b }, function () {
-                return (0, i.getRandomNumber)(0, 36).toString(36)
-              }).join('')
-            }
-            i.generateChars = v
-            var h = function (b, w) {
-              var j =
-                b.id ||
-                (b.name &&
-                  ''.concat(b.name, '-').concat((0, i.generateChars)(2))) ||
-                (0, i.generateChars)(4)
-              return (
-                (j = j.replace(/(:|\.|\[|\]|,)/g, '')),
-                (j = ''.concat(w, '-').concat(j)),
-                j
-              )
-            }
-            i.generateId = h
-            var d = function (b) {
-              return Object.prototype.toString.call(b).slice(8, -1)
-            }
-            i.getType = d
-            var c = function (b, w) {
-              return w != null && (0, i.getType)(w) === b
-            }
-            i.isType = c
-            var n = function (b, w) {
-              return (
-                w === void 0 && (w = document.createElement('div')),
-                b.parentNode &&
-                  (b.nextSibling
-                    ? b.parentNode.insertBefore(w, b.nextSibling)
-                    : b.parentNode.appendChild(w)),
-                w.appendChild(b)
-              )
-            }
-            i.wrap = n
-            var r = function (b, w, j) {
-              j === void 0 && (j = 1)
-              for (
-                var g = ''.concat(
-                    j > 0 ? 'next' : 'previous',
-                    'ElementSibling',
-                  ),
-                  e = b[g];
-                e;
-              ) {
-                if (e.matches(w)) return e
-                e = e[g]
-              }
-              return e
-            }
-            i.getAdjacentEl = r
-            var a = function (b, w, j) {
-              if ((j === void 0 && (j = 1), !b)) return !1
-              var g
-              return (
-                j > 0
-                  ? (g =
-                      w.scrollTop + w.offsetHeight >=
-                      b.offsetTop + b.offsetHeight)
-                  : (g = b.offsetTop >= w.scrollTop),
-                g
-              )
-            }
-            i.isScrolledIntoView = a
-            var I = function (b) {
-              return typeof b != 'string'
-                ? b
-                : b
-                    .replace(/&/g, '&amp;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/</g, '&lt;')
-                    .replace(/"/g, '&quot;')
-            }
-            ;((i.sanitise = I),
-              (i.strToEl = (function () {
-                var b = document.createElement('div')
-                return function (w) {
-                  var j = w.trim()
-                  b.innerHTML = j
-                  for (var g = b.children[0]; b.firstChild;)
-                    b.removeChild(b.firstChild)
-                  return g
-                }
-              })()))
-            var L = function (b, w) {
-              var j = b.value,
-                g = b.label,
-                e = g === void 0 ? j : g,
-                t = w.value,
-                s = w.label,
-                l = s === void 0 ? t : s
-              return e.localeCompare(l, [], {
-                sensitivity: 'base',
-                ignorePunctuation: !0,
-                numeric: !0,
-              })
-            }
-            i.sortByAlpha = L
-            var E = function (b, w) {
-              var j = b.score,
-                g = j === void 0 ? 0 : j,
-                e = w.score,
-                t = e === void 0 ? 0 : e
-              return g - t
-            }
-            i.sortByScore = E
-            var D = function (b, w, j) {
-              j === void 0 && (j = null)
-              var g = new CustomEvent(w, {
-                detail: j,
-                bubbles: !0,
-                cancelable: !0,
-              })
-              return b.dispatchEvent(g)
-            }
-            i.dispatchEvent = D
-            var B = function (b, w, j) {
-              return (
-                j === void 0 && (j = 'value'),
-                b.some(function (g) {
-                  return typeof w == 'string' ? g[j] === w.trim() : g[j] === w
-                })
-              )
-            }
-            i.existsInArray = B
-            var Q = function (b) {
-              return JSON.parse(JSON.stringify(b))
-            }
-            i.cloneObject = Q
-            var Z = function (b, w) {
-              var j = Object.keys(b).sort(),
-                g = Object.keys(w).sort()
-              return j.filter(function (e) {
-                return g.indexOf(e) < 0
-              })
-            }
-            i.diff = Z
-            var re = function (b) {
-              if (typeof b < 'u')
-                try {
-                  return JSON.parse(b)
-                } catch {
-                  return b
-                }
-              return {}
-            }
-            i.parseCustomProperties = re
-          },
-          273: function (N, i) {
-            var y =
-              (this && this.__spreadArray) ||
-              function (h, d, c) {
-                if (c || arguments.length === 2)
-                  for (var n = 0, r = d.length, a; n < r; n++)
-                    (a || !(n in d)) &&
-                      (a || (a = Array.prototype.slice.call(d, 0, n)),
-                      (a[n] = d[n]))
-                return h.concat(a || Array.prototype.slice.call(d))
-              }
-            ;(Object.defineProperty(i, '__esModule', { value: !0 }),
-              (i.defaultState = void 0),
-              (i.defaultState = []))
-            function v(h, d) {
-              switch (
-                (h === void 0 && (h = i.defaultState),
-                d === void 0 && (d = {}),
-                d.type)
-              ) {
-                case 'ADD_CHOICE': {
-                  var c = d,
-                    n = {
-                      id: c.id,
-                      elementId: c.elementId,
-                      groupId: c.groupId,
-                      value: c.value,
-                      label: c.label || c.value,
-                      disabled: c.disabled || !1,
-                      selected: !1,
-                      active: !0,
-                      score: 9999,
-                      customProperties: c.customProperties,
-                      placeholder: c.placeholder || !1,
-                    }
-                  return y(y([], h, !0), [n], !1)
-                }
-                case 'ADD_ITEM': {
-                  var r = d
-                  return r.choiceId > -1
-                    ? h.map(function (E) {
-                        var D = E
-                        return (
-                          D.id === parseInt(''.concat(r.choiceId), 10) &&
-                            (D.selected = !0),
-                          D
-                        )
-                      })
-                    : h
-                }
-                case 'REMOVE_ITEM': {
-                  var a = d
-                  return a.choiceId && a.choiceId > -1
-                    ? h.map(function (E) {
-                        var D = E
-                        return (
-                          D.id === parseInt(''.concat(a.choiceId), 10) &&
-                            (D.selected = !1),
-                          D
-                        )
-                      })
-                    : h
-                }
-                case 'FILTER_CHOICES': {
-                  var I = d
-                  return h.map(function (E) {
-                    var D = E
-                    return (
-                      (D.active = I.results.some(function (B) {
-                        var Q = B.item,
-                          Z = B.score
-                        return Q.id === D.id ? ((D.score = Z), !0) : !1
-                      })),
-                      D
-                    )
-                  })
-                }
-                case 'ACTIVATE_CHOICES': {
-                  var L = d
-                  return h.map(function (E) {
-                    var D = E
-                    return ((D.active = L.active), D)
-                  })
-                }
-                case 'CLEAR_CHOICES':
-                  return i.defaultState
-                default:
-                  return h
-              }
-            }
-            i.default = v
-          },
-          871: function (N, i) {
-            var y =
-              (this && this.__spreadArray) ||
-              function (h, d, c) {
-                if (c || arguments.length === 2)
-                  for (var n = 0, r = d.length, a; n < r; n++)
-                    (a || !(n in d)) &&
-                      (a || (a = Array.prototype.slice.call(d, 0, n)),
-                      (a[n] = d[n]))
-                return h.concat(a || Array.prototype.slice.call(d))
-              }
-            ;(Object.defineProperty(i, '__esModule', { value: !0 }),
-              (i.defaultState = void 0),
-              (i.defaultState = []))
-            function v(h, d) {
-              switch (
-                (h === void 0 && (h = i.defaultState),
-                d === void 0 && (d = {}),
-                d.type)
-              ) {
-                case 'ADD_GROUP': {
-                  var c = d
-                  return y(
-                    y([], h, !0),
-                    [
-                      {
-                        id: c.id,
-                        value: c.value,
-                        active: c.active,
-                        disabled: c.disabled,
-                      },
-                    ],
-                    !1,
-                  )
-                }
-                case 'CLEAR_CHOICES':
-                  return []
-                default:
-                  return h
-              }
-            }
-            i.default = v
-          },
-          655: function (N, i, y) {
-            var v =
-              (this && this.__importDefault) ||
-              function (E) {
-                return E && E.__esModule ? E : { default: E }
-              }
-            ;(Object.defineProperty(i, '__esModule', { value: !0 }),
-              (i.defaultState = void 0))
-            var h = y(791),
-              d = v(y(52)),
-              c = v(y(871)),
-              n = v(y(273)),
-              r = v(y(502)),
-              a = y(799)
-            i.defaultState = { groups: [], items: [], choices: [], loading: !1 }
-            var I = (0, h.combineReducers)({
-                items: d.default,
-                groups: c.default,
-                choices: n.default,
-                loading: r.default,
-              }),
-              L = function (E, D) {
-                var B = E
-                if (D.type === 'CLEAR_ALL') B = i.defaultState
-                else if (D.type === 'RESET_TO')
-                  return (0, a.cloneObject)(D.state)
-                return I(B, D)
-              }
-            i.default = L
-          },
-          52: function (N, i) {
-            var y =
-              (this && this.__spreadArray) ||
-              function (h, d, c) {
-                if (c || arguments.length === 2)
-                  for (var n = 0, r = d.length, a; n < r; n++)
-                    (a || !(n in d)) &&
-                      (a || (a = Array.prototype.slice.call(d, 0, n)),
-                      (a[n] = d[n]))
-                return h.concat(a || Array.prototype.slice.call(d))
-              }
-            ;(Object.defineProperty(i, '__esModule', { value: !0 }),
-              (i.defaultState = void 0),
-              (i.defaultState = []))
-            function v(h, d) {
-              switch (
-                (h === void 0 && (h = i.defaultState),
-                d === void 0 && (d = {}),
-                d.type)
-              ) {
-                case 'ADD_ITEM': {
-                  var c = d,
-                    n = y(
-                      y([], h, !0),
-                      [
-                        {
-                          id: c.id,
-                          choiceId: c.choiceId,
-                          groupId: c.groupId,
-                          value: c.value,
-                          label: c.label,
-                          active: !0,
-                          highlighted: !1,
-                          customProperties: c.customProperties,
-                          placeholder: c.placeholder || !1,
-                          keyCode: null,
-                        },
-                      ],
-                      !1,
-                    )
-                  return n.map(function (a) {
-                    var I = a
-                    return ((I.highlighted = !1), I)
-                  })
-                }
-                case 'REMOVE_ITEM':
-                  return h.map(function (a) {
-                    var I = a
-                    return (I.id === d.id && (I.active = !1), I)
-                  })
-                case 'HIGHLIGHT_ITEM': {
-                  var r = d
-                  return h.map(function (a) {
-                    var I = a
-                    return (I.id === r.id && (I.highlighted = r.highlighted), I)
-                  })
-                }
-                default:
-                  return h
-              }
-            }
-            i.default = v
-          },
-          502: function (N, i) {
-            ;(Object.defineProperty(i, '__esModule', { value: !0 }),
-              (i.defaultState = void 0),
-              (i.defaultState = !1))
-            var y = function (v, h) {
-              return (
-                v === void 0 && (v = i.defaultState),
-                h === void 0 && (h = {}),
-                h.type === 'SET_IS_LOADING' ? h.isLoading : v
-              )
-            }
-            i.default = y
-          },
-          744: function (N, i, y) {
-            var v =
-                (this && this.__spreadArray) ||
-                function (r, a, I) {
-                  if (I || arguments.length === 2)
-                    for (var L = 0, E = a.length, D; L < E; L++)
-                      (D || !(L in a)) &&
-                        (D || (D = Array.prototype.slice.call(a, 0, L)),
-                        (D[L] = a[L]))
-                  return r.concat(D || Array.prototype.slice.call(a))
-                },
-              h =
-                (this && this.__importDefault) ||
-                function (r) {
-                  return r && r.__esModule ? r : { default: r }
-                }
-            Object.defineProperty(i, '__esModule', { value: !0 })
-            var d = y(791),
-              c = h(y(655)),
-              n = (function () {
-                function r() {
-                  this._store = (0, d.createStore)(
-                    c.default,
-                    window.__REDUX_DEVTOOLS_EXTENSION__ &&
-                      window.__REDUX_DEVTOOLS_EXTENSION__(),
-                  )
-                }
-                return (
-                  (r.prototype.subscribe = function (a) {
-                    this._store.subscribe(a)
-                  }),
-                  (r.prototype.dispatch = function (a) {
-                    this._store.dispatch(a)
-                  }),
-                  Object.defineProperty(r.prototype, 'state', {
-                    get: function () {
-                      return this._store.getState()
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(r.prototype, 'items', {
-                    get: function () {
-                      return this.state.items
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(r.prototype, 'activeItems', {
-                    get: function () {
-                      return this.items.filter(function (a) {
-                        return a.active === !0
-                      })
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(r.prototype, 'highlightedActiveItems', {
-                    get: function () {
-                      return this.items.filter(function (a) {
-                        return a.active && a.highlighted
-                      })
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(r.prototype, 'choices', {
-                    get: function () {
-                      return this.state.choices
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(r.prototype, 'activeChoices', {
-                    get: function () {
-                      return this.choices.filter(function (a) {
-                        return a.active === !0
-                      })
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(r.prototype, 'selectableChoices', {
-                    get: function () {
-                      return this.choices.filter(function (a) {
-                        return a.disabled !== !0
-                      })
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(r.prototype, 'searchableChoices', {
-                    get: function () {
-                      return this.selectableChoices.filter(function (a) {
-                        return a.placeholder !== !0
-                      })
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(r.prototype, 'placeholderChoice', {
-                    get: function () {
-                      return v([], this.choices, !0)
-                        .reverse()
-                        .find(function (a) {
-                          return a.placeholder === !0
-                        })
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(r.prototype, 'groups', {
-                    get: function () {
-                      return this.state.groups
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  Object.defineProperty(r.prototype, 'activeGroups', {
-                    get: function () {
-                      var a = this,
-                        I = a.groups,
-                        L = a.choices
-                      return I.filter(function (E) {
-                        var D = E.active === !0 && E.disabled === !1,
-                          B = L.some(function (Q) {
-                            return Q.active === !0 && Q.disabled === !1
-                          })
-                        return D && B
-                      }, [])
-                    },
-                    enumerable: !1,
-                    configurable: !0,
-                  }),
-                  (r.prototype.isLoading = function () {
-                    return this.state.loading
-                  }),
-                  (r.prototype.getChoiceById = function (a) {
-                    return this.activeChoices.find(function (I) {
-                      return I.id === parseInt(a, 10)
-                    })
-                  }),
-                  (r.prototype.getGroupById = function (a) {
-                    return this.groups.find(function (I) {
-                      return I.id === a
-                    })
-                  }),
-                  r
-                )
-              })()
-            i.default = n
-          },
-          686: function (N, i) {
-            Object.defineProperty(i, '__esModule', { value: !0 })
-            var y = {
-              containerOuter: function (v, h, d, c, n, r, a) {
-                var I = v.classNames.containerOuter,
-                  L = Object.assign(document.createElement('div'), {
-                    className: I,
-                  })
-                return (
-                  (L.dataset.type = r),
-                  h && (L.dir = h),
-                  c && (L.tabIndex = 0),
-                  d &&
-                    (L.setAttribute('role', n ? 'combobox' : 'listbox'),
-                    n && L.setAttribute('aria-autocomplete', 'list')),
-                  L.setAttribute('aria-haspopup', 'true'),
-                  L.setAttribute('aria-expanded', 'false'),
-                  a && L.setAttribute('aria-labelledby', a),
-                  L
-                )
-              },
-              containerInner: function (v) {
-                var h = v.classNames.containerInner
-                return Object.assign(document.createElement('div'), {
-                  className: h,
-                })
-              },
-              itemList: function (v, h) {
-                var d = v.classNames,
-                  c = d.list,
-                  n = d.listSingle,
-                  r = d.listItems
-                return Object.assign(document.createElement('div'), {
-                  className: ''.concat(c, ' ').concat(h ? n : r),
-                })
-              },
-              placeholder: function (v, h) {
-                var d,
-                  c = v.allowHTML,
-                  n = v.classNames.placeholder
-                return Object.assign(
-                  document.createElement('div'),
-                  ((d = { className: n }),
-                  (d[c ? 'innerHTML' : 'innerText'] = h),
-                  d),
-                )
-              },
-              item: function (v, h, d) {
-                var c,
-                  n,
-                  r = v.allowHTML,
-                  a = v.classNames,
-                  I = a.item,
-                  L = a.button,
-                  E = a.highlightedState,
-                  D = a.itemSelectable,
-                  B = a.placeholder,
-                  Q = h.id,
-                  Z = h.value,
-                  re = h.label,
-                  b = h.customProperties,
-                  w = h.active,
-                  j = h.disabled,
-                  g = h.highlighted,
-                  e = h.placeholder,
-                  t = Object.assign(
-                    document.createElement('div'),
-                    ((c = { className: I }),
-                    (c[r ? 'innerHTML' : 'innerText'] = re),
-                    c),
-                  )
-                if (
-                  (Object.assign(t.dataset, {
-                    item: '',
-                    id: Q,
-                    value: Z,
-                    customProperties: b,
-                  }),
-                  w && t.setAttribute('aria-selected', 'true'),
-                  j && t.setAttribute('aria-disabled', 'true'),
-                  e && t.classList.add(B),
-                  t.classList.add(g ? E : D),
-                  d)
-                ) {
-                  ;(j && t.classList.remove(D), (t.dataset.deletable = ''))
-                  var s = 'Remove item',
-                    l = Object.assign(
-                      document.createElement('button'),
-                      ((n = { type: 'button', className: L }),
-                      (n[r ? 'innerHTML' : 'innerText'] = s),
-                      n),
-                    )
-                  ;(l.setAttribute(
-                    'aria-label',
-                    ''.concat(s, ": '").concat(Z, "'"),
-                  ),
-                    (l.dataset.button = ''),
-                    t.appendChild(l))
-                }
-                return t
-              },
-              choiceList: function (v, h) {
-                var d = v.classNames.list,
-                  c = Object.assign(document.createElement('div'), {
-                    className: d,
-                  })
-                return (
-                  h || c.setAttribute('aria-multiselectable', 'true'),
-                  c.setAttribute('role', 'listbox'),
-                  c
-                )
-              },
-              choiceGroup: function (v, h) {
-                var d,
-                  c = v.allowHTML,
-                  n = v.classNames,
-                  r = n.group,
-                  a = n.groupHeading,
-                  I = n.itemDisabled,
-                  L = h.id,
-                  E = h.value,
-                  D = h.disabled,
-                  B = Object.assign(document.createElement('div'), {
-                    className: ''.concat(r, ' ').concat(D ? I : ''),
-                  })
-                return (
-                  B.setAttribute('role', 'group'),
-                  Object.assign(B.dataset, { group: '', id: L, value: E }),
-                  D && B.setAttribute('aria-disabled', 'true'),
-                  B.appendChild(
-                    Object.assign(
-                      document.createElement('div'),
-                      ((d = { className: a }),
-                      (d[c ? 'innerHTML' : 'innerText'] = E),
-                      d),
-                    ),
-                  ),
-                  B
-                )
-              },
-              choice: function (v, h, d) {
-                var c,
-                  n = v.allowHTML,
-                  r = v.classNames,
-                  a = r.item,
-                  I = r.itemChoice,
-                  L = r.itemSelectable,
-                  E = r.selectedState,
-                  D = r.itemDisabled,
-                  B = r.placeholder,
-                  Q = h.id,
-                  Z = h.value,
-                  re = h.label,
-                  b = h.groupId,
-                  w = h.elementId,
-                  j = h.disabled,
-                  g = h.selected,
-                  e = h.placeholder,
-                  t = Object.assign(
-                    document.createElement('div'),
-                    ((c = { id: w }),
-                    (c[n ? 'innerHTML' : 'innerText'] = re),
-                    (c.className = ''.concat(a, ' ').concat(I)),
-                    c),
-                  )
-                return (
-                  g && t.classList.add(E),
-                  e && t.classList.add(B),
-                  t.setAttribute('role', b && b > 0 ? 'treeitem' : 'option'),
-                  Object.assign(t.dataset, {
-                    choice: '',
-                    id: Q,
-                    value: Z,
-                    selectText: d,
-                  }),
-                  j
-                    ? (t.classList.add(D),
-                      (t.dataset.choiceDisabled = ''),
-                      t.setAttribute('aria-disabled', 'true'))
-                    : (t.classList.add(L), (t.dataset.choiceSelectable = '')),
-                  t
-                )
-              },
-              input: function (v, h) {
-                var d = v.classNames,
-                  c = d.input,
-                  n = d.inputCloned,
-                  r = Object.assign(document.createElement('input'), {
-                    type: 'search',
-                    name: 'search_terms',
-                    className: ''.concat(c, ' ').concat(n),
-                    autocomplete: 'off',
-                    autocapitalize: 'off',
-                    spellcheck: !1,
-                  })
-                return (
-                  r.setAttribute('role', 'textbox'),
-                  r.setAttribute('aria-autocomplete', 'list'),
-                  r.setAttribute('aria-label', h),
-                  r
-                )
-              },
-              dropdown: function (v) {
-                var h = v.classNames,
-                  d = h.list,
-                  c = h.listDropdown,
-                  n = document.createElement('div')
-                return (
-                  n.classList.add(d, c),
-                  n.setAttribute('aria-expanded', 'false'),
-                  n
-                )
-              },
-              notice: function (v, h, d) {
-                var c,
-                  n = v.allowHTML,
-                  r = v.classNames,
-                  a = r.item,
-                  I = r.itemChoice,
-                  L = r.noResults,
-                  E = r.noChoices
-                d === void 0 && (d = '')
-                var D = [a, I]
-                return (
-                  d === 'no-choices'
-                    ? D.push(E)
-                    : d === 'no-results' && D.push(L),
-                  Object.assign(
-                    document.createElement('div'),
-                    ((c = {}),
-                    (c[n ? 'innerHTML' : 'innerText'] = h),
-                    (c.className = D.join(' ')),
-                    c),
-                  )
-                )
-              },
-              option: function (v) {
-                var h = v.label,
-                  d = v.value,
-                  c = v.customProperties,
-                  n = v.active,
-                  r = v.disabled,
-                  a = new Option(h, d, !1, n)
-                return (
-                  c && (a.dataset.customProperties = ''.concat(c)),
-                  (a.disabled = !!r),
-                  a
-                )
-              },
-            }
-            i.default = y
-          },
-          996: function (N) {
-            var i = function (w) {
-              return y(w) && !v(w)
-            }
-            function y(b) {
-              return !!b && typeof b == 'object'
-            }
-            function v(b) {
-              var w = Object.prototype.toString.call(b)
-              return w === '[object RegExp]' || w === '[object Date]' || c(b)
-            }
-            var h = typeof Symbol == 'function' && Symbol.for,
-              d = h ? Symbol.for('react.element') : 60103
-            function c(b) {
-              return b.$$typeof === d
-            }
-            function n(b) {
-              return Array.isArray(b) ? [] : {}
-            }
-            function r(b, w) {
-              return w.clone !== !1 && w.isMergeableObject(b)
-                ? Z(n(b), b, w)
-                : b
-            }
-            function a(b, w, j) {
-              return b.concat(w).map(function (g) {
-                return r(g, j)
-              })
-            }
-            function I(b, w) {
-              if (!w.customMerge) return Z
-              var j = w.customMerge(b)
-              return typeof j == 'function' ? j : Z
-            }
-            function L(b) {
-              return Object.getOwnPropertySymbols
-                ? Object.getOwnPropertySymbols(b).filter(function (w) {
-                    return b.propertyIsEnumerable(w)
-                  })
-                : []
-            }
-            function E(b) {
-              return Object.keys(b).concat(L(b))
-            }
-            function D(b, w) {
-              try {
-                return w in b
-              } catch {
-                return !1
-              }
-            }
-            function B(b, w) {
-              return (
-                D(b, w) &&
-                !(
-                  Object.hasOwnProperty.call(b, w) &&
-                  Object.propertyIsEnumerable.call(b, w)
-                )
-              )
-            }
-            function Q(b, w, j) {
-              var g = {}
-              return (
-                j.isMergeableObject(b) &&
-                  E(b).forEach(function (e) {
-                    g[e] = r(b[e], j)
-                  }),
-                E(w).forEach(function (e) {
-                  B(b, e) ||
-                    (D(b, e) && j.isMergeableObject(w[e])
-                      ? (g[e] = I(e, j)(b[e], w[e], j))
-                      : (g[e] = r(w[e], j)))
-                }),
-                g
-              )
-            }
-            function Z(b, w, j) {
-              ;((j = j || {}),
-                (j.arrayMerge = j.arrayMerge || a),
-                (j.isMergeableObject = j.isMergeableObject || i),
-                (j.cloneUnlessOtherwiseSpecified = r))
-              var g = Array.isArray(w),
-                e = Array.isArray(b),
-                t = g === e
-              return t ? (g ? j.arrayMerge(b, w, j) : Q(b, w, j)) : r(w, j)
-            }
-            Z.all = function (w, j) {
-              if (!Array.isArray(w))
-                throw new Error('first argument should be an array')
-              return w.reduce(function (g, e) {
-                return Z(g, e, j)
-              }, {})
-            }
-            var re = Z
-            N.exports = re
-          },
-          221: function (N, i, y) {
-            ;(y.r(i),
-              y.d(i, {
-                default: function () {
-                  return Se
-                },
-              }))
-            function v(p) {
-              return Array.isArray
-                ? Array.isArray(p)
-                : B(p) === '[object Array]'
-            }
-            let h = 1 / 0
-            function d(p) {
-              if (typeof p == 'string') return p
-              let o = p + ''
-              return o == '0' && 1 / p == -h ? '-0' : o
-            }
-            function c(p) {
-              return p == null ? '' : d(p)
-            }
-            function n(p) {
-              return typeof p == 'string'
-            }
-            function r(p) {
-              return typeof p == 'number'
-            }
-            function a(p) {
-              return (
-                p === !0 || p === !1 || (L(p) && B(p) == '[object Boolean]')
-              )
-            }
-            function I(p) {
-              return typeof p == 'object'
-            }
-            function L(p) {
-              return I(p) && p !== null
-            }
-            function E(p) {
-              return p != null
-            }
-            function D(p) {
-              return !p.trim().length
-            }
-            function B(p) {
-              return p == null
-                ? p === void 0
-                  ? '[object Undefined]'
-                  : '[object Null]'
-                : Object.prototype.toString.call(p)
-            }
-            let Q = 'Extended search is not available',
-              Z = "Incorrect 'index' type",
-              re = (p) => `Invalid value for key ${p}`,
-              b = (p) => `Pattern length exceeds max of ${p}.`,
-              w = (p) => `Missing ${p} property in key`,
-              j = (p) =>
-                `Property 'weight' in key '${p}' must be a positive integer`,
-              g = Object.prototype.hasOwnProperty
-            class e {
-              constructor(o) {
-                ;((this._keys = []), (this._keyMap = {}))
-                let m = 0
-                ;(o.forEach((S) => {
-                  let O = t(S)
-                  ;((m += O.weight),
-                    this._keys.push(O),
-                    (this._keyMap[O.id] = O),
-                    (m += O.weight))
-                }),
-                  this._keys.forEach((S) => {
-                    S.weight /= m
-                  }))
-              }
-              get(o) {
-                return this._keyMap[o]
-              }
-              keys() {
-                return this._keys
-              }
-              toJSON() {
-                return JSON.stringify(this._keys)
-              }
-            }
-            function t(p) {
-              let o = null,
-                m = null,
-                S = null,
-                O = 1,
-                C = null
-              if (n(p) || v(p)) ((S = p), (o = s(p)), (m = l(p)))
-              else {
-                if (!g.call(p, 'name')) throw new Error(w('name'))
-                let A = p.name
-                if (((S = A), g.call(p, 'weight') && ((O = p.weight), O <= 0)))
-                  throw new Error(j(A))
-                ;((o = s(A)), (m = l(A)), (C = p.getFn))
-              }
-              return { path: o, id: m, weight: O, src: S, getFn: C }
-            }
-            function s(p) {
-              return v(p) ? p : p.split('.')
-            }
-            function l(p) {
-              return v(p) ? p.join('.') : p
-            }
-            function _(p, o) {
-              let m = [],
-                S = !1,
-                O = (C, A, R) => {
-                  if (E(C))
-                    if (!A[R]) m.push(C)
-                    else {
-                      let F = A[R],
-                        Y = C[F]
-                      if (!E(Y)) return
-                      if (R === A.length - 1 && (n(Y) || r(Y) || a(Y)))
-                        m.push(c(Y))
-                      else if (v(Y)) {
-                        S = !0
-                        for (let V = 0, x = Y.length; V < x; V += 1)
-                          O(Y[V], A, R + 1)
-                      } else A.length && O(Y, A, R + 1)
-                    }
-                }
-              return (O(p, n(o) ? o.split('.') : o, 0), S ? m : m[0])
-            }
-            var u = {
-              ...{
-                isCaseSensitive: !1,
-                includeScore: !1,
-                keys: [],
-                shouldSort: !0,
-                sortFn: (p, o) =>
-                  p.score === o.score
-                    ? p.idx < o.idx
-                      ? -1
-                      : 1
-                    : p.score < o.score
-                      ? -1
-                      : 1,
-              },
-              ...{
-                includeMatches: !1,
-                findAllMatches: !1,
-                minMatchCharLength: 1,
-              },
-              ...{ location: 0, threshold: 0.6, distance: 100 },
-              ...{
-                useExtendedSearch: !1,
-                getFn: _,
-                ignoreLocation: !1,
-                ignoreFieldNorm: !1,
-                fieldNormWeight: 1,
-              },
-            }
-            let T = /[^ ]+/g
-            function H(p = 1, o = 3) {
-              let m = new Map(),
-                S = Math.pow(10, o)
-              return {
-                get(O) {
-                  let C = O.match(T).length
-                  if (m.has(C)) return m.get(C)
-                  let A = 1 / Math.pow(C, 0.5 * p),
-                    R = parseFloat(Math.round(A * S) / S)
-                  return (m.set(C, R), R)
-                },
-                clear() {
-                  m.clear()
-                },
-              }
-            }
-            class k {
-              constructor({
-                getFn: o = u.getFn,
-                fieldNormWeight: m = u.fieldNormWeight,
-              } = {}) {
-                ;((this.norm = H(m, 3)),
-                  (this.getFn = o),
-                  (this.isCreated = !1),
-                  this.setIndexRecords())
-              }
-              setSources(o = []) {
-                this.docs = o
-              }
-              setIndexRecords(o = []) {
-                this.records = o
-              }
-              setKeys(o = []) {
-                ;((this.keys = o),
-                  (this._keysMap = {}),
-                  o.forEach((m, S) => {
-                    this._keysMap[m.id] = S
-                  }))
-              }
-              create() {
-                this.isCreated ||
-                  !this.docs.length ||
-                  ((this.isCreated = !0),
-                  n(this.docs[0])
-                    ? this.docs.forEach((o, m) => {
-                        this._addString(o, m)
-                      })
-                    : this.docs.forEach((o, m) => {
-                        this._addObject(o, m)
-                      }),
-                  this.norm.clear())
-              }
-              add(o) {
-                let m = this.size()
-                n(o) ? this._addString(o, m) : this._addObject(o, m)
-              }
-              removeAt(o) {
-                this.records.splice(o, 1)
-                for (let m = o, S = this.size(); m < S; m += 1)
-                  this.records[m].i -= 1
-              }
-              getValueForItemAtKeyId(o, m) {
-                return o[this._keysMap[m]]
-              }
-              size() {
-                return this.records.length
-              }
-              _addString(o, m) {
-                if (!E(o) || D(o)) return
-                let S = { v: o, i: m, n: this.norm.get(o) }
-                this.records.push(S)
-              }
-              _addObject(o, m) {
-                let S = { i: m, $: {} }
-                ;(this.keys.forEach((O, C) => {
-                  let A = O.getFn ? O.getFn(o) : this.getFn(o, O.path)
-                  if (E(A)) {
-                    if (v(A)) {
-                      let R = [],
-                        F = [{ nestedArrIndex: -1, value: A }]
-                      for (; F.length;) {
-                        let { nestedArrIndex: Y, value: V } = F.pop()
-                        if (E(V))
-                          if (n(V) && !D(V)) {
-                            let x = { v: V, i: Y, n: this.norm.get(V) }
-                            R.push(x)
-                          } else
-                            v(V) &&
-                              V.forEach((x, G) => {
-                                F.push({ nestedArrIndex: G, value: x })
-                              })
-                      }
-                      S.$[C] = R
-                    } else if (n(A) && !D(A)) {
-                      let R = { v: A, n: this.norm.get(A) }
-                      S.$[C] = R
-                    }
-                  }
-                }),
-                  this.records.push(S))
-              }
-              toJSON() {
-                return { keys: this.keys, records: this.records }
-              }
-            }
-            function U(
-              p,
-              o,
-              {
-                getFn: m = u.getFn,
-                fieldNormWeight: S = u.fieldNormWeight,
-              } = {},
-            ) {
-              let O = new k({ getFn: m, fieldNormWeight: S })
-              return (O.setKeys(p.map(t)), O.setSources(o), O.create(), O)
-            }
-            function $(
-              p,
-              {
-                getFn: o = u.getFn,
-                fieldNormWeight: m = u.fieldNormWeight,
-              } = {},
-            ) {
-              let { keys: S, records: O } = p,
-                C = new k({ getFn: o, fieldNormWeight: m })
-              return (C.setKeys(S), C.setIndexRecords(O), C)
-            }
-            function W(
-              p,
-              {
-                errors: o = 0,
-                currentLocation: m = 0,
-                expectedLocation: S = 0,
-                distance: O = u.distance,
-                ignoreLocation: C = u.ignoreLocation,
-              } = {},
-            ) {
-              let A = o / p.length
-              if (C) return A
-              let R = Math.abs(S - m)
-              return O ? A + R / O : R ? 1 : A
-            }
-            function J(p = [], o = u.minMatchCharLength) {
-              let m = [],
-                S = -1,
-                O = -1,
-                C = 0
-              for (let A = p.length; C < A; C += 1) {
-                let R = p[C]
-                R && S === -1
-                  ? (S = C)
-                  : !R &&
-                    S !== -1 &&
-                    ((O = C - 1), O - S + 1 >= o && m.push([S, O]), (S = -1))
-              }
-              return (p[C - 1] && C - S >= o && m.push([S, C - 1]), m)
-            }
-            let X = 32
-            function ee(
-              p,
-              o,
-              m,
-              {
-                location: S = u.location,
-                distance: O = u.distance,
-                threshold: C = u.threshold,
-                findAllMatches: A = u.findAllMatches,
-                minMatchCharLength: R = u.minMatchCharLength,
-                includeMatches: F = u.includeMatches,
-                ignoreLocation: Y = u.ignoreLocation,
-              } = {},
-            ) {
-              if (o.length > X) throw new Error(b(X))
-              let V = o.length,
-                x = p.length,
-                G = Math.max(0, Math.min(S, x)),
-                q = C,
-                ne = G,
-                ue = R > 1 || F,
-                Ee = ue ? Array(x) : [],
-                ve
-              for (; (ve = p.indexOf(o, ne)) > -1;) {
-                let he = W(o, {
-                  currentLocation: ve,
-                  expectedLocation: G,
-                  distance: O,
-                  ignoreLocation: Y,
-                })
-                if (((q = Math.min(he, q)), (ne = ve + V), ue)) {
-                  let ge = 0
-                  for (; ge < V;) ((Ee[ve + ge] = 1), (ge += 1))
-                }
-              }
-              ne = -1
-              let Ie = [],
-                be = 1,
-                we = V + x,
-                at = 1 << (V - 1)
-              for (let he = 0; he < V; he += 1) {
-                let ge = 0,
-                  ye = we
-                for (; ge < ye;)
-                  (W(o, {
-                    errors: he,
-                    currentLocation: G + ye,
-                    expectedLocation: G,
-                    distance: O,
-                    ignoreLocation: Y,
-                  }) <= q
-                    ? (ge = ye)
-                    : (we = ye),
-                    (ye = Math.floor((we - ge) / 2 + ge)))
-                we = ye
-                let Ue = Math.max(1, G - ye + 1),
-                  Fe = A ? x : Math.min(G + ye, x) + V,
-                  Oe = Array(Fe + 2)
-                Oe[Fe + 1] = (1 << he) - 1
-                for (let fe = Fe; fe >= Ue; fe -= 1) {
-                  let Le = fe - 1,
-                    We = m[p.charAt(Le)]
-                  if (
-                    (ue && (Ee[Le] = +!!We),
-                    (Oe[fe] = ((Oe[fe + 1] << 1) | 1) & We),
-                    he &&
-                      (Oe[fe] |= ((Ie[fe + 1] | Ie[fe]) << 1) | 1 | Ie[fe + 1]),
-                    Oe[fe] & at &&
-                      ((be = W(o, {
-                        errors: he,
-                        currentLocation: Le,
-                        expectedLocation: G,
-                        distance: O,
-                        ignoreLocation: Y,
-                      })),
-                      be <= q))
-                  ) {
-                    if (((q = be), (ne = Le), ne <= G)) break
-                    Ue = Math.max(1, 2 * G - ne)
-                  }
-                }
-                if (
-                  W(o, {
-                    errors: he + 1,
-                    currentLocation: G,
-                    expectedLocation: G,
-                    distance: O,
-                    ignoreLocation: Y,
-                  }) > q
-                )
-                  break
-                Ie = Oe
-              }
-              let Ke = { isMatch: ne >= 0, score: Math.max(0.001, be) }
-              if (ue) {
-                let he = J(Ee, R)
-                he.length ? F && (Ke.indices = he) : (Ke.isMatch = !1)
-              }
-              return Ke
-            }
-            function ae(p) {
-              let o = {}
-              for (let m = 0, S = p.length; m < S; m += 1) {
-                let O = p.charAt(m)
-                o[O] = (o[O] || 0) | (1 << (S - m - 1))
-              }
-              return o
-            }
-            class le {
-              constructor(
-                o,
-                {
-                  location: m = u.location,
-                  threshold: S = u.threshold,
-                  distance: O = u.distance,
-                  includeMatches: C = u.includeMatches,
-                  findAllMatches: A = u.findAllMatches,
-                  minMatchCharLength: R = u.minMatchCharLength,
-                  isCaseSensitive: F = u.isCaseSensitive,
-                  ignoreLocation: Y = u.ignoreLocation,
-                } = {},
-              ) {
-                if (
-                  ((this.options = {
-                    location: m,
-                    threshold: S,
-                    distance: O,
-                    includeMatches: C,
-                    findAllMatches: A,
-                    minMatchCharLength: R,
-                    isCaseSensitive: F,
-                    ignoreLocation: Y,
-                  }),
-                  (this.pattern = F ? o : o.toLowerCase()),
-                  (this.chunks = []),
-                  !this.pattern.length)
-                )
-                  return
-                let V = (G, q) => {
-                    this.chunks.push({
-                      pattern: G,
-                      alphabet: ae(G),
-                      startIndex: q,
-                    })
-                  },
-                  x = this.pattern.length
-                if (x > X) {
-                  let G = 0,
-                    q = x % X,
-                    ne = x - q
-                  for (; G < ne;) (V(this.pattern.substr(G, X), G), (G += X))
-                  if (q) {
-                    let ue = x - X
-                    V(this.pattern.substr(ue), ue)
-                  }
-                } else V(this.pattern, 0)
-              }
-              searchIn(o) {
-                let { isCaseSensitive: m, includeMatches: S } = this.options
-                if ((m || (o = o.toLowerCase()), this.pattern === o)) {
-                  let ne = { isMatch: !0, score: 0 }
-                  return (S && (ne.indices = [[0, o.length - 1]]), ne)
-                }
-                let {
-                    location: O,
-                    distance: C,
-                    threshold: A,
-                    findAllMatches: R,
-                    minMatchCharLength: F,
-                    ignoreLocation: Y,
-                  } = this.options,
-                  V = [],
-                  x = 0,
-                  G = !1
-                this.chunks.forEach(
-                  ({ pattern: ne, alphabet: ue, startIndex: Ee }) => {
-                    let {
-                      isMatch: ve,
-                      score: Ie,
-                      indices: be,
-                    } = ee(o, ne, ue, {
-                      location: O + Ee,
-                      distance: C,
-                      threshold: A,
-                      findAllMatches: R,
-                      minMatchCharLength: F,
-                      includeMatches: S,
-                      ignoreLocation: Y,
-                    })
-                    ;(ve && (G = !0),
-                      (x += Ie),
-                      ve && be && (V = [...V, ...be]))
-                  },
-                )
-                let q = { isMatch: G, score: G ? x / this.chunks.length : 1 }
-                return (G && S && (q.indices = V), q)
-              }
-            }
-            class ce {
-              constructor(o) {
-                this.pattern = o
-              }
-              static isMultiMatch(o) {
-                return _e(o, this.multiRegex)
-              }
-              static isSingleMatch(o) {
-                return _e(o, this.singleRegex)
-              }
-              search() {}
-            }
-            function _e(p, o) {
-              let m = p.match(o)
-              return m ? m[1] : null
-            }
-            class ie extends ce {
-              constructor(o) {
-                super(o)
-              }
-              static get type() {
-                return 'exact'
-              }
-              static get multiRegex() {
-                return /^="(.*)"$/
-              }
-              static get singleRegex() {
-                return /^=(.*)$/
-              }
-              search(o) {
-                let m = o === this.pattern
-                return {
-                  isMatch: m,
-                  score: m ? 0 : 1,
-                  indices: [0, this.pattern.length - 1],
-                }
-              }
-            }
-            class de extends ce {
-              constructor(o) {
-                super(o)
-              }
-              static get type() {
-                return 'inverse-exact'
-              }
-              static get multiRegex() {
-                return /^!"(.*)"$/
-              }
-              static get singleRegex() {
-                return /^!(.*)$/
-              }
-              search(o) {
-                let S = o.indexOf(this.pattern) === -1
-                return {
-                  isMatch: S,
-                  score: S ? 0 : 1,
-                  indices: [0, o.length - 1],
-                }
-              }
-            }
-            class me extends ce {
-              constructor(o) {
-                super(o)
-              }
-              static get type() {
-                return 'prefix-exact'
-              }
-              static get multiRegex() {
-                return /^\^"(.*)"$/
-              }
-              static get singleRegex() {
-                return /^\^(.*)$/
-              }
-              search(o) {
-                let m = o.startsWith(this.pattern)
-                return {
-                  isMatch: m,
-                  score: m ? 0 : 1,
-                  indices: [0, this.pattern.length - 1],
-                }
-              }
-            }
-            class oe extends ce {
-              constructor(o) {
-                super(o)
-              }
-              static get type() {
-                return 'inverse-prefix-exact'
-              }
-              static get multiRegex() {
-                return /^!\^"(.*)"$/
-              }
-              static get singleRegex() {
-                return /^!\^(.*)$/
-              }
-              search(o) {
-                let m = !o.startsWith(this.pattern)
-                return {
-                  isMatch: m,
-                  score: m ? 0 : 1,
-                  indices: [0, o.length - 1],
-                }
-              }
-            }
-            class Ce extends ce {
-              constructor(o) {
-                super(o)
-              }
-              static get type() {
-                return 'suffix-exact'
-              }
-              static get multiRegex() {
-                return /^"(.*)"\$$/
-              }
-              static get singleRegex() {
-                return /^(.*)\$$/
-              }
-              search(o) {
-                let m = o.endsWith(this.pattern)
-                return {
-                  isMatch: m,
-                  score: m ? 0 : 1,
-                  indices: [o.length - this.pattern.length, o.length - 1],
-                }
-              }
-            }
-            class Pe extends ce {
-              constructor(o) {
-                super(o)
-              }
-              static get type() {
-                return 'inverse-suffix-exact'
-              }
-              static get multiRegex() {
-                return /^!"(.*)"\$$/
-              }
-              static get singleRegex() {
-                return /^!(.*)\$$/
-              }
-              search(o) {
-                let m = !o.endsWith(this.pattern)
-                return {
-                  isMatch: m,
-                  score: m ? 0 : 1,
-                  indices: [0, o.length - 1],
-                }
-              }
-            }
-            class Ye extends ce {
-              constructor(
-                o,
-                {
-                  location: m = u.location,
-                  threshold: S = u.threshold,
-                  distance: O = u.distance,
-                  includeMatches: C = u.includeMatches,
-                  findAllMatches: A = u.findAllMatches,
-                  minMatchCharLength: R = u.minMatchCharLength,
-                  isCaseSensitive: F = u.isCaseSensitive,
-                  ignoreLocation: Y = u.ignoreLocation,
-                } = {},
-              ) {
-                ;(super(o),
-                  (this._bitapSearch = new le(o, {
-                    location: m,
-                    threshold: S,
-                    distance: O,
-                    includeMatches: C,
-                    findAllMatches: A,
-                    minMatchCharLength: R,
-                    isCaseSensitive: F,
-                    ignoreLocation: Y,
-                  })))
-              }
-              static get type() {
-                return 'fuzzy'
-              }
-              static get multiRegex() {
-                return /^"(.*)"$/
-              }
-              static get singleRegex() {
-                return /^(.*)$/
-              }
-              search(o) {
-                return this._bitapSearch.searchIn(o)
-              }
-            }
-            class Ve extends ce {
-              constructor(o) {
-                super(o)
-              }
-              static get type() {
-                return 'include'
-              }
-              static get multiRegex() {
-                return /^'"(.*)"$/
-              }
-              static get singleRegex() {
-                return /^'(.*)$/
-              }
-              search(o) {
-                let m = 0,
-                  S,
-                  O = [],
-                  C = this.pattern.length
-                for (; (S = o.indexOf(this.pattern, m)) > -1;)
-                  ((m = S + C), O.push([S, m - 1]))
-                let A = !!O.length
-                return { isMatch: A, score: A ? 0 : 1, indices: O }
-              }
-            }
-            let Me = [ie, Ve, me, oe, Pe, Ce, de, Ye],
-              ke = Me.length,
-              Xe = / +(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/,
-              Je = '|'
-            function Qe(p, o = {}) {
-              return p.split(Je).map((m) => {
-                let S = m
-                    .trim()
-                    .split(Xe)
-                    .filter((C) => C && !!C.trim()),
-                  O = []
-                for (let C = 0, A = S.length; C < A; C += 1) {
-                  let R = S[C],
-                    F = !1,
-                    Y = -1
-                  for (; !F && ++Y < ke;) {
-                    let V = Me[Y],
-                      x = V.isMultiMatch(R)
-                    x && (O.push(new V(x, o)), (F = !0))
-                  }
-                  if (!F)
-                    for (Y = -1; ++Y < ke;) {
-                      let V = Me[Y],
-                        x = V.isSingleMatch(R)
-                      if (x) {
-                        O.push(new V(x, o))
-                        break
-                      }
-                    }
-                }
-                return O
-              })
-            }
-            let Ze = new Set([Ye.type, Ve.type])
-            class qe {
-              constructor(
-                o,
-                {
-                  isCaseSensitive: m = u.isCaseSensitive,
-                  includeMatches: S = u.includeMatches,
-                  minMatchCharLength: O = u.minMatchCharLength,
-                  ignoreLocation: C = u.ignoreLocation,
-                  findAllMatches: A = u.findAllMatches,
-                  location: R = u.location,
-                  threshold: F = u.threshold,
-                  distance: Y = u.distance,
-                } = {},
-              ) {
-                ;((this.query = null),
-                  (this.options = {
-                    isCaseSensitive: m,
-                    includeMatches: S,
-                    minMatchCharLength: O,
-                    findAllMatches: A,
-                    ignoreLocation: C,
-                    location: R,
-                    threshold: F,
-                    distance: Y,
-                  }),
-                  (this.pattern = m ? o : o.toLowerCase()),
-                  (this.query = Qe(this.pattern, this.options)))
-              }
-              static condition(o, m) {
-                return m.useExtendedSearch
-              }
-              searchIn(o) {
-                let m = this.query
-                if (!m) return { isMatch: !1, score: 1 }
-                let { includeMatches: S, isCaseSensitive: O } = this.options
-                o = O ? o : o.toLowerCase()
-                let C = 0,
-                  A = [],
-                  R = 0
-                for (let F = 0, Y = m.length; F < Y; F += 1) {
-                  let V = m[F]
-                  ;((A.length = 0), (C = 0))
-                  for (let x = 0, G = V.length; x < G; x += 1) {
-                    let q = V[x],
-                      { isMatch: ne, indices: ue, score: Ee } = q.search(o)
-                    if (ne) {
-                      if (((C += 1), (R += Ee), S)) {
-                        let ve = q.constructor.type
-                        Ze.has(ve) ? (A = [...A, ...ue]) : A.push(ue)
-                      }
-                    } else {
-                      ;((R = 0), (C = 0), (A.length = 0))
-                      break
-                    }
-                  }
-                  if (C) {
-                    let x = { isMatch: !0, score: R / C }
-                    return (S && (x.indices = A), x)
-                  }
-                }
-                return { isMatch: !1, score: 1 }
-              }
-            }
-            let De = []
-            function et(...p) {
-              De.push(...p)
-            }
-            function Ne(p, o) {
-              for (let m = 0, S = De.length; m < S; m += 1) {
-                let O = De[m]
-                if (O.condition(p, o)) return new O(p, o)
-              }
-              return new le(p, o)
-            }
-            let Te = { AND: '$and', OR: '$or' },
-              je = { PATH: '$path', PATTERN: '$val' },
-              Re = (p) => !!(p[Te.AND] || p[Te.OR]),
-              tt = (p) => !!p[je.PATH],
-              it = (p) => !v(p) && I(p) && !Re(p),
-              Be = (p) => ({
-                [Te.AND]: Object.keys(p).map((o) => ({ [o]: p[o] })),
-              })
-            function xe(p, o, { auto: m = !0 } = {}) {
-              let S = (O) => {
-                let C = Object.keys(O),
-                  A = tt(O)
-                if (!A && C.length > 1 && !Re(O)) return S(Be(O))
-                if (it(O)) {
-                  let F = A ? O[je.PATH] : C[0],
-                    Y = A ? O[je.PATTERN] : O[F]
-                  if (!n(Y)) throw new Error(re(F))
-                  let V = { keyId: l(F), pattern: Y }
-                  return (m && (V.searcher = Ne(Y, o)), V)
-                }
-                let R = { children: [], operator: C[0] }
-                return (
-                  C.forEach((F) => {
-                    let Y = O[F]
-                    v(Y) &&
-                      Y.forEach((V) => {
-                        R.children.push(S(V))
-                      })
-                  }),
-                  R
-                )
-              }
-              return (Re(p) || (p = Be(p)), S(p))
-            }
-            function nt(p, { ignoreFieldNorm: o = u.ignoreFieldNorm }) {
-              p.forEach((m) => {
-                let S = 1
-                ;(m.matches.forEach(({ key: O, norm: C, score: A }) => {
-                  let R = O ? O.weight : null
-                  S *= Math.pow(
-                    A === 0 && R ? Number.EPSILON : A,
-                    (R || 1) * (o ? 1 : C),
-                  )
-                }),
-                  (m.score = S))
-              })
-            }
-            function st(p, o) {
-              let m = p.matches
-              ;((o.matches = []),
-                E(m) &&
-                  m.forEach((S) => {
-                    if (!E(S.indices) || !S.indices.length) return
-                    let { indices: O, value: C } = S,
-                      A = { indices: O, value: C }
-                    ;(S.key && (A.key = S.key.src),
-                      S.idx > -1 && (A.refIndex = S.idx),
-                      o.matches.push(A))
-                  }))
-            }
-            function rt(p, o) {
-              o.score = p.score
-            }
-            function ot(
-              p,
-              o,
-              {
-                includeMatches: m = u.includeMatches,
-                includeScore: S = u.includeScore,
-              } = {},
-            ) {
-              let O = []
-              return (
-                m && O.push(st),
-                S && O.push(rt),
-                p.map((C) => {
-                  let { idx: A } = C,
-                    R = { item: o[A], refIndex: A }
-                  return (
-                    O.length &&
-                      O.forEach((F) => {
-                        F(C, R)
-                      }),
-                    R
-                  )
-                })
-              )
-            }
-            class Se {
-              constructor(o, m = {}, S) {
-                ;((this.options = { ...u, ...m }),
-                  this.options.useExtendedSearch,
-                  (this._keyStore = new e(this.options.keys)),
-                  this.setCollection(o, S))
-              }
-              setCollection(o, m) {
-                if (((this._docs = o), m && !(m instanceof k)))
-                  throw new Error(Z)
-                this._myIndex =
-                  m ||
-                  U(this.options.keys, this._docs, {
-                    getFn: this.options.getFn,
-                    fieldNormWeight: this.options.fieldNormWeight,
-                  })
-              }
-              add(o) {
-                E(o) && (this._docs.push(o), this._myIndex.add(o))
-              }
-              remove(o = () => !1) {
-                let m = []
-                for (let S = 0, O = this._docs.length; S < O; S += 1) {
-                  let C = this._docs[S]
-                  o(C, S) && (this.removeAt(S), (S -= 1), (O -= 1), m.push(C))
-                }
-                return m
-              }
-              removeAt(o) {
-                ;(this._docs.splice(o, 1), this._myIndex.removeAt(o))
-              }
-              getIndex() {
-                return this._myIndex
-              }
-              search(o, { limit: m = -1 } = {}) {
-                let {
-                    includeMatches: S,
-                    includeScore: O,
-                    shouldSort: C,
-                    sortFn: A,
-                    ignoreFieldNorm: R,
-                  } = this.options,
-                  F = n(o)
-                    ? n(this._docs[0])
-                      ? this._searchStringList(o)
-                      : this._searchObjectList(o)
-                    : this._searchLogical(o)
-                return (
-                  nt(F, { ignoreFieldNorm: R }),
-                  C && F.sort(A),
-                  r(m) && m > -1 && (F = F.slice(0, m)),
-                  ot(F, this._docs, { includeMatches: S, includeScore: O })
-                )
-              }
-              _searchStringList(o) {
-                let m = Ne(o, this.options),
-                  { records: S } = this._myIndex,
-                  O = []
-                return (
-                  S.forEach(({ v: C, i: A, n: R }) => {
-                    if (!E(C)) return
-                    let { isMatch: F, score: Y, indices: V } = m.searchIn(C)
-                    F &&
-                      O.push({
-                        item: C,
-                        idx: A,
-                        matches: [{ score: Y, value: C, norm: R, indices: V }],
-                      })
-                  }),
-                  O
-                )
-              }
-              _searchLogical(o) {
-                let m = xe(o, this.options),
-                  S = (R, F, Y) => {
-                    if (!R.children) {
-                      let { keyId: x, searcher: G } = R,
-                        q = this._findMatches({
-                          key: this._keyStore.get(x),
-                          value: this._myIndex.getValueForItemAtKeyId(F, x),
-                          searcher: G,
-                        })
-                      return q && q.length
-                        ? [{ idx: Y, item: F, matches: q }]
-                        : []
-                    }
-                    let V = []
-                    for (let x = 0, G = R.children.length; x < G; x += 1) {
-                      let q = R.children[x],
-                        ne = S(q, F, Y)
-                      if (ne.length) V.push(...ne)
-                      else if (R.operator === Te.AND) return []
-                    }
-                    return V
-                  },
-                  O = this._myIndex.records,
-                  C = {},
-                  A = []
-                return (
-                  O.forEach(({ $: R, i: F }) => {
-                    if (E(R)) {
-                      let Y = S(m, R, F)
-                      Y.length &&
-                        (C[F] ||
-                          ((C[F] = { idx: F, item: R, matches: [] }),
-                          A.push(C[F])),
-                        Y.forEach(({ matches: V }) => {
-                          C[F].matches.push(...V)
-                        }))
-                    }
-                  }),
-                  A
-                )
-              }
-              _searchObjectList(o) {
-                let m = Ne(o, this.options),
-                  { keys: S, records: O } = this._myIndex,
-                  C = []
-                return (
-                  O.forEach(({ $: A, i: R }) => {
-                    if (!E(A)) return
-                    let F = []
-                    ;(S.forEach((Y, V) => {
-                      F.push(
-                        ...this._findMatches({
-                          key: Y,
-                          value: A[V],
-                          searcher: m,
-                        }),
-                      )
-                    }),
-                      F.length && C.push({ idx: R, item: A, matches: F }))
-                  }),
-                  C
-                )
-              }
-              _findMatches({ key: o, value: m, searcher: S }) {
-                if (!E(m)) return []
-                let O = []
-                if (v(m))
-                  m.forEach(({ v: C, i: A, n: R }) => {
-                    if (!E(C)) return
-                    let { isMatch: F, score: Y, indices: V } = S.searchIn(C)
-                    F &&
-                      O.push({
-                        score: Y,
-                        key: o,
-                        value: C,
-                        idx: A,
-                        norm: R,
-                        indices: V,
-                      })
-                  })
-                else {
-                  let { v: C, n: A } = m,
-                    { isMatch: R, score: F, indices: Y } = S.searchIn(C)
-                  R &&
-                    O.push({ score: F, key: o, value: C, norm: A, indices: Y })
-                }
-                return O
-              }
-            }
-            ;((Se.version = '6.6.2'),
-              (Se.createIndex = U),
-              (Se.parseIndex = $),
-              (Se.config = u),
-              (Se.parseQuery = xe),
-              et(qe))
-          },
-          791: function (N, i, y) {
-            ;(y.r(i),
-              y.d(i, {
-                __DO_NOT_USE__ActionTypes: function () {
-                  return E
-                },
-                applyMiddleware: function () {
-                  return M
-                },
-                bindActionCreators: function () {
-                  return _
-                },
-                combineReducers: function () {
-                  return s
-                },
-                compose: function () {
-                  return P
-                },
-                createStore: function () {
-                  return w
-                },
-                legacy_createStore: function () {
-                  return j
-                },
-              }))
-            function v(f) {
-              '@babel/helpers - typeof'
-              return (
-                (v =
-                  typeof Symbol == 'function' &&
-                  typeof Symbol.iterator == 'symbol'
-                    ? function (u) {
-                        return typeof u
-                      }
-                    : function (u) {
-                        return u &&
-                          typeof Symbol == 'function' &&
-                          u.constructor === Symbol &&
-                          u !== Symbol.prototype
-                          ? 'symbol'
-                          : typeof u
-                      }),
-                v(f)
-              )
-            }
-            function h(f, u) {
-              if (v(f) !== 'object' || f === null) return f
-              var T = f[Symbol.toPrimitive]
-              if (T !== void 0) {
-                var H = T.call(f, u || 'default')
-                if (v(H) !== 'object') return H
-                throw new TypeError(
-                  '@@toPrimitive must return a primitive value.',
-                )
-              }
-              return (u === 'string' ? String : Number)(f)
-            }
-            function d(f) {
-              var u = h(f, 'string')
-              return v(u) === 'symbol' ? u : String(u)
-            }
-            function c(f, u, T) {
-              return (
-                (u = d(u)),
-                u in f
-                  ? Object.defineProperty(f, u, {
-                      value: T,
-                      enumerable: !0,
-                      configurable: !0,
-                      writable: !0,
-                    })
-                  : (f[u] = T),
-                f
-              )
-            }
-            function n(f, u) {
-              var T = Object.keys(f)
-              if (Object.getOwnPropertySymbols) {
-                var H = Object.getOwnPropertySymbols(f)
-                ;(u &&
-                  (H = H.filter(function (k) {
-                    return Object.getOwnPropertyDescriptor(f, k).enumerable
+              this)
+            : (this.config.silent ||
+                console.warn(
+                  'refresh method can only be used on choices backed by a <select> element',
+                ),
+              this)
+        )
+      }),
+      (i.prototype.removeChoice = function (e) {
+        var t = this._store.choices.find(function (s) {
+          return s.value === e
+        })
+        return t
+          ? (this._clearNotice(),
+            this._store.dispatch(lt(t)),
+            this._searcher.reset(),
+            t.selected && this.passedElement.triggerEvent(I.removeItem, x(t)),
+            this)
+          : this
+      }),
+      (i.prototype.clearChoices = function (e, t) {
+        var s = this
+        return (
+          e === void 0 && (e = !0),
+          t === void 0 && (t = !1),
+          e &&
+            (t
+              ? this.passedElement.element.replaceChildren('')
+              : this.passedElement.element
+                  .querySelectorAll(':not([selected])')
+                  .forEach(function (n) {
+                    n.remove()
                   })),
-                  T.push.apply(T, H))
-              }
-              return T
-            }
-            function r(f) {
-              for (var u = 1; u < arguments.length; u++) {
-                var T = arguments[u] != null ? arguments[u] : {}
-                u % 2
-                  ? n(Object(T), !0).forEach(function (H) {
-                      c(f, H, T[H])
-                    })
-                  : Object.getOwnPropertyDescriptors
-                    ? Object.defineProperties(
-                        f,
-                        Object.getOwnPropertyDescriptors(T),
-                      )
-                    : n(Object(T)).forEach(function (H) {
-                        Object.defineProperty(
-                          f,
-                          H,
-                          Object.getOwnPropertyDescriptor(T, H),
-                        )
-                      })
-              }
-              return f
-            }
-            function a(f) {
-              return (
-                'Minified Redux error #' +
-                f +
-                '; visit https://redux.js.org/Errors?code=' +
-                f +
-                ' for the full message or use the non-minified dev environment for full errors. '
-              )
-            }
-            var I = (function () {
+          this.itemList.element.replaceChildren(''),
+          this.choiceList.element.replaceChildren(''),
+          this._clearNotice(),
+          this._store.withTxn(function () {
+            var n = t ? [] : s._store.items
+            ;(s._store.reset(),
+              n.forEach(function (r) {
+                ;(s._store.dispatch(De(r)), s._store.dispatch(xe(r)))
+              }))
+          }),
+          this._searcher.reset(),
+          this
+        )
+      }),
+      (i.prototype.clearStore = function (e) {
+        return (
+          e === void 0 && (e = !0),
+          this.clearChoices(e, !0),
+          this._stopSearch(),
+          (this._lastAddedChoiceId = 0),
+          (this._lastAddedGroupId = 0),
+          this
+        )
+      }),
+      (i.prototype.clearInput = function () {
+        var e = !this._isSelectOneElement
+        return (this.input.clear(e), this._stopSearch(), this)
+      }),
+      (i.prototype._validateConfig = function () {
+        var e = this.config,
+          t = yt(e, He)
+        ;(t.length &&
+          console.warn('Unknown config option(s) passed', t.join(', ')),
+          e.allowHTML &&
+            e.allowHtmlUserInput &&
+            (e.addItems &&
+              console.warn(
+                'Warning: allowHTML/allowHtmlUserInput/addItems all being true is strongly not recommended and may lead to XSS attacks',
+              ),
+            e.addChoices &&
+              console.warn(
+                'Warning: allowHTML/allowHtmlUserInput/addChoices all being true is strongly not recommended and may lead to XSS attacks',
+              )))
+      }),
+      (i.prototype._render = function (e) {
+        ;(e === void 0 && (e = { choices: !0, groups: !0, items: !0 }),
+          !this._store.inTxn() &&
+            (this._isSelectElement &&
+              (e.choices || e.groups) &&
+              this._renderChoices(),
+            e.items && this._renderItems()))
+      }),
+      (i.prototype._renderChoices = function () {
+        var e = this
+        if (this._canAddItems()) {
+          var t = this,
+            s = t.config,
+            n = t._isSearching,
+            r = this._store,
+            o = r.activeGroups,
+            a = r.activeChoices,
+            l = n ? s.searchResultLimit : s.renderChoiceLimit
+          if (this._isSelectElement) {
+            var u = a.filter(function (g) {
+              return !g.element
+            })
+            u.length && this.passedElement.addOptions(u)
+          }
+          var c = document.createDocumentFragment(),
+            h = function (g) {
+              return g.filter(function (y) {
                 return (
-                  (typeof Symbol == 'function' && Symbol.observable) ||
-                  '@@observable'
+                  !y.placeholder &&
+                  (n
+                    ? (s.searchRenderSelectedChoices || !y.selected) && !!y.rank
+                    : s.renderSelectedChoices || !y.selected)
                 )
-              })(),
-              L = function () {
-                return Math.random()
-                  .toString(36)
-                  .substring(7)
-                  .split('')
-                  .join('.')
-              },
-              E = {
-                INIT: '@@redux/INIT' + L(),
-                REPLACE: '@@redux/REPLACE' + L(),
-                PROBE_UNKNOWN_ACTION: function () {
-                  return '@@redux/PROBE_UNKNOWN_ACTION' + L()
-                },
-              }
-            function D(f) {
-              if (typeof f != 'object' || f === null) return !1
-              for (var u = f; Object.getPrototypeOf(u) !== null;)
-                u = Object.getPrototypeOf(u)
-              return Object.getPrototypeOf(f) === u
-            }
-            function B(f) {
-              if (f === void 0) return 'undefined'
-              if (f === null) return 'null'
-              var u = typeof f
-              switch (u) {
-                case 'boolean':
-                case 'string':
-                case 'number':
-                case 'symbol':
-                case 'function':
-                  return u
-              }
-              if (Array.isArray(f)) return 'array'
-              if (re(f)) return 'date'
-              if (Z(f)) return 'error'
-              var T = Q(f)
-              switch (T) {
-                case 'Symbol':
-                case 'Promise':
-                case 'WeakMap':
-                case 'WeakSet':
-                case 'Map':
-                case 'Set':
-                  return T
-              }
-              return u.slice(8, -1).toLowerCase().replace(/\s/g, '')
-            }
-            function Q(f) {
-              return typeof f.constructor == 'function'
-                ? f.constructor.name
-                : null
-            }
-            function Z(f) {
-              return (
-                f instanceof Error ||
-                (typeof f.message == 'string' &&
-                  f.constructor &&
-                  typeof f.constructor.stackTraceLimit == 'number')
-              )
-            }
-            function re(f) {
-              return f instanceof Date
-                ? !0
-                : typeof f.toDateString == 'function' &&
-                    typeof f.getDate == 'function' &&
-                    typeof f.setDate == 'function'
-            }
-            function b(f) {
-              var u = typeof f
-              return u
-            }
-            function w(f, u, T) {
-              var H
-              if (
-                (typeof u == 'function' && typeof T == 'function') ||
-                (typeof T == 'function' && typeof arguments[3] == 'function')
-              )
-                throw new Error(a(0))
-              if (
-                (typeof u == 'function' &&
-                  typeof T > 'u' &&
-                  ((T = u), (u = void 0)),
-                typeof T < 'u')
-              ) {
-                if (typeof T != 'function') throw new Error(a(1))
-                return T(w)(f, u)
-              }
-              if (typeof f != 'function') throw new Error(a(2))
-              var k = f,
-                U = u,
-                $ = [],
-                W = $,
-                J = !1
-              function X() {
-                W === $ && (W = $.slice())
-              }
-              function ee() {
-                if (J) throw new Error(a(3))
-                return U
-              }
-              function ae(ie) {
-                if (typeof ie != 'function') throw new Error(a(4))
-                if (J) throw new Error(a(5))
-                var de = !0
-                return (
-                  X(),
-                  W.push(ie),
-                  function () {
-                    if (de) {
-                      if (J) throw new Error(a(6))
-                      ;((de = !1), X())
-                      var oe = W.indexOf(ie)
-                      ;(W.splice(oe, 1), ($ = null))
-                    }
-                  }
-                )
-              }
-              function le(ie) {
-                if (!D(ie)) throw new Error(a(7))
-                if (typeof ie.type > 'u') throw new Error(a(8))
-                if (J) throw new Error(a(9))
-                try {
-                  ;((J = !0), (U = k(U, ie)))
-                } finally {
-                  J = !1
-                }
-                for (var de = ($ = W), me = 0; me < de.length; me++) {
-                  var oe = de[me]
-                  oe()
-                }
-                return ie
-              }
-              function ce(ie) {
-                if (typeof ie != 'function') throw new Error(a(10))
-                ;((k = ie), le({ type: E.REPLACE }))
-              }
-              function _e() {
-                var ie,
-                  de = ae
-                return (
-                  (ie = {
-                    subscribe: function (oe) {
-                      if (typeof oe != 'object' || oe === null)
-                        throw new Error(a(11))
-                      function Ce() {
-                        oe.next && oe.next(ee())
-                      }
-                      Ce()
-                      var Pe = de(Ce)
-                      return { unsubscribe: Pe }
-                    },
-                  }),
-                  (ie[I] = function () {
-                    return this
-                  }),
-                  ie
-                )
-              }
-              return (
-                le({ type: E.INIT }),
-                (H = {
-                  dispatch: le,
-                  subscribe: ae,
-                  getState: ee,
-                  replaceReducer: ce,
-                }),
-                (H[I] = _e),
-                H
-              )
-            }
-            var j = w
-            function g(f) {
-              typeof console < 'u' &&
-                typeof console.error == 'function' &&
-                console.error(f)
-              try {
-                throw new Error(f)
-              } catch {}
-            }
-            function e(f, u, T, H) {
-              var k = Object.keys(u),
-                U =
-                  T && T.type === E.INIT
-                    ? 'preloadedState argument passed to createStore'
-                    : 'previous state received by the reducer'
-              if (k.length === 0)
-                return 'Store does not have a valid reducer. Make sure the argument passed to combineReducers is an object whose values are reducers.'
-              if (!D(f))
-                return (
-                  'The ' +
-                  U +
-                  ' has unexpected type of "' +
-                  b(f) +
-                  '". Expected argument to be an object with the following ' +
-                  ('keys: "' + k.join('", "') + '"')
-                )
-              var $ = Object.keys(f).filter(function (W) {
-                return !u.hasOwnProperty(W) && !H[W]
               })
-              if (
-                ($.forEach(function (W) {
-                  H[W] = !0
-                }),
-                !(T && T.type === E.REPLACE) && $.length > 0)
-              )
-                return (
-                  'Unexpected ' +
-                  ($.length > 1 ? 'keys' : 'key') +
-                  ' ' +
-                  ('"' + $.join('", "') + '" found in ' + U + '. ') +
-                  'Expected to find one of the known reducer keys instead: ' +
-                  ('"' + k.join('", "') + '". Unexpected keys will be ignored.')
-                )
-            }
-            function t(f) {
-              Object.keys(f).forEach(function (u) {
-                var T = f[u],
-                  H = T(void 0, { type: E.INIT })
-                if (typeof H > 'u') throw new Error(a(12))
-                if (typeof T(void 0, { type: E.PROBE_UNKNOWN_ACTION() }) > 'u')
-                  throw new Error(a(13))
-              })
-            }
-            function s(f) {
-              for (var u = Object.keys(f), T = {}, H = 0; H < u.length; H++) {
-                var k = u[H]
-                typeof f[k] == 'function' && (T[k] = f[k])
-              }
-              var U = Object.keys(T),
-                $,
-                W
-              try {
-                t(T)
-              } catch (J) {
-                W = J
-              }
-              return function (X, ee) {
-                if ((X === void 0 && (X = {}), W)) throw W
-                if (0) var ae
-                for (var le = !1, ce = {}, _e = 0; _e < U.length; _e++) {
-                  var ie = U[_e],
-                    de = T[ie],
-                    me = X[ie],
-                    oe = de(me, ee)
-                  if (typeof oe > 'u') {
-                    var Ce = ee && ee.type
-                    throw new Error(a(14))
-                  }
-                  ;((ce[ie] = oe), (le = le || oe !== me))
-                }
-                return (
-                  (le = le || U.length !== Object.keys(X).length),
-                  le ? ce : X
-                )
-              }
-            }
-            function l(f, u) {
-              return function () {
-                return u(f.apply(this, arguments))
-              }
-            }
-            function _(f, u) {
-              if (typeof f == 'function') return l(f, u)
-              if (typeof f != 'object' || f === null) throw new Error(a(16))
-              var T = {}
-              for (var H in f) {
-                var k = f[H]
-                typeof k == 'function' && (T[H] = l(k, u))
-              }
-              return T
-            }
-            function P() {
-              for (
-                var f = arguments.length, u = new Array(f), T = 0;
-                T < f;
-                T++
-              )
-                u[T] = arguments[T]
-              return u.length === 0
-                ? function (H) {
-                    return H
-                  }
-                : u.length === 1
-                  ? u[0]
-                  : u.reduce(function (H, k) {
-                      return function () {
-                        return H(k.apply(void 0, arguments))
-                      }
-                    })
-            }
-            function M() {
-              for (
-                var f = arguments.length, u = new Array(f), T = 0;
-                T < f;
-                T++
-              )
-                u[T] = arguments[T]
-              return function (H) {
-                return function () {
-                  var k = H.apply(void 0, arguments),
-                    U = function () {
-                      throw new Error(a(15))
-                    },
-                    $ = {
-                      getState: k.getState,
-                      dispatch: function () {
-                        return U.apply(void 0, arguments)
-                      },
-                    },
-                    W = u.map(function (J) {
-                      return J($)
-                    })
+            },
+            d = s.appendGroupInSearch && n,
+            p = !1,
+            f = null,
+            m = function (g, y) {
+              n ? g.sort(_t) : s.shouldSort && g.sort(s.sorter)
+              var b = g.length
+              ;((b = !y && l > 0 && b > l ? l : b),
+                b--,
+                g.every(function (C, B) {
+                  var Y =
+                    C.choiceEl ||
+                    e._templates.choice(
+                      s,
+                      C,
+                      s.itemSelectText,
+                      d && C.group ? C.group.label : void 0,
+                    )
                   return (
-                    (U = P.apply(void 0, W)(k.dispatch)),
-                    r(r({}, k), {}, { dispatch: U })
+                    (C.choiceEl = Y),
+                    c.appendChild(Y),
+                    n || !C.selected ? (p = !0) : f || (f = Y),
+                    B < b
                   )
-                }
-              }
+                }))
             }
-            function K() {}
-          },
-        },
-        te = {}
-      function z(N) {
-        var i = te[N]
-        if (i !== void 0) return i.exports
-        var y = (te[N] = { exports: {} })
-        return (se[N].call(y.exports, y, y.exports, z), y.exports)
-      }
-      ;((function () {
-        z.n = function (N) {
-          var i =
-            N && N.__esModule
-              ? function () {
-                  return N.default
-                }
-              : function () {
-                  return N
-                }
-          return (z.d(i, { a: i }), i)
+          ;(a.length &&
+            (s.resetScrollPosition &&
+              requestAnimationFrame(function () {
+                return e.choiceList.scrollToTop()
+              }),
+            !this._hasNonChoicePlaceholder &&
+              !n &&
+              this._isSelectOneElement &&
+              m(
+                a.filter(function (g) {
+                  return g.placeholder && !g.group
+                }),
+                !1,
+              ),
+            o.length && !n
+              ? (s.shouldSort && o.sort(s.sorter),
+                m(
+                  a.filter(function (g) {
+                    return !g.placeholder && !g.group
+                  }),
+                  !1,
+                ),
+                o.forEach(function (g) {
+                  var y = h(g.choices)
+                  if (y.length) {
+                    if (g.label) {
+                      var b = g.groupEl || e._templates.choiceGroup(e.config, g)
+                      ;((g.groupEl = b), b.remove(), c.appendChild(b))
+                    }
+                    m(y, !0)
+                  }
+                }))
+              : m(h(a), !1)),
+            !p &&
+              (n || !c.children.length || !s.renderSelectedChoices) &&
+              (this._notice ||
+                (this._notice = {
+                  text: Re(n ? s.noResultsText : s.noChoicesText),
+                  type: n ? S.noResults : S.noChoices,
+                }),
+              c.replaceChildren('')),
+            this._renderNotice(c),
+            this.choiceList.element.replaceChildren(c),
+            this._highlightChoice(f))
         }
-      })(),
-        (function () {
-          z.d = function (N, i) {
-            for (var y in i)
-              z.o(i, y) &&
-                !z.o(N, y) &&
-                Object.defineProperty(N, y, { enumerable: !0, get: i[y] })
+      }),
+      (i.prototype._renderItems = function () {
+        var e = this,
+          t = this._store.items || [],
+          s = this.itemList.element,
+          n = this.config,
+          r = document.createDocumentFragment(),
+          o = function (h) {
+            return s.querySelector('[data-item][data-id="'.concat(h.id, '"]'))
+          },
+          a = function (h) {
+            var d = h.itemEl
+            ;(d && d.parentElement) ||
+              ((d = o(h) || e._templates.item(n, h, n.removeItemButton)),
+              (h.itemEl = d),
+              r.appendChild(d))
           }
-        })(),
-        (function () {
-          z.o = function (N, i) {
-            return Object.prototype.hasOwnProperty.call(N, i)
+        t.forEach(a)
+        var l = !!r.childNodes.length
+        if (this._isSelectOneElement) {
+          var u = s.children.length
+          if (l || u > 1) {
+            var c = s.querySelector(W(n.classNames.placeholder))
+            c && c.remove()
+          } else
+            !l &&
+              !u &&
+              this._placeholderValue &&
+              ((l = !0),
+              a(
+                M(
+                  {
+                    selected: !0,
+                    value: '',
+                    label: this._placeholderValue,
+                    placeholder: !0,
+                  },
+                  !1,
+                ),
+              ))
+        }
+        ;(l &&
+          (s.append(r),
+          n.shouldSortItems &&
+            !this._isSelectOneElement &&
+            (t.sort(n.sorter),
+            t.forEach(function (h) {
+              var d = o(h)
+              d && (d.remove(), r.append(d))
+            }),
+            s.append(r))),
+          this._isTextElement &&
+            (this.passedElement.value = t
+              .map(function (h) {
+                var d = h.value
+                return d
+              })
+              .join(n.delimiter)))
+      }),
+      (i.prototype._displayNotice = function (e, t, s) {
+        s === void 0 && (s = !0)
+        var n = this._notice
+        if (
+          n &&
+          ((n.type === t && n.text === e) ||
+            (n.type === S.addChoice &&
+              (t === S.noResults || t === S.noChoices)))
+        ) {
+          s && this.showDropdown(!0)
+          return
+        }
+        ;(this._clearNotice(),
+          (this._notice = e ? { text: e, type: t } : void 0),
+          this._renderNotice(),
+          s && e && this.showDropdown(!0))
+      }),
+      (i.prototype._clearNotice = function () {
+        if (this._notice) {
+          var e = this.choiceList.element.querySelector(
+            W(this.config.classNames.notice),
+          )
+          ;(e && e.remove(), (this._notice = void 0))
+        }
+      }),
+      (i.prototype._renderNotice = function (e) {
+        var t = this._notice
+        if (t) {
+          var s = this._templates.notice(this.config, t.text, t.type)
+          e ? e.append(s) : this.choiceList.prepend(s)
+        }
+      }),
+      (i.prototype._getChoiceForOutput = function (e, t) {
+        return x(e, t)
+      }),
+      (i.prototype._triggerChange = function (e) {
+        e != null && this.passedElement.triggerEvent(I.change, { value: e })
+      }),
+      (i.prototype._handleButtonAction = function (e) {
+        var t = this,
+          s = this._store.items
+        if (!(
+          !s.length ||
+          !this.config.removeItems ||
+          !this.config.removeItemButton
+        )) {
+          var n = e && ue(e.closest('[data-id]')),
+            r =
+              n &&
+              s.find(function (o) {
+                return o.id === n
+              })
+          r &&
+            this._store.withTxn(function () {
+              if (
+                (t._removeItem(r),
+                t._triggerChange(r.value),
+                t._isSelectOneElement && !t._hasNonChoicePlaceholder)
+              ) {
+                var o = (
+                  t.config.shouldSort
+                    ? t._store.choices.reverse()
+                    : t._store.choices
+                ).find(function (a) {
+                  return a.placeholder
+                })
+                o &&
+                  (t._addItem(o),
+                  t.unhighlightAll(),
+                  o.value && t._triggerChange(o.value))
+              }
+            })
+        }
+      }),
+      (i.prototype._handleItemAction = function (e, t) {
+        var s = this
+        t === void 0 && (t = !1)
+        var n = this._store.items
+        if (!(
+          !n.length ||
+          !this.config.removeItems ||
+          this._isSelectOneElement
+        )) {
+          var r = ue(e)
+          r &&
+            (n.forEach(function (o) {
+              o.id === r && !o.highlighted
+                ? s.highlightItem(o)
+                : !t && o.highlighted && s.unhighlightItem(o)
+            }),
+            this.input.focus())
+        }
+      }),
+      (i.prototype._handleChoiceAction = function (e) {
+        var t = this,
+          s = ue(e),
+          n = s && this._store.getChoiceById(s)
+        if (!n || n.disabled) return !1
+        var r = this.dropdown.isActive
+        if (!n.selected) {
+          if (!this._canAddItems()) return !0
+          ;(this._store.withTxn(function () {
+            ;(t._addItem(n, !0, !0), t.clearInput(), t.unhighlightAll())
+          }),
+            this._triggerChange(n.value))
+        }
+        return (
+          r &&
+            this.config.closeDropdownOnSelect &&
+            (this.hideDropdown(!0), this.containerOuter.element.focus()),
+          !0
+        )
+      }),
+      (i.prototype._handleBackspace = function (e) {
+        var t = this.config
+        if (!(!t.removeItems || !e.length)) {
+          var s = e[e.length - 1],
+            n = e.some(function (r) {
+              return r.highlighted
+            })
+          t.editItems && !n && s
+            ? ((this.input.value = s.value),
+              this.input.setWidth(),
+              this._removeItem(s),
+              this._triggerChange(s.value))
+            : (n || this.highlightItem(s, !1), this.removeHighlightedItems(!0))
+        }
+      }),
+      (i.prototype._loadChoices = function () {
+        var e,
+          t = this,
+          s = this.config
+        if (this._isTextElement) {
+          if (
+            ((this._presetChoices = s.items.map(function (o) {
+              return M(o, !1)
+            })),
+            this.passedElement.value)
+          ) {
+            var n = this.passedElement.value
+              .split(s.delimiter)
+              .map(function (o) {
+                return M(o, !1, t.config.allowHtmlUserInput)
+              })
+            this._presetChoices = this._presetChoices.concat(n)
           }
-        })(),
-        (function () {
-          z.r = function (N) {
-            ;(typeof Symbol < 'u' &&
-              Symbol.toStringTag &&
-              Object.defineProperty(N, Symbol.toStringTag, { value: 'Module' }),
-              Object.defineProperty(N, '__esModule', { value: !0 }))
+          this._presetChoices.forEach(function (o) {
+            o.selected = !0
+          })
+        } else if (this._isSelectElement) {
+          this._presetChoices = s.choices.map(function (o) {
+            return M(o, !0)
+          })
+          var r = this.passedElement.optionsAsChoices()
+          r && (e = this._presetChoices).push.apply(e, r)
+        }
+      }),
+      (i.prototype._handleLoadingState = function (e) {
+        e === void 0 && (e = !0)
+        var t = this.itemList.element
+        e
+          ? (this.disable(),
+            this.containerOuter.addLoadingState(),
+            this._isSelectOneElement
+              ? t.replaceChildren(
+                  this._templates.placeholder(
+                    this.config,
+                    this.config.loadingText,
+                  ),
+                )
+              : (this.input.placeholder = this.config.loadingText))
+          : (this.enable(),
+            this.containerOuter.removeLoadingState(),
+            this._isSelectOneElement
+              ? (t.replaceChildren(''), this._render())
+              : (this.input.placeholder = this._placeholderValue || ''))
+      }),
+      (i.prototype._handleSearch = function (e) {
+        if (this.input.isFocussed)
+          if (
+            e !== null &&
+            typeof e < 'u' &&
+            e.length >= this.config.searchFloor
+          ) {
+            var t = this.config.searchChoices ? this._searchChoices(e) : 0
+            t !== null &&
+              this.passedElement.triggerEvent(I.search, {
+                value: e,
+                resultCount: t,
+              })
+          } else
+            this._store.choices.some(function (s) {
+              return !s.active
+            }) && this._stopSearch()
+      }),
+      (i.prototype._canAddItems = function () {
+        var e = this.config,
+          t = e.maxItemCount,
+          s = e.maxItemText
+        return !e.singleModeForMultiSelect &&
+          t > 0 &&
+          t <= this._store.items.length
+          ? (this.choiceList.element.replaceChildren(''),
+            (this._notice = void 0),
+            this._displayNotice(
+              typeof s == 'function' ? s(t) : s,
+              S.addChoice,
+              !1,
+            ),
+            !1)
+          : (this._notice &&
+              this._notice.type === S.addChoice &&
+              this._clearNotice(),
+            !0)
+      }),
+      (i.prototype._canCreateItem = function (e) {
+        var t = this.config,
+          s = !0,
+          n = ''
+        if (
+          (s &&
+            typeof t.addItemFilter == 'function' &&
+            !t.addItemFilter(e) &&
+            ((s = !1), (n = X(t.customAddItemText, e, void 0))),
+          s)
+        ) {
+          var r = this._store.choices.find(function (o) {
+            return t.valueComparer(o.value, e)
+          })
+          if (r) {
+            if (this._isSelectElement)
+              return (this._displayNotice('', S.addChoice), !1)
+            t.duplicateItemsAllowed ||
+              ((s = !1), (n = X(t.uniqueItemText, e, void 0)))
           }
-        })())
-      var pe = {}
-      return (
-        (function () {
-          var N = z(373),
-            i = z.n(N),
-            y = z(187),
-            v = z.n(y),
-            h = z(883),
-            d = z(789),
-            c = z(686)
-          pe.default = i()
-        })(),
-        (pe = pe.default),
-        pe
-      )
-    })()
-  })
-})
-var ze = mt($e(), 1)
-function vt({
-  getResultsUsing: se,
-  hasDynamicSearchResults: te,
-  label: z,
-  loadingMessage: pe,
-  noSearchResultsMessage: N,
-  optionsLimit: i,
-  placeholder: y,
-  searchPrompt: v,
-  searchingMessage: h,
-  state: d,
+        }
+        return (
+          s && (n = X(t.addItemText, e, void 0)),
+          n && this._displayNotice(n, S.addChoice),
+          s
+        )
+      }),
+      (i.prototype._searchChoices = function (e) {
+        var t = e.trim().replace(/\s{2,}/, ' ')
+        if (!t.length || t === this._currentValue) return null
+        var s = this._searcher
+        s.isEmptyIndex() && s.index(this._store.searchableChoices)
+        var n = s.search(t)
+        ;((this._currentValue = t),
+          (this._highlightPosition = 0),
+          (this._isSearching = !0))
+        var r = this._notice,
+          o = r && r.type
+        return (
+          o !== S.addChoice &&
+            (n.length
+              ? this._clearNotice()
+              : this._displayNotice(
+                  Re(this.config.noResultsText),
+                  S.noResults,
+                )),
+          this._store.dispatch(ct(n)),
+          n.length
+        )
+      }),
+      (i.prototype._stopSearch = function () {
+        this._isSearching &&
+          ((this._currentValue = ''),
+          (this._isSearching = !1),
+          this._clearNotice(),
+          this._store.dispatch(ht(!0)),
+          this.passedElement.triggerEvent(I.search, {
+            value: '',
+            resultCount: 0,
+          }))
+      }),
+      (i.prototype._addEventListeners = function () {
+        var e = this._docRoot,
+          t = this.containerOuter.element,
+          s = this.input.element,
+          n = this.passedElement.element
+        ;(e.addEventListener('touchend', this._onTouchEnd, !0),
+          t.addEventListener('keydown', this._onKeyDown, !0),
+          t.addEventListener('mousedown', this._onMouseDown, !0),
+          e.addEventListener('click', this._onClick, { passive: !0 }),
+          e.addEventListener('touchmove', this._onTouchMove, { passive: !0 }),
+          this.dropdown.element.addEventListener(
+            'mouseover',
+            this._onMouseOver,
+            { passive: !0 },
+          ),
+          this._isSelectOneElement &&
+            (t.addEventListener('focus', this._onFocus, { passive: !0 }),
+            t.addEventListener('blur', this._onBlur, { passive: !0 })),
+          s.addEventListener('keyup', this._onKeyUp, { passive: !0 }),
+          s.addEventListener('input', this._onInput, { passive: !0 }),
+          s.addEventListener('focus', this._onFocus, { passive: !0 }),
+          s.addEventListener('blur', this._onBlur, { passive: !0 }),
+          s.form &&
+            s.form.addEventListener('reset', this._onFormReset, {
+              passive: !0,
+            }),
+          n.hasAttribute('required') &&
+            (n.addEventListener('change', this._onChange, { passive: !0 }),
+            n.addEventListener('invalid', this._onInvalid, { passive: !0 })),
+          this.input.addEventListeners())
+      }),
+      (i.prototype._removeEventListeners = function () {
+        var e = this._docRoot,
+          t = this.containerOuter.element,
+          s = this.input.element,
+          n = this.passedElement.element
+        ;(e.removeEventListener('touchend', this._onTouchEnd, !0),
+          t.removeEventListener('keydown', this._onKeyDown, !0),
+          t.removeEventListener('mousedown', this._onMouseDown, !0),
+          e.removeEventListener('click', this._onClick),
+          e.removeEventListener('touchmove', this._onTouchMove),
+          this.dropdown.element.removeEventListener(
+            'mouseover',
+            this._onMouseOver,
+          ),
+          this._isSelectOneElement &&
+            (t.removeEventListener('focus', this._onFocus),
+            t.removeEventListener('blur', this._onBlur)),
+          s.removeEventListener('keyup', this._onKeyUp),
+          s.removeEventListener('input', this._onInput),
+          s.removeEventListener('focus', this._onFocus),
+          s.removeEventListener('blur', this._onBlur),
+          s.form && s.form.removeEventListener('reset', this._onFormReset),
+          n.hasAttribute('required') &&
+            (n.removeEventListener('change', this._onChange),
+            n.removeEventListener('invalid', this._onInvalid)),
+          this.input.removeEventListeners())
+      }),
+      (i.prototype._onKeyDown = function (e) {
+        var t = e.keyCode,
+          s = this.dropdown.isActive,
+          n =
+            e.key.length === 1 ||
+            (e.key.length === 2 && e.key.charCodeAt(0) >= 55296) ||
+            e.key === 'Unidentified'
+        switch (
+          (!this._isTextElement &&
+            !s &&
+            t !== w.ESC_KEY &&
+            t !== w.TAB_KEY &&
+            t !== w.SHIFT_KEY &&
+            (this.showDropdown(),
+            !this.input.isFocussed &&
+              n &&
+              ((this.input.value += e.key),
+              e.key === ' ' && e.preventDefault())),
+          t)
+        ) {
+          case w.A_KEY:
+            return this._onSelectKey(e, this.itemList.element.hasChildNodes())
+          case w.ENTER_KEY:
+            return this._onEnterKey(e, s)
+          case w.ESC_KEY:
+            return this._onEscapeKey(e, s)
+          case w.UP_KEY:
+          case w.PAGE_UP_KEY:
+          case w.DOWN_KEY:
+          case w.PAGE_DOWN_KEY:
+            return this._onDirectionKey(e, s)
+          case w.DELETE_KEY:
+          case w.BACK_KEY:
+            return this._onDeleteKey(
+              e,
+              this._store.items,
+              this.input.isFocussed,
+            )
+        }
+      }),
+      (i.prototype._onKeyUp = function () {
+        this._canSearch = this.config.searchEnabled
+      }),
+      (i.prototype._onInput = function () {
+        var e = this.input.value
+        if (!e) {
+          this._isTextElement ? this.hideDropdown(!0) : this._stopSearch()
+          return
+        }
+        this._canAddItems() &&
+          (this._canSearch && this._handleSearch(e),
+          this._canAddUserChoices &&
+            (this._canCreateItem(e),
+            this._isSelectElement &&
+              ((this._highlightPosition = 0), this._highlightChoice())))
+      }),
+      (i.prototype._onSelectKey = function (e, t) {
+        if ((e.ctrlKey || e.metaKey) && t) {
+          this._canSearch = !1
+          var s =
+            this.config.removeItems &&
+            !this.input.value &&
+            this.input.element === document.activeElement
+          s && this.highlightAll()
+        }
+      }),
+      (i.prototype._onEnterKey = function (e, t) {
+        var s = this,
+          n = this.input.value,
+          r = e.target
+        if ((e.preventDefault(), r && r.hasAttribute('data-button'))) {
+          this._handleButtonAction(r)
+          return
+        }
+        if (!t) {
+          ;(this._isSelectElement || this._notice) && this.showDropdown()
+          return
+        }
+        var o = this.dropdown.element.querySelector(
+          W(this.config.classNames.highlightedState),
+        )
+        if (!(o && this._handleChoiceAction(o))) {
+          if (!r || !n) {
+            this.hideDropdown(!0)
+            return
+          }
+          if (this._canAddItems()) {
+            var a = !1
+            ;(this._store.withTxn(function () {
+              if (((a = s._findAndSelectChoiceByValue(n, !0)), !a)) {
+                if (!s._canAddUserChoices || !s._canCreateItem(n)) return
+                ;(s._addChoice(M(n, !1, s.config.allowHtmlUserInput), !0, !0),
+                  (a = !0))
+              }
+              ;(s.clearInput(), s.unhighlightAll())
+            }),
+              a &&
+                (this._triggerChange(n),
+                this.config.closeDropdownOnSelect && this.hideDropdown(!0)))
+          }
+        }
+      }),
+      (i.prototype._onEscapeKey = function (e, t) {
+        t &&
+          (e.stopPropagation(),
+          this.hideDropdown(!0),
+          this._stopSearch(),
+          this.containerOuter.element.focus())
+      }),
+      (i.prototype._onDirectionKey = function (e, t) {
+        var s = e.keyCode
+        if (t || this._isSelectOneElement) {
+          ;(this.showDropdown(), (this._canSearch = !1))
+          var n = s === w.DOWN_KEY || s === w.PAGE_DOWN_KEY ? 1 : -1,
+            r = e.metaKey || s === w.PAGE_DOWN_KEY || s === w.PAGE_UP_KEY,
+            o = void 0
+          if (r)
+            n > 0
+              ? (o = this.dropdown.element.querySelector(
+                  ''.concat(q, ':last-of-type'),
+                ))
+              : (o = this.dropdown.element.querySelector(q))
+          else {
+            var a = this.dropdown.element.querySelector(
+              W(this.config.classNames.highlightedState),
+            )
+            a ? (o = pt(a, q, n)) : (o = this.dropdown.element.querySelector(q))
+          }
+          ;(o &&
+            (Pe(o, this.choiceList.element, n) ||
+              this.choiceList.scrollToChildElement(o, n),
+            this._highlightChoice(o)),
+            e.preventDefault())
+        }
+      }),
+      (i.prototype._onDeleteKey = function (e, t, s) {
+        !this._isSelectOneElement &&
+          !e.target.value &&
+          s &&
+          (this._handleBackspace(t), e.preventDefault())
+      }),
+      (i.prototype._onTouchMove = function () {
+        this._wasTap && (this._wasTap = !1)
+      }),
+      (i.prototype._onTouchEnd = function (e) {
+        var t = (e || e.touches[0]).target,
+          s = this._wasTap && this.containerOuter.element.contains(t)
+        if (s) {
+          var n =
+            t === this.containerOuter.element ||
+            t === this.containerInner.element
+          ;(n &&
+            (this._isTextElement
+              ? this.input.focus()
+              : this._isSelectMultipleElement && this.showDropdown()),
+            e.stopPropagation())
+        }
+        this._wasTap = !0
+      }),
+      (i.prototype._onMouseDown = function (e) {
+        var t = e.target
+        if (t instanceof Element) {
+          if (yi && this.choiceList.element.contains(t)) {
+            var s = this.choiceList.element.firstElementChild
+            this._isScrollingOnIe =
+              this._direction === 'ltr'
+                ? e.offsetX >= s.offsetWidth
+                : e.offsetX < s.offsetLeft
+          }
+          if (t !== this.input.element) {
+            var n = t.closest('[data-button],[data-item],[data-choice]')
+            ;(n instanceof HTMLElement &&
+              ('button' in n.dataset
+                ? this._handleButtonAction(n)
+                : 'item' in n.dataset
+                  ? this._handleItemAction(n, e.shiftKey)
+                  : 'choice' in n.dataset && this._handleChoiceAction(n)),
+              e.preventDefault())
+          }
+        }
+      }),
+      (i.prototype._onMouseOver = function (e) {
+        var t = e.target
+        t instanceof HTMLElement &&
+          'choice' in t.dataset &&
+          this._highlightChoice(t)
+      }),
+      (i.prototype._onClick = function (e) {
+        var t = e.target,
+          s = this.containerOuter,
+          n = s.element.contains(t)
+        n
+          ? !this.dropdown.isActive && !s.isDisabled
+            ? this._isTextElement
+              ? document.activeElement !== this.input.element &&
+                this.input.focus()
+              : (this.showDropdown(), s.element.focus())
+            : this._isSelectOneElement &&
+              t !== this.input.element &&
+              !this.dropdown.element.contains(t) &&
+              this.hideDropdown()
+          : (s.removeFocusState(), this.hideDropdown(!0), this.unhighlightAll())
+      }),
+      (i.prototype._onFocus = function (e) {
+        var t = e.target,
+          s = this.containerOuter,
+          n = t && s.element.contains(t)
+        if (n) {
+          var r = t === this.input.element
+          this._isTextElement
+            ? r && s.addFocusState()
+            : this._isSelectMultipleElement
+              ? r && (this.showDropdown(!0), s.addFocusState())
+              : (s.addFocusState(), r && this.showDropdown(!0))
+        }
+      }),
+      (i.prototype._onBlur = function (e) {
+        var t = e.target,
+          s = this.containerOuter,
+          n = t && s.element.contains(t)
+        n && !this._isScrollingOnIe
+          ? t === this.input.element
+            ? (s.removeFocusState(),
+              this.hideDropdown(!0),
+              (this._isTextElement || this._isSelectMultipleElement) &&
+                this.unhighlightAll())
+            : t === this.containerOuter.element &&
+              (s.removeFocusState(),
+              this.config.searchEnabled || this.hideDropdown(!0))
+          : ((this._isScrollingOnIe = !1), this.input.element.focus())
+      }),
+      (i.prototype._onFormReset = function () {
+        var e = this
+        this._store.withTxn(function () {
+          ;(e.clearInput(),
+            e.hideDropdown(),
+            e.refresh(!1, !1, !0),
+            e._initialItems.length && e.setChoiceByValue(e._initialItems))
+        })
+      }),
+      (i.prototype._onChange = function (e) {
+        e.target.checkValidity() && this.containerOuter.removeInvalidState()
+      }),
+      (i.prototype._onInvalid = function () {
+        this.containerOuter.addInvalidState()
+      }),
+      (i.prototype._removeHighlightedChoices = function () {
+        var e = this.config.classNames.highlightedState,
+          t = Array.from(this.dropdown.element.querySelectorAll(W(e)))
+        t.forEach(function (s) {
+          ;(D(s, e), s.setAttribute('aria-selected', 'false'))
+        })
+      }),
+      (i.prototype._highlightChoice = function (e) {
+        e === void 0 && (e = null)
+        var t = Array.from(this.dropdown.element.querySelectorAll(q))
+        if (t.length) {
+          var s = e,
+            n = this.config.classNames.highlightedState
+          ;(this._removeHighlightedChoices(),
+            s
+              ? (this._highlightPosition = t.indexOf(s))
+              : (t.length > this._highlightPosition
+                  ? (s = t[this._highlightPosition])
+                  : (s = t[t.length - 1]),
+                s || (s = t[0])),
+            _(s, n),
+            s.setAttribute('aria-selected', 'true'),
+            this.passedElement.triggerEvent(I.highlightChoice, { el: s }),
+            this.dropdown.isActive &&
+              (this.input.setActiveDescendant(s.id),
+              this.containerOuter.setActiveDescendant(s.id)))
+        }
+      }),
+      (i.prototype._addItem = function (e, t, s) {
+        if ((t === void 0 && (t = !0), s === void 0 && (s = !1), !e.id))
+          throw new TypeError(
+            'item.id must be set before _addItem is called for a choice/item',
+          )
+        if (
+          ((this.config.singleModeForMultiSelect || this._isSelectOneElement) &&
+            this.removeActiveItems(e.id),
+          this._store.dispatch(xe(e)),
+          t)
+        ) {
+          var n = x(e)
+          ;(this.passedElement.triggerEvent(I.addItem, n),
+            s && this.passedElement.triggerEvent(I.choice, n))
+        }
+      }),
+      (i.prototype._removeItem = function (e) {
+        if (e.id) {
+          this._store.dispatch(Me(e))
+          var t = this._notice
+          ;(t && t.type === S.noChoices && this._clearNotice(),
+            this.passedElement.triggerEvent(I.removeItem, x(e)))
+        }
+      }),
+      (i.prototype._addChoice = function (e, t, s) {
+        if ((t === void 0 && (t = !0), s === void 0 && (s = !1), e.id))
+          throw new TypeError(
+            'Can not re-add a choice which has already been added',
+          )
+        var n = this.config
+        if (!(
+          !n.duplicateItemsAllowed &&
+          this._store.choices.find(function (a) {
+            return n.valueComparer(a.value, e.value)
+          })
+        )) {
+          ;(this._lastAddedChoiceId++,
+            (e.id = this._lastAddedChoiceId),
+            (e.elementId = ''
+              .concat(this._baseId, '-')
+              .concat(this._idNames.itemChoice, '-')
+              .concat(e.id)))
+          var r = n.prependValue,
+            o = n.appendValue
+          ;(r && (e.value = r + e.value),
+            o && (e.value += o.toString()),
+            (r || o) && e.element && (e.element.value = e.value),
+            this._clearNotice(),
+            this._store.dispatch(De(e)),
+            e.selected && this._addItem(e, t, s))
+        }
+      }),
+      (i.prototype._addGroup = function (e, t) {
+        var s = this
+        if ((t === void 0 && (t = !0), e.id))
+          throw new TypeError(
+            'Can not re-add a group which has already been added',
+          )
+        ;(this._store.dispatch(ut(e)),
+          e.choices &&
+            (this._lastAddedGroupId++,
+            (e.id = this._lastAddedGroupId),
+            e.choices.forEach(function (n) {
+              ;((n.group = e),
+                e.disabled && (n.disabled = !0),
+                s._addChoice(n, t))
+            })))
+      }),
+      (i.prototype._createTemplates = function () {
+        var e = this,
+          t = this.config.callbackOnCreateTemplates,
+          s = {}
+        typeof t == 'function' && (s = t.call(this, mt, Oe, oe))
+        var n = {}
+        ;(Object.keys(this._templates).forEach(function (r) {
+          r in s ? (n[r] = s[r].bind(e)) : (n[r] = e._templates[r].bind(e))
+        }),
+          (this._templates = n))
+      }),
+      (i.prototype._createElements = function () {
+        var e = this._templates,
+          t = this,
+          s = t.config,
+          n = t._isSelectOneElement,
+          r = s.position,
+          o = s.classNames,
+          a = this._elementType
+        ;((this.containerOuter = new ke({
+          element: e.containerOuter(
+            s,
+            this._direction,
+            this._isSelectElement,
+            n,
+            s.searchEnabled,
+            a,
+            s.labelId,
+          ),
+          classNames: o,
+          type: a,
+          position: r,
+        })),
+          (this.containerInner = new ke({
+            element: e.containerInner(s),
+            classNames: o,
+            type: a,
+            position: r,
+          })),
+          (this.input = new St({
+            element: e.input(s, this._placeholderValue),
+            classNames: o,
+            type: a,
+            preventPaste: !s.paste,
+          })),
+          (this.choiceList = new Fe({ element: e.choiceList(s, n) })),
+          (this.itemList = new Fe({ element: e.itemList(s, n) })),
+          (this.dropdown = new Ct({
+            element: e.dropdown(s),
+            classNames: o,
+            type: a,
+          })))
+      }),
+      (i.prototype._createStructure = function () {
+        var e = this,
+          t = e.containerInner,
+          s = e.containerOuter,
+          n = e.passedElement,
+          r = this.dropdown.element
+        ;(n.conceal(),
+          t.wrap(n.element),
+          s.wrap(t.element),
+          s.element.appendChild(t.element),
+          s.element.appendChild(r),
+          t.element.appendChild(this.itemList.element),
+          r.appendChild(this.choiceList.element),
+          this._isSelectOneElement
+            ? ((this.input.placeholder =
+                this.config.searchPlaceholderValue || ''),
+              this.config.searchEnabled &&
+                r.insertBefore(this.input.element, r.firstChild))
+            : ((!this._isSelectMultipleElement || this.config.searchEnabled) &&
+                t.element.appendChild(this.input.element),
+              this._placeholderValue &&
+                (this.input.placeholder = this._placeholderValue),
+              this.input.setWidth()),
+          (this._highlightPosition = 0),
+          (this._isSearching = !1))
+      }),
+      (i.prototype._initStore = function () {
+        var e = this
+        ;(this._store.subscribe(this._render).withTxn(function () {
+          e._addPredefinedChoices(
+            e._presetChoices,
+            e._isSelectOneElement && !e._hasNonChoicePlaceholder,
+            !1,
+          )
+        }),
+          (!this._store.choices.length ||
+            (this._isSelectOneElement && this._hasNonChoicePlaceholder)) &&
+            this._render())
+      }),
+      (i.prototype._addPredefinedChoices = function (e, t, s) {
+        var n = this
+        if ((t === void 0 && (t = !1), s === void 0 && (s = !0), t)) {
+          var r =
+            e.findIndex(function (o) {
+              return o.selected
+            }) === -1
+          r &&
+            e.some(function (o) {
+              return o.disabled || 'choices' in o ? !1 : ((o.selected = !0), !0)
+            })
+        }
+        e.forEach(function (o) {
+          'choices' in o
+            ? n._isSelectElement && n._addGroup(o, s)
+            : n._addChoice(o, s)
+        })
+      }),
+      (i.prototype._findAndSelectChoiceByValue = function (e, t) {
+        var s = this
+        t === void 0 && (t = !1)
+        var n = this._store.choices.find(function (r) {
+          return s.config.valueComparer(r.value, e)
+        })
+        return n && !n.disabled && !n.selected
+          ? (this._addItem(n, !0, t), !0)
+          : !1
+      }),
+      (i.prototype._generatePlaceholderValue = function () {
+        var e = this.config
+        if (!e.placeholder) return null
+        if (this._hasNonChoicePlaceholder) return e.placeholderValue
+        if (this._isSelectElement) {
+          var t = this.passedElement.placeholderOption
+          return t ? t.text : null
+        }
+        return null
+      }),
+      (i.prototype._warnChoicesInitFailed = function (e) {
+        if (!this.config.silent)
+          if (this.initialised) {
+            if (!this.initialisedOK)
+              throw new TypeError(
+                ''.concat(
+                  e,
+                  ' called for an element which has multiple instances of Choices initialised on it',
+                ),
+              )
+          } else
+            throw new TypeError(
+              ''.concat(e, ' called on a non-initialised instance of Choices'),
+            )
+      }),
+      (i.version = '11.2.3'),
+      i
+    )
+  })()
+function Ei({
+  getResultsUsing: i,
+  hasDynamicSearchResults: e,
+  label: t,
+  loadingMessage: s,
+  noSearchResultsMessage: n,
+  optionsLimit: r,
+  placeholder: o,
+  searchPrompt: a,
+  searchingMessage: l,
+  state: u,
   updateSelected: c,
 }) {
   return {
@@ -5328,27 +4138,27 @@ function vt({
     selectedOptions: [],
     isStateBeingUpdated: !1,
     searchRequest: 0,
-    state: d,
+    state: u,
     _handlers: {},
     _loadingTimer: null,
     async init() {
-      ;((this.select = new ze.default(this.$refs.input, {
+      ;((this.select = new rt(this.$refs.input, {
         allowHTML: !0,
         duplicateItemsAllowed: !1,
         itemSelectText: '',
-        loadingText: pe,
+        loadingText: s,
         maxItemCount: -1,
-        noChoicesText: v,
-        noResultsText: N,
-        placeholderValue: y,
+        noChoicesText: a,
+        noResultsText: n,
+        placeholderValue: o,
         removeItemButton: !1,
-        renderChoiceLimit: i,
+        renderChoiceLimit: r,
         searchEnabled: !0,
         searchFields: ['label'],
-        searchPlaceholderValue: v,
-        searchResultLimit: i,
+        searchPlaceholderValue: a,
+        searchResultLimit: r,
         shouldSort: !1,
-        searchFloor: te ? 0 : 1,
+        searchFloor: e ? 0 : 1,
         classNames: {
           containerOuter: 'choices choices__select__changer',
           containerInner: 'choices__inner',
@@ -5365,27 +4175,27 @@ function vt({
         }),
         (this._handlers.change = async () => {
           this.refreshPlaceholder()
-          let r = this.select.getValue(!0) ?? null
-          ;(this.setChoices([{ label: z, value: d, selected: !0 }]), await c(r))
+          let d = this.select.getValue(!0) ?? null
+          ;(this.setChoices([{ label: t, value: u, selected: !0 }]), await c(d))
         }),
         (this._handlers.search = async () => {
           this.isSearching = !0
         }))
-      let n = window.Alpine
-      ;((this._handlers.debouncedSearch = n?.debounce
-        ? n.debounce(async (r) => {
-            ;(await this.refreshChoices({ search: r.detail.value?.trim() }),
+      let h = window.Alpine
+      ;((this._handlers.debouncedSearch = h?.debounce
+        ? h.debounce(async (d) => {
+            ;(await this.refreshChoices({ search: d.detail.value?.trim() }),
               (this.isSearching = !1))
           }, 120)
-        : async (r) => {
-            ;(await this.refreshChoices({ search: r.detail.value?.trim() }),
+        : async (d) => {
+            ;(await this.refreshChoices({ search: d.detail.value?.trim() }),
               (this.isSearching = !1))
           }),
-        (this._handlers.keydown = (r) => {
-          r.key === 'Tab' &&
+        (this._handlers.keydown = (d) => {
+          d.key === 'Tab' &&
             this.select?.dropdown?.isActive &&
             this.acceptHighlightedChoice() &&
-            (r.preventDefault(), r.stopPropagation())
+            (d.preventDefault(), d.stopPropagation())
         }),
         this.$refs.input.addEventListener(
           'showDropdown',
@@ -5398,10 +4208,10 @@ function vt({
           this._handlers.debouncedSearch,
         ),
         this.$el.addEventListener('keydown', this._handlers.keydown),
-        (this._handlers.wireRefresh = (r) => {
+        (this._handlers.wireRefresh = (d) => {
           ;(this.select.clearChoices(),
             this.select.setChoices([
-              { label: r.label, value: d, selected: !0 },
+              { label: d.label, value: u, selected: !0 },
             ]))
         }),
         this.$wire?.on &&
@@ -5427,29 +4237,29 @@ function vt({
           this._handlers.wireRefresh &&
           this.$wire.off('record-switcher:refresh', this._handlers.wireRefresh))
     },
-    async refreshChoices(n = {}) {
-      let r,
-        a = ++this.searchRequest
-      this.scheduleLoadingChoice(n.search)
+    async refreshChoices(h = {}) {
+      let d,
+        p = ++this.searchRequest
+      this.scheduleLoadingChoice(h.search)
       try {
-        r = await this.getChoices(n)
+        d = await this.getChoices(h)
       } catch {
-        r = []
+        d = []
       }
-      a === this.searchRequest &&
+      p === this.searchRequest &&
         (window.clearTimeout(this._loadingTimer),
         this.refreshPlaceholder(),
-        this.setChoices(r),
+        this.setChoices(d),
         this.highlightSelectedChoice())
     },
-    scheduleLoadingChoice(n) {
+    scheduleLoadingChoice(h) {
       ;(window.clearTimeout(this._loadingTimer),
         (this._loadingTimer = window.setTimeout(() => {
           this.hasVisibleChoices() ||
             (this.select.clearChoices(),
             this.select.setChoices([
               {
-                label: [null, void 0, ''].includes(n) ? pe : h,
+                label: [null, void 0, ''].includes(h) ? s : l,
                 value: '',
                 disabled: !0,
               },
@@ -5458,19 +4268,19 @@ function vt({
     },
     highlightSelectedChoice() {
       if ([null, void 0, ''].includes(this.state)) return
-      let n = this.select.dropdown.getChild(
+      let h = this.select.dropdown.getChild(
         `.choices__item[data-value="${this.state}"]`,
       )
-      n &&
-        (this.select._highlightChoice(n),
-        window.setTimeout(() => n.scrollIntoView({ block: 'nearest' }), 100))
+      h &&
+        (this.select._highlightChoice(h),
+        window.setTimeout(() => h.scrollIntoView({ block: 'nearest' }), 100))
     },
     acceptHighlightedChoice() {
-      let n = this.select.dropdown.element.querySelector(
+      let h = this.select.dropdown.element.querySelector(
         '.choices__item.is-highlighted[data-choice-selectable], .choices__item[data-choice-selectable]',
       )
-      return n?.dataset?.value
-        ? (this.select.setChoiceByValue(n.dataset.value),
+      return h?.dataset?.value
+        ? (this.select.setChoiceByValue(h.dataset.value),
           this.select.hideDropdown(),
           this.$refs.input.dispatchEvent(new Event('change', { bubbles: !0 })),
           !0)
@@ -5483,29 +4293,29 @@ function vt({
         ) !== null
       )
     },
-    setChoices(n) {
-      this.select.setChoices(n, 'value', 'label', !0)
+    setChoices(h) {
+      this.select.setChoices(h, 'value', 'label', !0)
     },
-    async getChoices({ search: n }) {
-      let r
+    async getChoices({ search: h }) {
+      let d
       try {
-        r = await se(n)
+        d = await i(h)
       } catch {
-        r = []
+        d = []
       }
-      let a = {}
+      let p = {}
       return (
-        r.forEach((I) => {
-          I.group &&
-            ((a[I.group] ??= {
-              label: I.group,
-              id: I.group,
+        d.forEach((f) => {
+          f.group &&
+            ((p[f.group] ??= {
+              label: f.group,
+              id: f.group,
               disabled: !1,
               choices: [],
             }),
-            a[I.group].choices.push(I))
+            p[f.group].choices.push(f))
         }),
-        Object.keys(a).length === 0 ? r : Object.values(a)
+        Object.keys(p).length === 0 ? d : Object.values(p)
       )
     },
     refreshPlaceholder() {
@@ -5513,10 +4323,10 @@ function vt({
         (this.select._renderItems(), ![null, void 0, ''].includes(this.state))
       )
         return
-      let n = this.$el.querySelector('.choices__list--single')
-      n &&
-        (n.innerHTML = `<div class="choices__placeholder choices__item">${y ?? ''}</div>`)
+      let h = this.$el.querySelector('.choices__list--single')
+      h &&
+        (h.innerHTML = `<div class="choices__placeholder choices__item">${o ?? ''}</div>`)
     },
   }
 }
-export { vt as default }
+export { Ei as default }

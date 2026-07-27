@@ -18,7 +18,7 @@ test('record switcher asset is generated from committed package source', functio
     $dependencies = is_array($packageManifest['dependencies'] ?? null) ? $packageManifest['dependencies'] : [];
 
     expect($packageManifest)->toBeArray()
-        ->and($dependencies['choices.js'] ?? null)->toBe('10.2.0')
+        ->and($dependencies['choices.js'] ?? null)->toBe('11.2.3')
         ->and(data_get($packageManifest, 'scripts.build:check'))->toBe('node build.mjs --check')
         ->and($source)->toBeString()
         ->toContain("import Choices from 'choices.js'")
@@ -26,7 +26,7 @@ test('record switcher asset is generated from committed package source', functio
         ->and($distribution)->toBeString()
         ->toStartWith('// Generated from resources/js/record-switcher.js.')
         ->toContain('record-switcher:refresh')
-        ->toContain('choices.js v10.2.0');
+        ->toContain('choices.js v11.2.3');
 });
 
 it('runs registration-aware diagnostics returning doctor check results', function (): void {
