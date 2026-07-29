@@ -241,6 +241,7 @@ final class BuildRecordSwitcherOptionsAction
             $columnExpression = sprintf('%s collate %s', $columnExpression, $collation);
         }
 
+        /** @var literal-string $columnExpression */
         return new Expression($columnExpression);
     }
 
