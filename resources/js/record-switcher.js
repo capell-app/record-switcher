@@ -42,11 +42,11 @@ export default function selectChangerComponent({
                 shouldSort: false,
                 searchFloor: hasDynamicSearchResults ? 0 : 1,
                 classNames: {
-                    containerOuter: 'choices choices__select__changer',
+                    containerOuter: ['choices', 'choices__select__changer'],
                     containerInner: 'choices__inner',
                     input: 'choices__input',
                     listDropdown: 'choices__list--dropdown',
-                    item: 'choices__item choices__select__changer__item',
+                    item: ['choices__item', 'choices__select__changer__item'],
                     list: 'choices__list',
                     placeholder: 'choices__placeholder',
                 },

@@ -93,8 +93,16 @@ it('prioritizes recently updated generic records before older records', function
 
 it('prioritizes page siblings before same-site and other-site pages', function (): void {
     $pageType = Blueprint::factory()->page()->default()->create();
-    $primarySite = Site::factory()->create(['name' => 'Primary site']);
-    $secondarySite = Site::factory()->create(['name' => 'Secondary site']);
+    $primarySite = Site::factory()->withTranslations(siteDomainData: [
+        'domain' => 'primary-switcher.example.test',
+        'scheme' => 'https',
+        'path' => null,
+    ])->create(['name' => 'Primary site']);
+    $secondarySite = Site::factory()->withTranslations(siteDomainData: [
+        'domain' => 'secondary-switcher.example.test',
+        'scheme' => 'https',
+        'path' => null,
+    ])->create(['name' => 'Secondary site']);
     $parentPage = Page::factory()->site($primarySite)->type($pageType)->create(['name' => 'Section']);
     $currentPage = Page::factory()->site($primarySite)->type($pageType)->parent($parentPage)->create(['name' => 'Current']);
     Page::factory()->site($secondarySite)->type($pageType)->create(['name' => 'Aardvark other site']);

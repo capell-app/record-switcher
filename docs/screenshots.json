@@ -69,6 +69,29 @@
             "notes": "Capture an edit page where the current resource cannot provide switchable records because of permission, tenancy, or unsupported model configuration.",
             "useCase": "An editor lands on a supported admin page without switchable peer records and the heading remains stable without exposing inaccessible records.",
             "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-unavailable-resource.png"
+        },
+        {
+            "id": "record-switcher-admin-sidebar-menu-open",
+            "title": "Record Switcher admin heading suggestions with admin sidebar menu open.",
+            "package": "record-switcher",
+            "surface": "admin",
+            "targetType": "admin-surface",
+            "target": "RecordSwitcherHeadingExtender",
+            "scenario": "admin-index",
+            "url": "/pages/{first-record}/edit",
+            "click": ".filament-record-switcher .choices__inner",
+            "waitFor": ".filament-record-switcher .choices__list--dropdown.is-active .choices__item[data-choice-selectable][data-value*=\"/pages/\"]",
+            "required": false,
+            "notes": "Capture a Capell admin edit page heading with record-switcher page suggestions loaded. Capture this same admin surface with the fully collapsible sidebar opened.",
+            "useCase": "An editor jumps between related editable records without returning to the table view.",
+            "screenshotPath": "packages/record-switcher/docs/screenshots/record-switcher-admin-sidebar-menu-open.png",
+            "darkScreenshotPath": "packages/record-switcher/docs/screenshots/record-switcher-admin-sidebar-menu-open-dark.png",
+            "beforeWait": [
+                {
+                    "type": "click",
+                    "selector": ".fi-topbar-open-collapse-sidebar-btn"
+                }
+            ]
         }
     ]
 }
