@@ -23,6 +23,8 @@ test('record switcher asset is generated from committed package source', functio
         ->and($source)->toBeString()
         ->toContain("import Choices from 'choices.js'")
         ->toContain('this.$wire.on(')
+        ->toContain('this.select.dropdown.element.querySelector(')
+        ->not->toContain('this.select.dropdown.getChild(')
         ->and($distribution)->toBeString()
         ->toStartWith('// Generated from resources/js/record-switcher.js.')
         ->toContain('record-switcher:refresh')

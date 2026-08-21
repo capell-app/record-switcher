@@ -4268,7 +4268,7 @@ function Ei({
     },
     highlightSelectedChoice() {
       if ([null, void 0, ''].includes(this.state)) return
-      let h = this.select.dropdown.getChild(
+      let h = this.select.dropdown.element.querySelector(
         `.choices__item[data-value="${this.state}"]`,
       )
       h &&

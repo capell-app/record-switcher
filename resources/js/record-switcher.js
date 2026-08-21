@@ -209,7 +209,7 @@ export default function selectChangerComponent({
                 return
             }
 
-            const selectedChoice = this.select.dropdown.getChild(
+            const selectedChoice = this.select.dropdown.element.querySelector(
                 `.choices__item[data-value="${this.state}"]`,
             )
 
