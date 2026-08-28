@@ -41,7 +41,6 @@ Screenshot contract: `docs/screenshots.json`.
 - Record Switcher empty search state (admin, supplementary evidence).
 - Record Switcher cross-site page suggestions (admin, supplementary evidence).
 - Record Switcher unavailable resource state (admin, supplementary evidence).
-- Record Switcher admin heading suggestions with admin sidebar menu open (admin, supplementary evidence).
 
 ## Technical Shape
 
