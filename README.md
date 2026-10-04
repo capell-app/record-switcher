@@ -10,8 +10,6 @@ Record Switcher adds a compact selector to supported Filament record headings so
 
 On supported edit pages, admin users can search the current resource and open another permitted record from the heading.
 
-Evidence: [`src/Filament/RecordSwitcherHeadingExtender.php`](src/Filament/RecordSwitcherHeadingExtender.php), [`src/Actions/BuildRecordSwitcherOptionsAction.php`](src/Actions/BuildRecordSwitcherOptionsAction.php), [`tests/Unit/RecordSwitcherOptionsTest.php`](tests/Unit/RecordSwitcherOptionsTest.php), [`docs/overview.admin.md`](docs/overview.admin.md).
-
 Status details:
 
 - Status: Available
@@ -27,8 +25,6 @@ Status details:
 
 **For teams:** Editors can review or update a sequence of records with fewer trips through index pages.
 
-Evidence: [`src/Actions/BuildRecordSwitcherOptionsAction.php`](src/Actions/BuildRecordSwitcherOptionsAction.php), [`src/Filament/RecordSwitcherHeadingExtender.php`](src/Filament/RecordSwitcherHeadingExtender.php), [`tests/Unit/RecordSwitcherOptionsTest.php`](tests/Unit/RecordSwitcherOptionsTest.php), [`docs/overview.admin.md`](docs/overview.admin.md).
-
 ## Screens And Workflow
 
 Screenshot contract: `docs/screenshots.json`.
@@ -40,7 +36,6 @@ Screenshot contract: `docs/screenshots.json`.
 - Record Switcher admin heading suggestions (admin, required evidence).
 - Record Switcher empty search state (admin, supplementary evidence).
 - Record Switcher cross-site page suggestions (admin, supplementary evidence).
-- Record Switcher unavailable resource state (admin, supplementary evidence).
 
 ## Technical Shape
 
@@ -59,6 +54,7 @@ Screenshot contract: `docs/screenshots.json`.
 ### Actions
 
 - `BuildRecordSwitcherOptionsAction`
+- `PrepareRecordSwitcherScreenshotAction`
 
 ### Data objects
 
@@ -109,7 +105,7 @@ This package has no schema impact. It extends Capell through `asset` contributio
 ## Quick Start
 
 1. Install the package: `composer require capell-app/record-switcher`.
-2. Open the package admin surface at `/pages/{first-record}/edit` and confirm Record Switcher is available.
+2. Open the package admin surface at `/admin/pages/{first-record}/edit` and confirm Record Switcher is available.
 
 ## Next Steps
 
@@ -121,6 +117,5 @@ This package has no schema impact. It extends Capell through `asset` contributio
 - [Capell content language plan](../../docs/CONTENT_LANGUAGE_PLAN.md)
 - [Capell documentation design system](../../docs/DESIGN_SYSTEM.md)
 - [Capell and package ERD notes](../../docs/erd/capell-and-package-erds.md)
-- Focused tests: `vendor/bin/pest packages/record-switcher/tests --configuration=phpunit.xml`.
 
 <!-- prettier-ignore-end -->
