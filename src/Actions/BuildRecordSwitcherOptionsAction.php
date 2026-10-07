@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Capell\RecordSwitcher\Actions;
 
+use Capell\Admin\Actions\ScopePageRestoreVisibilityAction;
 use Capell\Admin\Support\SiteScope;
 use Capell\Core\Exceptions\UrlMissingSiteDomainException;
 use Capell\Core\Models\Page;
@@ -54,6 +55,8 @@ final class BuildRecordSwitcherOptionsAction
 
         // Keep policy dependencies even though table-column eager loads are unnecessary.
         if ($query->getModel() instanceof Page) {
+            $query->withoutGlobalScope(ScopePageRestoreVisibilityAction::class)
+                ->whereNull($query->getModel()->getQualifiedDeletedAtColumn());
             $query->withoutEagerLoads()->with($this->pagePolicyRelations());
         }
 

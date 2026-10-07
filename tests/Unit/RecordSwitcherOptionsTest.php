@@ -163,6 +163,21 @@ it('keeps page option rendering inside the manifest admin query budget', functio
         ->and($queryCount)->toBeLessThanOrEqual(RecordSwitcherFixtures::adminQueryBudget());
 });
 
+it('does not offer trashed page destinations', function (): void {
+    $pageType = Blueprint::factory()->page()->default()->create();
+    $site = Site::factory()->withTranslations()->create();
+    $currentPage = Page::factory()->site($site)->type($pageType)->create(['name' => 'Current']);
+    $trashedPage = Page::factory()->site($site)->type($pageType)->create(['name' => 'Archived']);
+    $trashedPage->delete();
+
+    $options = BuildRecordSwitcherOptionsAction::run(
+        resourceClass: PageResource::class,
+        recordKey: (string) $currentPage->getRouteKey(),
+    );
+
+    expect($options)->toBe([]);
+});
+
 it('lets resources opt out of heading replacement', function (): void {
     expect((new RecordSwitcherHeadingExtender)->supports(new RecordSwitcherDisabledEditPage))->toBeFalse();
 });

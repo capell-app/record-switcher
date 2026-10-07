@@ -1,0 +1,82 @@
+{
+    "version": 3,
+    "package": "record-switcher",
+    "scenarios": {
+        "default": {
+            "source": {
+                "ref": "origin/main",
+                "commit": "646068b2d21e233ea517c342d62bc0eca1762192",
+                "providers": {
+                    "Providers/RecordSwitcherServiceProvider.php": "b3545c90bdfe1ac24310e929109e4b920b354c52f64f05ecce4fb64cbf7e6b14"
+                }
+            },
+            "disabledContributions": [],
+            "surfaces": {
+                "routes": [],
+                "livewire": [
+                    "capell-record-switcher=Capell\\RecordSwitcher\\Livewire"
+                ],
+                "filament": [],
+                "listeners": [],
+                "gates": [],
+                "policies": [],
+                "commands": [],
+                "view-namespaces": ["capell-record-switcher"],
+                "config-keys": [],
+                "migrations": []
+            },
+            "uninstalledSurfaces": {
+                "routes": [],
+                "livewire": [
+                    "capell-record-switcher=Capell\\RecordSwitcher\\Livewire"
+                ],
+                "filament": [],
+                "listeners": [],
+                "gates": [],
+                "policies": [],
+                "commands": [],
+                "view-namespaces": ["capell-record-switcher"],
+                "config-keys": [],
+                "migrations": []
+            }
+        },
+        "companions-absent": {
+            "source": {
+                "ref": "origin/main",
+                "commit": "646068b2d21e233ea517c342d62bc0eca1762192",
+                "providers": {
+                    "Providers/RecordSwitcherServiceProvider.php": "b3545c90bdfe1ac24310e929109e4b920b354c52f64f05ecce4fb64cbf7e6b14"
+                }
+            },
+            "disabledContributions": [],
+            "surfaces": {
+                "routes": [],
+                "livewire": [
+                    "capell-record-switcher=Capell\\RecordSwitcher\\Livewire"
+                ],
+                "filament": [],
+                "listeners": [],
+                "gates": [],
+                "policies": [],
+                "commands": [],
+                "view-namespaces": ["capell-record-switcher"],
+                "config-keys": [],
+                "migrations": []
+            },
+            "uninstalledSurfaces": {
+                "routes": [],
+                "livewire": [
+                    "capell-record-switcher=Capell\\RecordSwitcher\\Livewire"
+                ],
+                "filament": [],
+                "listeners": [],
+                "gates": [],
+                "policies": [],
+                "commands": [],
+                "view-namespaces": ["capell-record-switcher"],
+                "config-keys": [],
+                "migrations": []
+            }
+        }
+    }
+}

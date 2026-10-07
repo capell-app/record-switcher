@@ -11,6 +11,7 @@ use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Css;
 use Filament\Support\Facades\FilamentAsset;
 use Livewire\Livewire;
+use Override;
 use Spatie\LaravelPackageTools\Package;
 
 final class RecordSwitcherServiceProvider extends AbstractPackageServiceProvider
@@ -19,6 +20,7 @@ final class RecordSwitcherServiceProvider extends AbstractPackageServiceProvider
 
     public static string $packageName = 'capell-app/record-switcher';
 
+    #[Override]
     public function configurePackage(Package $package): void
     {
         $package
@@ -27,17 +29,20 @@ final class RecordSwitcherServiceProvider extends AbstractPackageServiceProvider
             ->hasTranslations();
     }
 
+    #[Override]
     public function packageBooted(): void
     {
-        if ($this->isPackageInstalled()) {
-            $this->app->tag([RecordSwitcherHeadingExtender::class], EditRecordHeadingExtender::TAG);
-        }
-
         Livewire::addNamespace('capell-record-switcher', classNamespace: 'Capell\\RecordSwitcher\\Livewire');
 
         FilamentAsset::register([
             Css::make('record-switcher', __DIR__ . '/../../resources/css/components/record-switcher.css'),
             AlpineComponent::make('record-switcher', __DIR__ . '/../../resources/dist/record-switcher.js'),
         ], package: self::$name);
+    }
+
+    #[Override]
+    protected function bootInstalledRuntime(): void
+    {
+        $this->app->tag([RecordSwitcherHeadingExtender::class], EditRecordHeadingExtender::TAG);
     }
 }
