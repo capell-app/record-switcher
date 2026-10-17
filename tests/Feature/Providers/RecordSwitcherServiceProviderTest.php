@@ -2,43 +2,22 @@
 
 declare(strict_types=1);
 
-use Capell\Admin\Contracts\Extenders\EditRecordHeadingExtender;
-use Capell\Core\Facades\CapellCore;
-use Capell\RecordSwitcher\Filament\RecordSwitcherHeadingExtender;
-use Capell\RecordSwitcher\Providers\RecordSwitcherServiceProvider;
+use Capell\Admin\Filament\Resources\Pages\Pages\EditPage;
+use Capell\Admin\Support\Schemas\AdminSchemaExtensionPipeline;
+use Capell\Core\Models\Page;
+use Capell\Tests\Support\InstalledRuntimeParity;
+use Capell\Tests\Support\InstalledRuntimeState;
+use Capell\Tests\Support\InstalledRuntimeTestCase;
 
-it('does not tag the heading extender when the package is not installed', function (): void {
-    $tagsProperty = new ReflectionProperty(app(), 'tags');
-    $originalTags = $tagsProperty->getValue(app());
-    throw_unless(is_array($originalTags), RuntimeException::class, 'Expected the application container tags to be an array.');
+it('keeps the default heading when the package is not installed', function (): void {
+    $record = Page::factory()->withTranslations()->create();
 
-    $tags = $originalTags;
-    $tags[EditRecordHeadingExtender::TAG] = array_values(array_filter(
-        (array) ($tags[EditRecordHeadingExtender::TAG] ?? []),
-        static fn (mixed $abstract): bool => $abstract !== RecordSwitcherHeadingExtender::class,
-    ));
+    InstalledRuntimeState::run(static function () use ($record): void {
+        $app = InstalledRuntimeTestCase::boot(InstalledRuntimeParity::manifest('record-switcher'), false);
+        $page = new EditPage;
+        $page->record = $record;
+        $heading = $app->make(AdminSchemaExtensionPipeline::class)->editRecordHeading($page, 'Original page title');
 
-    $tagsProperty->setValue(app(), $tags);
-    CapellCore::forcePackageInstalled(RecordSwitcherServiceProvider::$packageName, false);
-
-    try {
-        $provider = app()->getProvider(RecordSwitcherServiceProvider::class);
-        throw_unless($provider instanceof RecordSwitcherServiceProvider, RuntimeException::class, 'Expected the Record Switcher service provider to be loaded.');
-
-        $provider->packageBooted();
-
-        $hasHeadingExtender = false;
-
-        foreach (app()->tagged(EditRecordHeadingExtender::TAG) as $extender) {
-            if ($extender instanceof RecordSwitcherHeadingExtender) {
-                $hasHeadingExtender = true;
-                break;
-            }
-        }
-
-        expect($hasHeadingExtender)->toBeFalse();
-    } finally {
-        $tagsProperty->setValue(app(), $originalTags);
-        CapellCore::forcePackageInstalled(RecordSwitcherServiceProvider::$packageName);
-    }
+        expect($heading)->toBe('Original page title');
+    });
 });

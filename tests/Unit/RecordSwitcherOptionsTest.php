@@ -7,6 +7,7 @@ use Capell\Core\Models\Blueprint;
 use Capell\Core\Models\Page;
 use Capell\Core\Models\PageUrl;
 use Capell\Core\Models\Site;
+use Capell\Core\Support\Creator\PageCreator;
 use Capell\RecordSwitcher\Actions\BuildRecordSwitcherOptionsAction;
 use Capell\RecordSwitcher\Data\RecordSwitcherOptionData;
 use Capell\RecordSwitcher\Filament\RecordSwitcherHeadingExtender;
@@ -337,4 +338,14 @@ it('finds a Page by its public path without matching its name', function (): voi
     expect($options)->toHaveCount(1)
         ->and($options[0]['label'])->toBe('Contact')
         ->and($options[0]['path'])->toBe('https://switcher.test/help/get-in-touch');
+});
+
+it('includes an explicitly created system page among the site record options', function (): void {
+    $current = Page::factory()->withTranslations()->create(['name' => 'Current']);
+    $systemPage = resolve(PageCreator::class)->createErrorPage($current->site);
+
+    $options = BuildRecordSwitcherOptionsAction::run(PageResource::class, (string) $current->getRouteKey());
+
+    expect($options)->toHaveCount(1)
+        ->and($options[0]['label'])->toBe($systemPage->name);
 });

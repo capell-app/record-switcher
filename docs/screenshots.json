@@ -14,14 +14,33 @@
             "targetType": "admin-surface",
             "target": "RecordSwitcherHeadingExtender",
             "scenario": "admin-index",
-            "url": "/pages/{first-record}/edit",
+            "url": "/screenshot-fixtures/record-switcher/pages",
             "click": ".filament-record-switcher .choices__inner",
-            "waitFor": ".filament-record-switcher .choices__list--dropdown.is-active .choices__item[data-choice-selectable][data-value*=\"/pages/\"]",
+            "waitFor": ".filament-record-switcher .choices__list--dropdown:has-text(\"Related\"):has-text(\"Publishing guide\")",
             "required": true,
             "notes": "Capture a real seeded Capell admin edit page with record-switcher page suggestions loaded. Require actual populated options before saving the image.",
             "useCase": "An editor jumps between related editable records without returning to the table view.",
             "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher.png",
-            "darkScreenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-dark.png"
+            "darkScreenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-dark.png",
+            "beforeWait": [
+                {
+                    "type": "waitForTimeout",
+                    "timeout": 3000
+                },
+                {
+                    "type": "click",
+                    "selector": ".filament-record-switcher .choices__inner"
+                },
+                {
+                    "type": "fill",
+                    "selector": ".filament-record-switcher input.choices__input",
+                    "value": "Publishing guide"
+                },
+                {
+                    "type": "waitForTimeout",
+                    "timeout": 2500
+                }
+            ]
         },
         {
             "id": "admin-heading-switcher-empty-search",
@@ -39,15 +58,20 @@
             "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-empty-search.png",
             "beforeWait": [
                 {
+                    "type": "waitForTimeout",
+                    "timeout": 3000
+                },
+                {
                     "type": "click",
                     "selector": ".filament-record-switcher .choices__inner"
                 },
                 {
                     "type": "fill",
-                    "selector": ".filament-record-switcher .choices__input",
+                    "selector": ".filament-record-switcher input.choices__input",
                     "value": "zz-screenshot-no-matching-record"
                 }
-            ]
+            ],
+            "expectedState": "empty"
         },
         {
             "id": "admin-heading-switcher-cross-site-pages",
@@ -65,12 +89,16 @@
             "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-cross-site-pages.png",
             "beforeWait": [
                 {
+                    "type": "waitForTimeout",
+                    "timeout": 3000
+                },
+                {
                     "type": "click",
                     "selector": ".filament-record-switcher .choices__inner"
                 },
                 {
                     "type": "fill",
-                    "selector": ".filament-record-switcher .choices__input",
+                    "selector": ".filament-record-switcher input.choices__input",
                     "value": "Partner guide"
                 }
             ]

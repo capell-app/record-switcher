@@ -89,8 +89,12 @@ function harness(
     component.$el = Object.assign(new EventTarget(), {
         querySelector: () => ({ textContent: '' }),
     })
-    component.$wire = { on() {}, off() {} }
-    return { component, timers, navigation, focused: () => focused }
+    const wire = new EventTarget()
+    component.$wire = {
+        on: (event, listener) => wire.addEventListener(event, listener),
+        off: (event, listener) => wire.removeEventListener(event, listener),
+    }
+    return { component, timers, navigation, wire, focused: () => focused }
 }
 
 const option = (label, group) => ({
@@ -239,4 +243,20 @@ test('selection revalidates the record and rejects missing, foreign and unsafe U
         if (!navigation.length)
             assert.equal(component.select.rows[0].label, 'Unavailable')
     }
+})
+
+test('refresh events reset visible choices and are detached during teardown', async () => {
+    const { component, wire } = harness(async () => [
+        option('Customer page', 'Related'),
+    ])
+    await component.init()
+    await component.refreshChoices()
+    assert.equal(component.select.rows[0].label, 'Related')
+    wire.dispatchEvent(new Event('record-switcher:refresh'))
+    assert.equal(component.select.rows.length, 1)
+    assert.equal(component.select.rows[0].label, 'Switch record')
+    assert.equal(component.select.rows[0].value, '')
+    assert.equal(component.select.rows[0].selected, true)
+    component.destroy()
+    wire.dispatchEvent(new Event('record-switcher:refresh'))
 })
