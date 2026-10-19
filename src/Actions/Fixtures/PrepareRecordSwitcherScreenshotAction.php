@@ -8,6 +8,7 @@ use Capell\Admin\Support\SiteScope;
 use Capell\Core\Models\Blueprint;
 use Capell\Core\Models\Page;
 use Capell\Core\Models\Site;
+use Capell\ScreenshotFixtures\FixtureState;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -25,12 +26,18 @@ final class PrepareRecordSwitcherScreenshotAction
         abort_unless($actor !== null && SiteScope::isGlobalActor($actor), 403);
         $this->assertDisposableScreenshotEnvironment();
 
+        require_once dirname(__DIR__, 5) . '/scripts/screenshots/FixtureState.php';
+        FixtureState::boot();
+
         return $this->seedForCapture();
     }
 
     public function seedForCapture(): Page
     {
         $this->assertDisposableScreenshotEnvironment();
+
+        require_once dirname(__DIR__, 5) . '/scripts/screenshots/FixtureState.php';
+        FixtureState::boot();
         $actor = auth()->user();
         if ($actor === null) {
             $model = config('auth.providers.users.model');
@@ -65,7 +72,9 @@ final class PrepareRecordSwitcherScreenshotAction
             && getenv('CAPELL_SCREENSHOT_FIXTURE') === 'record-state'
             && is_string($appPath)
             && is_string($basePath)
-            && $appPath === $basePath, 403);
+            && $appPath === $basePath
+                && (realpath(base_path()) === realpath(dirname(__DIR__, 5) . '/vendor/orchestra/testbench-core/laravel')
+                    || str_starts_with((string) realpath(base_path()), dirname(__DIR__, 5) . '/tmp/testbench-skeletons/')), 403);
 
         $captureEmail = getenv('CAPELL_SCREENSHOT_ADMIN_EMAIL') ?: (getenv('CAPELL_ADMIN_EMAIL') ?: 'admin@example.com');
         $authenticated = auth()->user();

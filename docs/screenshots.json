@@ -11,21 +11,24 @@
             "title": "Record Switcher admin heading suggestions.",
             "package": "record-switcher",
             "surface": "admin",
-            "targetType": "admin-surface",
-            "target": "RecordSwitcherHeadingExtender",
+            "targetType": "admin-resource",
+            "target": "PageResource.edit",
             "scenario": "admin-index",
-            "url": "/screenshot-fixtures/record-switcher/pages",
-            "click": ".filament-record-switcher .choices__inner",
+            "url": "/pages",
             "waitFor": ".filament-record-switcher .choices__list--dropdown:has-text(\"Related\"):has-text(\"Publishing guide\")",
             "required": true,
-            "notes": "Capture a real seeded Capell admin edit page with record-switcher page suggestions loaded. Require actual populated options before saving the image.",
+            "notes": "Capture the real prepared Editorial guide page in the native editor. Select Editorial studio in the native Pages table, open Editorial guide, open the heading switcher, search Publishing guide and require the populated Related options; no record switch or save is performed.",
             "useCase": "An editor jumps between related editable records without returning to the table view.",
             "screenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher.png",
             "darkScreenshotPath": "packages/record-switcher/docs/screenshots/admin-heading-switcher-dark.png",
             "beforeWait": [
                 {
-                    "type": "waitForTimeout",
-                    "timeout": 3000
+                    "type": "click",
+                    "selector": ".fi-tabs-item:has-text(\"Editorial studio\")"
+                },
+                {
+                    "type": "click",
+                    "selector": "a[href$=\"/900001/edit\"]:has-text(\"Editorial guide\")"
                 },
                 {
                     "type": "click",
@@ -35,12 +38,11 @@
                     "type": "fill",
                     "selector": ".filament-record-switcher input.choices__input",
                     "value": "Publishing guide"
-                },
-                {
-                    "type": "waitForTimeout",
-                    "timeout": 2500
                 }
-            ]
+            ],
+            "user": "admin",
+            "evidenceKind": "installed-app-filament-capture",
+            "colorSchemes": ["light", "dark"]
         },
         {
             "id": "admin-heading-switcher-empty-search",
@@ -115,5 +117,8 @@
             "surface": "admin",
             "reason": "An unavailable resource deliberately hides the switcher. Waiting for .filament-record-switcher could only capture an available control, so this image cannot prove the former claim. Absence and inaccessible endpoints remain covered by the Livewire tests."
         }
+    ],
+    "fixtureCommands": [
+        "capell:screenshot-admin-fixture --package=record-switcher"
     ]
 }

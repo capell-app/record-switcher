@@ -33,7 +33,7 @@ Screenshot contract: `docs/screenshots.json`.
 
 ![Record Switcher empty search state](docs/screenshots/admin-heading-switcher-empty-search.png)
 
-- Record Switcher admin heading suggestions (admin, required evidence).
+- Record Switcher admin heading suggestions (admin, required authentic evidence).
 - Record Switcher empty search state (admin, supplementary evidence).
 - Record Switcher cross-site page suggestions (admin, supplementary evidence).
 
@@ -105,7 +105,7 @@ This package has no schema impact. It extends Capell through `asset` contributio
 ## Quick Start
 
 1. Install the package: `composer require capell-app/record-switcher`.
-2. Verify the package provider and manifest contributions are registered in the host app.
+2. Open the package admin surface at `/admin/pages` and confirm Record Switcher is available.
 
 ## Next Steps
 
