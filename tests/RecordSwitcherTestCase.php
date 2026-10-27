@@ -7,8 +7,11 @@ namespace Capell\RecordSwitcher\Tests;
 use Capell\Core\Facades\CapellCore;
 use Capell\Frontend\Actions\RegenerateSiteErrorPagesAction;
 use Capell\RecordSwitcher\Providers\RecordSwitcherServiceProvider;
+use Capell\RecordSwitcher\Tests\Fixtures\RecordSwitcherTestRecord;
+use Capell\RecordSwitcher\Tests\Fixtures\RecordSwitcherTestRecordPolicy;
 use Capell\Tests\Packages\PackagesTestCase;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Gate;
 use Override;
 
 abstract class RecordSwitcherTestCase extends PackagesTestCase
@@ -21,6 +24,8 @@ abstract class RecordSwitcherTestCase extends PackagesTestCase
         // Cache regeneration creates system pages on each site save. These
         // navigation fixtures own their page set, not the derived cache job.
         RegenerateSiteErrorPagesAction::mock()->shouldReceive('handle')->andReturnNull();
+
+        Gate::policy(RecordSwitcherTestRecord::class, RecordSwitcherTestRecordPolicy::class);
     }
 
     /**

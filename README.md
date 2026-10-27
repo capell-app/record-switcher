@@ -107,6 +107,10 @@ This package has no schema impact. It extends Capell through `asset` contributio
 1. Install the package: `composer require capell-app/record-switcher`.
 2. Open the package admin surface at `/admin/pages` and confirm Record Switcher is available.
 
+## Upgrading
+
+No manual steps between minor versions.
+
 ## Next Steps
 
 - [Package docs](docs/README.md)

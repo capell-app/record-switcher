@@ -55,7 +55,7 @@ final class RecordSwitcherHealthCheck implements ChecksExtensionHealth
         $available = class_exists(RecordSwitcherHeadingExtender::class);
 
         return new DoctorCheckResultData(
-            label: 'Record Switcher heading extender',
+            label: 'Record Switcher: record switcher available',
             passed: $available,
             message: $available
                 ? 'The Record Switcher heading extender is available.'
@@ -63,6 +63,7 @@ final class RecordSwitcherHealthCheck implements ChecksExtensionHealth
             remediation: $available
                 ? null
                 : 'Ensure the record-switcher package autoloader and service provider are registered.',
+            id: 'legacy.record.switcher.heading.extender',
         );
     }
 
@@ -71,7 +72,7 @@ final class RecordSwitcherHealthCheck implements ChecksExtensionHealth
         $registered = $this->headingExtenderIsTagged();
 
         return new DoctorCheckResultData(
-            label: 'Record Switcher heading extender registration',
+            label: 'Record Switcher: record switcher registered',
             passed: $registered,
             message: $registered
                 ? 'The Record Switcher heading extender is tagged into Capell Admin edit pages.'
@@ -79,6 +80,7 @@ final class RecordSwitcherHealthCheck implements ChecksExtensionHealth
             remediation: $registered
                 ? null
                 : 'Ensure the Record Switcher service provider boots and tags RecordSwitcherHeadingExtender with EditRecordHeadingExtender::TAG.',
+            id: 'legacy.record.switcher.heading.extender.registration',
         );
     }
 
@@ -87,7 +89,7 @@ final class RecordSwitcherHealthCheck implements ChecksExtensionHealth
         $registered = $this->livewireNamespaceIsRegistered();
 
         return new DoctorCheckResultData(
-            label: 'Record Switcher Livewire namespace',
+            label: 'Record Switcher: record switcher component registered',
             passed: $registered,
             message: $registered
                 ? 'The Record Switcher Livewire namespace resolves the heading switcher component.'
@@ -95,6 +97,7 @@ final class RecordSwitcherHealthCheck implements ChecksExtensionHealth
             remediation: $registered
                 ? null
                 : 'Ensure the Record Switcher service provider calls Livewire::addNamespace() for capell-record-switcher.',
+            id: 'legacy.record.switcher.livewire.namespace',
         );
     }
 
@@ -115,7 +118,7 @@ final class RecordSwitcherHealthCheck implements ChecksExtensionHealth
         ];
 
         return new DoctorCheckResultData(
-            label: 'Record Switcher admin assets',
+            label: 'Record Switcher: admin files present',
             passed: $problems === [],
             message: $problems === []
                 ? 'The Record Switcher admin CSS and Alpine assets are present and registered.'
@@ -123,6 +126,7 @@ final class RecordSwitcherHealthCheck implements ChecksExtensionHealth
             remediation: $problems === []
                 ? null
                 : 'Rebuild the record-switcher package assets and ensure the service provider registers Filament asset handles.',
+            id: 'legacy.record.switcher.admin.assets',
         );
     }
 
