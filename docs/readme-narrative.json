@@ -17,7 +17,7 @@
     },
     "whyItMatters": {
         "developers": {
-            "text": "A focused query Action builds authorized labels and URLs, keeping resource discovery and option construction outside the heading extension.",
+            "text": "A focused query Action builds authorised labels and URLs, keeping resource discovery and option construction outside the heading extension.",
             "evidence": [
                 "src/Actions/BuildRecordSwitcherOptionsAction.php",
                 "src/Filament/RecordSwitcherHeadingExtender.php",

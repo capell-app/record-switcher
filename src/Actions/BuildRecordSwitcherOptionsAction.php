@@ -6,9 +6,11 @@ namespace Capell\RecordSwitcher\Actions;
 
 use Capell\Admin\Actions\ScopePageRestoreVisibilityAction;
 use Capell\Admin\Support\SiteScope;
+use Capell\Core\Data\Database\SqlFragment;
 use Capell\Core\Exceptions\UrlMissingSiteDomainException;
 use Capell\Core\Models\Page;
 use Capell\Core\Models\PageUrl;
+use Capell\Core\Support\TableName;
 use Capell\RecordSwitcher\Data\RecordSwitcherOptionData;
 use Filament\Resources\Resource;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -129,14 +131,14 @@ final class BuildRecordSwitcherOptionsAction
 
         $hasPageHierarchy = method_exists($resourceClass, 'hasPageHierarchy')
             && (bool) $resourceClass::hasPageHierarchy();
-        $ancestorScope = (clone $query)->select('pages.id');
+        $ancestorScope = (clone $query)->select(TableName::resolve('pages') . '.id');
 
         $query->with([
             'site:id,name,default',
             'pageUrl:id,pageable_type,pageable_id,site_id,language_id,url',
             'pageUrl.siteDomain:id,site_id,language_id,domain,path,scheme,port',
             ...($hasPageHierarchy ? ['ancestors' => fn (BuilderContract $ancestors): BuilderContract => $ancestors
-                ->whereIn('pages.id', $ancestorScope)->with($this->pagePolicyRelations())] : []),
+                ->whereIn(TableName::resolve('pages') . '.id', $ancestorScope)->with($this->pagePolicyRelations())] : []),
         ])
             ->whereHas(
                 'type',
@@ -146,7 +148,7 @@ final class BuildRecordSwitcherOptionsAction
 
         $this->applyPagePriorityOrdering($query->reorder(), $current instanceof Page ? $current : null);
 
-        return $query->orderBy('pages.name')->orderBy('pages.id');
+        return $query->orderBy(TableName::resolve('pages') . '.name')->orderBy(TableName::resolve('pages') . '.id');
     }
 
     /**
@@ -160,16 +162,12 @@ final class BuildRecordSwitcherOptionsAction
         }
 
         if ($currentPage->parent_id === null) {
-            return $query->orderByRaw(
-                'case when pages.parent_id is null and pages.site_id = ? then 0 when pages.site_id = ? then 1 else 2 end',
-                [$currentPage->site_id, $currentPage->site_id],
-            );
+            return $query->orderBy(SqlFragment::raw('case when ' . TableName::resolve('pages') . '.parent_id is null and ' . TableName::resolve('pages') . '.site_id = ? then 0 when ' . TableName::resolve('pages') . '.site_id = ? then 1 else 2 end')->expression())
+                ->addBinding([$currentPage->site_id, $currentPage->site_id], 'order');
         }
 
-        return $query->orderByRaw(
-            'case when pages.parent_id = ? and pages.site_id = ? then 0 when pages.site_id = ? then 1 else 2 end',
-            [$currentPage->parent_id, $currentPage->site_id, $currentPage->site_id],
-        );
+        return $query->orderBy(SqlFragment::raw('case when ' . TableName::resolve('pages') . '.parent_id = ? and ' . TableName::resolve('pages') . '.site_id = ? then 0 when ' . TableName::resolve('pages') . '.site_id = ? then 1 else 2 end')->expression())
+            ->addBinding([$currentPage->parent_id, $currentPage->site_id, $currentPage->site_id], 'order');
     }
 
     /** @param class-string<resource> $resourceClass */

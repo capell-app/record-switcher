@@ -8,7 +8,7 @@
     "version": "1.0.0",
     "description": "Fast Filament edit-page record switching for Capell admins, with searchable suggestions, sibling and same-site prioritization, recent-record ordering, and keyboard selection.",
     "product": {
-        "group": "Capell Foundation",
+        "group": "Capell Essentials",
         "tier": "free",
         "bundle": "foundation"
     },
@@ -119,6 +119,22 @@
     "marketplace": {
         "summary": "Jump between editable Capell records directly from the page heading with fast suggestions and Tab-to-accept keyboard flow.",
         "description": "Record Switcher keeps editors moving across pages, layouts, widgets, sections, and navigation records without returning to table views. It prioritizes nearby page siblings, same-site pages, and recently updated records so the next useful edit target appears first. It ships first-party admin assets, a Livewire heading component, and Capell-owned styling that matches the admin surface.",
+        "problem": "Admin users editing several records must return to the list between each one.",
+        "outcome": "Supported edit pages have a selector for moving to another permitted record.",
+        "faq": [
+            {
+                "question": "Where does the selector appear?",
+                "answer": "It appears in supported Filament record headings on edit pages."
+            },
+            {
+                "question": "Can users search for another record?",
+                "answer": "Yes. Users can search the current resource from the heading."
+            },
+            {
+                "question": "Which records can users open?",
+                "answer": "Users can open another permitted record from the selector."
+            }
+        ],
         "screenshots": [
             {
                 "path": "docs/screenshots/admin-heading-switcher.png",

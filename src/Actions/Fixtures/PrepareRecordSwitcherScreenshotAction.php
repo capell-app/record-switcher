@@ -26,7 +26,7 @@ final class PrepareRecordSwitcherScreenshotAction
         abort_unless($actor !== null && SiteScope::isGlobalActor($actor), 403);
         $this->assertDisposableScreenshotEnvironment();
 
-        require_once dirname(__DIR__, 5) . '/scripts/screenshots/FixtureState.php';
+        require_once (str_contains(__DIR__, '/vendor/capell-app/') ? dirname(__DIR__, 6) : dirname(__DIR__, 5)) . '/scripts/screenshots/FixtureState.php';
         FixtureState::boot();
 
         return $this->seedForCapture();
@@ -36,7 +36,7 @@ final class PrepareRecordSwitcherScreenshotAction
     {
         $this->assertDisposableScreenshotEnvironment();
 
-        require_once dirname(__DIR__, 5) . '/scripts/screenshots/FixtureState.php';
+        require_once (str_contains(__DIR__, '/vendor/capell-app/') ? dirname(__DIR__, 6) : dirname(__DIR__, 5)) . '/scripts/screenshots/FixtureState.php';
         FixtureState::boot();
         $actor = auth()->user();
         if ($actor === null) {
@@ -73,8 +73,8 @@ final class PrepareRecordSwitcherScreenshotAction
             && is_string($appPath)
             && is_string($basePath)
             && $appPath === $basePath
-                && (realpath(base_path()) === realpath(dirname(__DIR__, 5) . '/vendor/orchestra/testbench-core/laravel')
-                    || str_starts_with((string) realpath(base_path()), dirname(__DIR__, 5) . '/tmp/testbench-skeletons/')), 403);
+                && (realpath(base_path()) === realpath((str_contains(__DIR__, '/vendor/capell-app/') ? dirname(__DIR__, 6) : dirname(__DIR__, 5)) . '/vendor/orchestra/testbench-core/laravel')
+                    || str_starts_with((string) realpath(base_path()), (str_contains(__DIR__, '/vendor/capell-app/') ? dirname(__DIR__, 6) : dirname(__DIR__, 5)) . '/tmp/testbench-skeletons/')), 403);
 
         $captureEmail = getenv('CAPELL_SCREENSHOT_ADMIN_EMAIL') ?: (getenv('CAPELL_ADMIN_EMAIL') ?: 'admin@example.com');
         $authenticated = auth()->user();
