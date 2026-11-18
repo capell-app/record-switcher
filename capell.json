@@ -6,7 +6,7 @@
     "kind": "package",
     "capellApiVersion": "^1.0",
     "version": "1.0.0",
-    "description": "Fast Filament edit-page record switching for Capell admins, with searchable suggestions, sibling and same-site prioritization, recent-record ordering, and keyboard selection.",
+    "description": "A Switch record menu under the title of Capell admin edit screens for pages, layouts, sites, sections, widgets and menus.",
     "product": {
         "group": "Capell Essentials",
         "tier": "free",
@@ -117,34 +117,38 @@
         "privateDocsRequested": false
     },
     "marketplace": {
-        "summary": "Jump between editable Capell records directly from the page heading with fast suggestions and Tab-to-accept keyboard flow.",
-        "description": "Record Switcher keeps editors moving across pages, layouts, widgets, sections, and navigation records without returning to table views. It prioritizes nearby page siblings, same-site pages, and recently updated records so the next useful edit target appears first. It ships first-party admin assets, a Livewire heading component, and Capell-owned styling that matches the admin surface.",
-        "problem": "Admin users editing several records must return to the list between each one.",
-        "outcome": "Supported edit pages have a selector for moving to another permitted record.",
+        "summary": "Search for another page, layout, site or menu from the edit screen you are on and jump straight to it, without going back to the list.",
+        "description": "Add a searchable Switch record menu to Capell admin edit screens for pages, layouts, sites, sections, widgets and menus. Page results are grouped by related pages, this site and other sites, and show each page's site and address. Only records the person can edit appear.",
+        "problem": "I have to go back to the page tree between each page I edit.",
+        "outcome": "Editors jump to the next page from the edit screen with a search.",
         "faq": [
             {
-                "question": "Where does the selector appear?",
-                "answer": "It appears in supported Filament record headings on edit pages."
+                "question": "Do I need to set anything up?",
+                "answer": "No. It works with Capell Admin and has nothing to set up or switch on."
             },
             {
-                "question": "Can users search for another record?",
-                "answer": "Yes. Users can search the current resource from the heading."
+                "question": "Does switching save the page I'm leaving?",
+                "answer": "No. The menu doesn't save the item you're leaving, so save before you switch."
             },
             {
-                "question": "Which records can users open?",
-                "answer": "Users can open another permitted record from the selector."
+                "question": "Which things can I switch between?",
+                "answer": "Pages, layouts, sites, sections, widgets and menus, each listing others of its own kind. You only see items you're allowed to edit, and the menu stays hidden when there's nothing else to switch to."
+            },
+            {
+                "question": "In what order are other pages suggested?",
+                "answer": "Related pages that share a site and a parent come first, then other pages on this site, then pages on other sites. Typing narrows the list by page name, parent names or public address, and ten results show at a time."
             }
         ],
         "screenshots": [
             {
                 "path": "docs/screenshots/admin-heading-switcher.png",
-                "alt": "Capell admin edit page with Record Switcher suggestions open",
-                "caption": "Searchable heading switcher for moving between editable records in the Capell admin."
+                "alt": "Edit screen for Editorial guide with the switch menu open, showing a search box and one related result with its address.",
+                "caption": "Type in the menu under the page title to jump to another page without going back to the page tree."
             },
             {
                 "path": "docs/screenshots/admin-heading-switcher-dark.png",
-                "alt": "Dark mode Capell admin edit page with Record Switcher suggestions open",
-                "caption": "Dark mode capture of the same Record Switcher heading workflow."
+                "alt": "The same page edit screen in the dark theme with the switch menu open and one related result listed.",
+                "caption": "The same menu for admins who use the dark theme."
             }
         ],
         "categories": ["admin", "foundation", "editor-productivity"]

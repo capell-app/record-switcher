@@ -1,0 +1,5 @@
+Type a few letters in the Switch record menu under the title of a page edit screen to jump to another page. You don't need to go back to the page tree. The same menu appears when you edit a layout, a site, a section, a widget or a menu, and lists others of that kind. It works with Capell Admin and has nothing to set up or switch on.
+
+For pages, suggestions come in three groups. Related pages that share a site and a parent come first, then other pages on this site, then pages on other sites. Typing narrows the list by page name, parent names or public address. Every result shows its site and address, so two pages with the same name are easy to tell apart. For the other kinds, the most recently updated come first. Either way, ten results show at a time, and arrow keys and Enter choose one.
+
+Save before you switch, because the menu doesn't save the item you're leaving. Once you save, the title above the menu updates to the new name. You only see items you're allowed to edit, and the menu stays hidden when there's nothing else to switch to. Pick a result and its edit screen opens, ready for your next change.

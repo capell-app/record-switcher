@@ -4,10 +4,10 @@ Start at the [package README](../README.md) when deciding whether to install thi
 
 ## Documents
 
-| Document                                | Use                                                          |
-| --------------------------------------- | ------------------------------------------------------------ |
-| [Overview](overview.md)                 | Heading switcher workflow, setup notes, and health checks.   |
-| [Screenshot contract](screenshots.json) | Marketplace/admin captures required for package publication. |
+| Document                        | Use                                                          |
+| ------------------------------- | ------------------------------------------------------------ |
+| [Overview](overview.md)         | Heading switcher workflow, setup notes, and health checks.   |
+| [Screenshots](screenshots.json) | Marketplace/admin captures required for package publication. |
 
 ## Related Packages
 

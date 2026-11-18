@@ -6,7 +6,7 @@ Developer reference for `capell-app/record-switcher`. Start with the [README](..
 
 ## Package Details
 
-Record Switcher is an **Available**, **No schema impact** Capell package in the **Capell Essentials** product group. It ships as `capell-app/record-switcher` and extends these surfaces: admin.
+Record Switcher is an **Available** Capell package in the **Capell Essentials** product group. It ships as `capell-app/record-switcher` and extends these surfaces: admin.
 
 - Status: Available
 - Tier: free

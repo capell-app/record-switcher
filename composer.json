@@ -1,6 +1,6 @@
 {
     "name": "capell-app/record-switcher",
-    "description": "Admin record switcher for Capell edit pages, with fast search and keyboard selection.",
+    "description": "Searchable Switch record menu on Capell admin edit screens for pages, layouts, sites, sections, widgets and menus.",
     "type": "library",
     "license": "proprietary",
     "autoload": {

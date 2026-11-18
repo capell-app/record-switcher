@@ -1,0 +1,94 @@
+[
+    {
+        "claim": "Type a few letters in the Switch record menu under the title of a page edit screen to jump to another page.",
+        "evidence": [
+            "src/Filament/RecordSwitcherHeadingExtender.php",
+            "resources/views/components/record-switcher.blade.php",
+            "resources/css/components/record-switcher.css",
+            "resources/lang/en/switcher.php"
+        ]
+    },
+    {
+        "claim": "You don't need to go back to the page tree.",
+        "evidence": [
+            "resources/js/record-switcher.js",
+            "src/Livewire/RecordSwitcher.php"
+        ]
+    },
+    {
+        "claim": "The same menu appears when you edit a layout, a site, a section, a widget or a menu, and lists others of that kind.",
+        "evidence": [
+            "src/Filament/RecordSwitcherHeadingExtender.php",
+            "src/Actions/BuildRecordSwitcherOptionsAction.php"
+        ]
+    },
+    {
+        "claim": "It works with Capell Admin and has nothing to set up or switch on.",
+        "evidence": [
+            "composer.json",
+            "capell.json",
+            "src/Providers/RecordSwitcherServiceProvider.php"
+        ]
+    },
+    {
+        "claim": "For pages, suggestions come in three groups: related pages that share a site and a parent first, then other pages on this site, then pages on other sites.",
+        "evidence": [
+            "src/Actions/BuildRecordSwitcherOptionsAction.php",
+            "resources/lang/en/switcher.php"
+        ]
+    },
+    {
+        "claim": "Typing narrows the list by page name, parent names or public address.",
+        "evidence": [
+            "src/Data/RecordSwitcherOptionData.php",
+            "src/Actions/BuildRecordSwitcherOptionsAction.php"
+        ]
+    },
+    {
+        "claim": "Every result shows its site and address, so two pages with the same name are easy to tell apart.",
+        "evidence": [
+            "src/Actions/BuildRecordSwitcherOptionsAction.php",
+            "resources/js/record-switcher.js"
+        ]
+    },
+    {
+        "claim": "For the other kinds, the most recently updated come first.",
+        "evidence": ["src/Actions/BuildRecordSwitcherOptionsAction.php"]
+    },
+    {
+        "claim": "Save before you switch, because the menu doesn't save the item you're leaving.",
+        "evidence": ["resources/js/record-switcher.js"]
+    },
+    {
+        "claim": "Once you save, the title above the menu updates to the new name.",
+        "evidence": [
+            "src/Filament/RecordSwitcherHeadingExtender.php",
+            "src/Livewire/RecordSwitcher.php",
+            "resources/views/components/record-switcher.blade.php"
+        ]
+    },
+    {
+        "claim": "You only see items you're allowed to edit, and the menu stays hidden when there's nothing else to switch to.",
+        "evidence": [
+            "src/Actions/BuildRecordSwitcherOptionsAction.php",
+            "src/Livewire/RecordSwitcher.php",
+            "resources/views/components/record-switcher.blade.php"
+        ]
+    },
+    {
+        "claim": "Either way, ten results show at a time, and arrow keys and Enter choose one.",
+        "evidence": [
+            "src/Livewire/RecordSwitcher.php",
+            "resources/views/components/record-switcher.blade.php",
+            "resources/js/record-switcher.js"
+        ]
+    },
+    {
+        "claim": "Pick a result and its edit screen opens, ready for your next change.",
+        "evidence": [
+            "resources/js/record-switcher.js",
+            "src/Livewire/RecordSwitcher.php",
+            "src/Actions/BuildRecordSwitcherOptionsAction.php"
+        ]
+    }
+]
