@@ -15,7 +15,7 @@ Record Switcher lets you open another record of the same type without returning 
 ## Switch records
 
 1. While editing a record, select **Switch record** below its title.
-2. Choose one of the suggested records or type a Page name, ancestor name or public path. Other resources use their declared searchable attributes.
+2. Choose one of the suggested records or type a Page name, ancestor name or public path. Other resources use their declared searchable attributes. With the search box empty, records you pinned appear first under Pinned, then the last ten you opened under Recent; they are checked against your edit permission each time, so a record you can no longer edit never appears. Pinning is stored per user. Each suggestion has a pin button that pins or unpins it without opening it, and Alt+P does the same for the highlighted suggestion from the keyboard; a record you cannot edit cannot be pinned.
 3. Select a result to open its edit page. With the keyboard, use the arrow keys and **Enter** to choose a result. **Escape** returns focus to the switch control; **Tab** moves on without selecting.
 
 The switcher returns up to ten results at a time. Page suggestions are grouped as Related, This site and Other sites, in that order. Each result retains its site, accessible ancestors and public URL. Other record types prefer recently updated records unless their resource defines different ordering.

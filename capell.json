@@ -20,7 +20,9 @@
         "conflicts": ["howdu/filament-record-switcher"]
     },
     "providers": {
-        "metadata": [],
+        "metadata": [
+            "Capell\\RecordSwitcher\\Providers\\MigrationMetadataServiceProvider"
+        ],
         "install": [],
         "runtime": [],
         "admin": [
@@ -42,9 +44,9 @@
         }
     ],
     "database": {
-        "migrations": false,
+        "migrations": true,
         "settings": false,
-        "requiredTables": []
+        "requiredTables": ["record_switcher_entries"]
     },
     "commands": {
         "install": null,
@@ -57,7 +59,7 @@
     "permissions": [],
     "capabilities": ["record-switcher"],
     "security": {
-        "riskTier": "low",
+        "riskTier": "standard",
         "publicSurface": {
             "routeNames": [],
             "auth": "none",

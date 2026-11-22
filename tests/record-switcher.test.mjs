@@ -10,9 +10,51 @@ const source = readFileSync(
     .replace("import Choices from 'choices.js'", '')
     .replace('export default function', 'function')
 
+class FakeElement extends EventTarget {
+    constructor(doc, tag = 'div') {
+        super()
+        this.ownerDocument = doc
+        this.tag = tag
+        this.children = []
+        this.dataset = {}
+        this.attributes = {}
+        this.classes = new Set()
+        this.classList = {
+            add: (name) => this.classes.add(name),
+            toggle: (name, on) =>
+                on ? this.classes.add(name) : this.classes.delete(name),
+        }
+    }
+    append(child) {
+        this.children.push(child)
+    }
+    remove() {
+        this.removed = true
+    }
+    setAttribute(name, value) {
+        this.attributes[name] = value
+        if (name.startsWith('data-')) this.dataset[name.slice(5)] = value
+    }
+    querySelector(selector) {
+        return this.children.find((child) => child.matches(selector)) ?? null
+    }
+    matches(selector) {
+        return selector === '[data-pin-toggle]' && 'pin-toggle' in this.dataset
+    }
+    closest(selector) {
+        return this.matches(selector) ? this : null
+    }
+}
+
+const fakeDocument = {
+    createElement: (tag) => new FakeElement(fakeDocument, tag),
+    createElementNS: (ns, tag) => new FakeElement(fakeDocument, tag),
+}
+
 function harness(
     getResultsUsing = async () => [],
     updateSelected = async () => null,
+    togglePin = undefined,
 ) {
     const timers = new Map()
     const navigation = []
@@ -21,10 +63,14 @@ function harness(
     class Choices {
         constructor(input, config) {
             this.config = config
-            this.dropdown = {
-                isActive: true,
-                element: { querySelector: () => null },
-            }
+            this.items = []
+            const element = new FakeElement(fakeDocument)
+            element.querySelector = (selector) =>
+                selector === '.choices__item.is-highlighted'
+                    ? (this.items[0] ?? null)
+                    : null
+            element.querySelectorAll = () => this.items
+            this.dropdown = { isActive: true, element }
             this.containerOuter = {
                 element: {
                     focus: () => {
@@ -36,6 +82,14 @@ function harness(
         }
         setChoices(rows) {
             this.rows = rows
+            this.items = rows
+                .flatMap((row) => row.choices ?? [row])
+                .filter((row) => row.value && !row.disabled)
+                .map((row) => {
+                    const item = new FakeElement(fakeDocument)
+                    item.dataset.value = row.value
+                    return item
+                })
         }
         clearChoices() {
             this.rows = []
@@ -75,6 +129,11 @@ function harness(
     const component = factory({
         getResultsUsing,
         updateSelected,
+        togglePin,
+        pinLabel: 'Pin :record',
+        unpinLabel: 'Unpin :record',
+        pinnedMessage: ':record pinned.',
+        unpinnedMessage: ':record unpinned.',
         label: 'Switch record',
         state: '',
         optionsLimit: 10,
@@ -84,9 +143,10 @@ function harness(
         errorMessage: 'Error',
         unavailableMessage: 'Unavailable',
         noSearchResultsMessage: 'No results',
+        placeholder: 'Select an option',
     })
     component.$refs = { input: new EventTarget() }
-    component.$el = Object.assign(new EventTarget(), {
+    component.$el = Object.assign(new FakeElement(fakeDocument), {
         querySelector: () => ({ textContent: '' }),
     })
     const wire = new EventTarget()
@@ -259,4 +319,98 @@ test('refresh events reset visible choices and are detached during teardown', as
     assert.equal(component.select.rows[0].selected, true)
     component.destroy()
     wire.dispatchEvent(new Event('record-switcher:refresh'))
+})
+
+test('the closed control reads the switch label, not a generic select placeholder', async () => {
+    const { component } = harness()
+    const closedText = { textContent: '' }
+    component.$el.querySelector = () => closedText
+    await component.init()
+    assert.equal(component.select.config.placeholderValue, 'Switch record')
+    assert.equal(closedText.textContent, 'Switch record')
+})
+
+test('each row gets a labelled pin button that toggles without choosing the record', async () => {
+    // Bug caught: with no pin control in the menu, pins could only be set from code, and a click on it would have navigated away.
+    const calls = []
+    let pinned = false
+    const { component, navigation } = harness(
+        async () => [{ ...option('Alpha', 'Related'), pinned }],
+        async () => '/records/2/edit',
+        async (key) => {
+            calls.push(key)
+            pinned = !pinned
+            return pinned
+        },
+    )
+    await component.init()
+    await component.refreshChoices()
+
+    const button = component.select.items[0].querySelector('[data-pin-toggle]')
+    assert.equal(button.attributes['aria-label'], 'Pin Alpha')
+    assert.equal(button.attributes['aria-pressed'], 'false')
+
+    let prevented = false
+    let stopped = false
+    const click = Object.assign(new Event('click'), {
+        preventDefault: () => (prevented = true),
+        stopPropagation: () => (stopped = true),
+    })
+    Object.defineProperty(click, 'target', { value: button })
+    component._handlers.pinPointer(click)
+    await new Promise((resolve) => setImmediate(resolve))
+
+    assert.deepEqual(calls, ['2'])
+    assert.ok(prevented && stopped)
+    assert.deepEqual(navigation, [])
+    assert.equal(
+        component.select.items[0].querySelector('[data-pin-toggle]').attributes[
+            'aria-pressed'
+        ],
+        'true',
+    )
+    assert.equal(
+        component.select.items[0].querySelector('[data-pin-toggle]').attributes[
+            'aria-label'
+        ],
+        'Unpin Alpha',
+    )
+    assert.equal(component.statusElement.textContent, 'Alpha pinned.')
+})
+
+test('Alt+P pins the highlighted record from the search box', async () => {
+    // Bug caught: the pin button is not in the tab order, so keyboard users had no way to pin.
+    const calls = []
+    const { component } = harness(
+        async () => [option('Alpha', 'Related')],
+        async () => null,
+        async (key) => {
+            calls.push(key)
+            return true
+        },
+    )
+    await component.init()
+    await component.refreshChoices()
+    let prevented = false
+    component._handlers.keydown({
+        altKey: true,
+        code: 'KeyP',
+        key: 'π',
+        preventDefault: () => (prevented = true),
+    })
+    await new Promise((resolve) => setImmediate(resolve))
+
+    assert.deepEqual(calls, ['2'])
+    assert.ok(prevented)
+})
+
+test('no pin buttons render when pinning is not wired', async () => {
+    const { component } = harness(async () => [option('Alpha', 'Related')])
+    await component.init()
+    await component.refreshChoices()
+
+    assert.equal(
+        component.select.items[0].querySelector('[data-pin-toggle]'),
+        null,
+    )
 })

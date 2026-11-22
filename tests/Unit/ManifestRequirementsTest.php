@@ -107,7 +107,7 @@ describe('record-switcher manifest', function (): void {
         $composerRequires = $contract['composerRequires'] ?? [];
         throw_unless(is_array($composerRequires), RuntimeException::class, 'Record Switcher screenshot contract composer requirements must be an array.');
 
-        expect($generatedFor)->toBe('deployment-screenshot-runner')
+        expect($generatedFor)->toBe('shared-capell-screenshot-runner')
             ->and($composerRequires)->toContain('capell-app/record-switcher')
             ->and($entries)->not->toBeEmpty();
 

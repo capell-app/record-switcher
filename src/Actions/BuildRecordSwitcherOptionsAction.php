@@ -12,6 +12,7 @@ use Capell\Core\Models\Page;
 use Capell\Core\Models\PageUrl;
 use Capell\Core\Support\TableName;
 use Capell\RecordSwitcher\Data\RecordSwitcherOptionData;
+use Capell\RecordSwitcher\Models\RecordSwitcherEntry;
 use Filament\Resources\Resource;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Database\Eloquent\Builder as BuilderContract;
@@ -35,6 +36,9 @@ final class BuildRecordSwitcherOptionsAction
 {
     use AsFake;
     use AsObject;
+
+    /** Most rows read for an edit-policy check that cannot run in SQL. */
+    private const int MAX_POLICY_CANDIDATES = 500;
 
     /**
      * @param  class-string<resource>  $resourceClass
@@ -76,6 +80,16 @@ final class BuildRecordSwitcherOptionsAction
 
         $search = Str::substr(trim($search ?? ''), 0, 200);
 
+        $highlighted = [];
+
+        if ($targetKey === null && $search === '') {
+            $highlighted = $this->highlightedItems($query, $resourceClass, $current);
+
+            if ($highlighted !== []) {
+                $query->whereNotIn($query->getModel()->qualifyColumn($query->getModel()->getRouteKeyName()), array_column($highlighted, 'recordKey'));
+            }
+        }
+
         if ($search !== '' && ! $current instanceof Page) {
             $this->applyAttributeConstraints($query, $resourceClass, $search);
         }
@@ -83,7 +97,14 @@ final class BuildRecordSwitcherOptionsAction
         $items = [];
 
         // Apply the result limit after policy checks so denied records cannot hide alternatives.
+        $candidates = 0;
+
         foreach ($query->lazy(100) as $model) {
+            // The edit policy cannot run in SQL, so the candidates it reads are capped.
+            if (++$candidates > self::MAX_POLICY_CANDIDATES) {
+                break;
+            }
+
             if (! $resourceClass::canEdit($model)) {
                 continue;
             }
@@ -102,6 +123,62 @@ final class BuildRecordSwitcherOptionsAction
 
             if (count($items) >= max(1, min(50, $limitResults))) {
                 break;
+            }
+        }
+
+        return [...$highlighted, ...$items];
+    }
+
+    /**
+     * Records the user pinned or opened recently, pinned first, each re-checked against the edit policy.
+     *
+     * @param  Builder<Model>  $query
+     * @param  class-string<resource>  $resourceClass
+     * @return list<array{value: string, label: string, group?: string, site: ?string, ancestors: list<string>, path: ?string, recordKey: string}>
+     */
+    private function highlightedItems(Builder $query, string $resourceClass, Model $current): array
+    {
+        $user = auth()->user();
+
+        if (! $user instanceof Model) {
+            return [];
+        }
+
+        $entries = RecordSwitcherEntry::query()
+            ->where(['user_type' => $user->getMorphClass(), 'user_id' => $user->getKey(), 'resource_class' => $resourceClass])
+            ->where('record_key', '!=', $this->routeKeyString($current))
+            ->get()
+            ->sortBy([
+                fn (RecordSwitcherEntry $a, RecordSwitcherEntry $b): int => ($b->pinned_at !== null) <=> ($a->pinned_at !== null),
+                fn (RecordSwitcherEntry $a, RecordSwitcherEntry $b): int => ($b->visited_at?->getTimestamp() ?? 0) <=> ($a->visited_at?->getTimestamp() ?? 0),
+                fn (RecordSwitcherEntry $a, RecordSwitcherEntry $b): int => $b->id <=> $a->id,
+            ])
+            ->values();
+
+        if ($entries->isEmpty()) {
+            return [];
+        }
+
+        $models = (clone $query)
+            ->whereIn($query->getModel()->qualifyColumn($query->getModel()->getRouteKeyName()), $entries->pluck('record_key')->all())
+            ->get()
+            ->keyBy(fn (Model $model): string => $this->routeKeyString($model));
+
+        $items = [];
+
+        foreach ($entries as $entry) {
+            $model = $models->get($entry->record_key);
+
+            if (! $model instanceof Model || ! $resourceClass::canEdit($model)) {
+                continue;
+            }
+
+            try {
+                $items[] = $this->item($model, $resourceClass, $current)
+                    ->withGroup((string) ($entry->pinned_at !== null ? __('capell-record-switcher::switcher.pinned') : __('capell-record-switcher::switcher.recent')))
+                    ->toArray();
+            } catch (RouteNotFoundException) {
+                continue;
             }
         }
 
@@ -168,6 +245,13 @@ final class BuildRecordSwitcherOptionsAction
 
         return $query->orderBy(SqlFragment::raw('case when ' . TableName::resolve('pages') . '.parent_id = ? and ' . TableName::resolve('pages') . '.site_id = ? then 0 when ' . TableName::resolve('pages') . '.site_id = ? then 1 else 2 end')->expression())
             ->addBinding([$currentPage->parent_id, $currentPage->site_id, $currentPage->site_id], 'order');
+    }
+
+    private function routeKeyString(Model $model): string
+    {
+        $key = $model->getRouteKey();
+
+        return is_string($key) || is_int($key) ? (string) $key : '';
     }
 
     /** @param class-string<resource> $resourceClass */

@@ -9,6 +9,7 @@ use Capell\Core\Models\Page;
 use Capell\Core\Models\PageUrl;
 use Capell\Core\Models\Site;
 use Capell\RecordSwitcher\Livewire\RecordSwitcher;
+use Capell\RecordSwitcher\Models\RecordSwitcherEntry;
 use Capell\RecordSwitcher\Tests\Fixtures\RecordSwitcherDisabledEditPage;
 use Capell\RecordSwitcher\Tests\Fixtures\RecordSwitcherDisabledResource;
 use Capell\RecordSwitcher\Tests\Fixtures\RecordSwitcherFixtures;
@@ -172,4 +173,50 @@ it('handles no alternatives empty searches and wires loading and failure feedbac
     // The component must propagate an unexpected failure, rather than report no results.
     Schema::drop('record_switcher_test_records');
     expect(fn () => $component->call('getOptions'))->toThrow(QueryException::class);
+});
+
+it('flips and persists a record pin from the menu and reports it in the options', function (): void {
+    // Bug caught: pinning was only reachable from code, and the menu could not show which records are pinned.
+    RecordSwitcherFixtures::createRecordsTable();
+    $current = RecordSwitcherTestRecord::query()->create(['name' => 'Current', 'code' => 'current']);
+    $alpha = RecordSwitcherTestRecord::query()->create(['name' => 'Alpha', 'code' => 'alpha']);
+    $bravo = RecordSwitcherTestRecord::query()->create(['name' => 'Bravo', 'code' => 'bravo']);
+    $key = RecordSwitcherFixtures::routeKey($alpha);
+
+    $component = Livewire::test(RecordSwitcher::class, [
+        'resourceClass' => RecordSwitcherTestRecordResource::class,
+        'pageClass' => RecordSwitcherDisabledEditPage::class,
+        'recordKey' => RecordSwitcherFixtures::routeKey($current),
+        'label' => 'Current',
+    ])->assertSee('togglePin(key)', escape: false)
+        ->assertSee('Pin :record', escape: false);
+
+    $component->call('getOptions')->assertReturned(fn (array $options): bool => array_column($options, 'pinned') === [false, false]);
+
+    $component->call('togglePin', $key)->assertReturned(true);
+    expect(RecordSwitcherEntry::query()->where('record_key', $key)->whereNotNull('pinned_at')->count())->toBe(1);
+
+    $component->call('getOptions')->assertReturned(fn (array $options): bool => array_column($options, 'label') === ['Alpha', 'Bravo']
+        && array_column($options, 'pinned') === [true, false]
+        && array_column($options, 'group') === ['Pinned']);
+
+    $component->call('togglePin', $key)->assertReturned(false);
+    expect(RecordSwitcherEntry::query()->where('record_key', $key)->whereNotNull('pinned_at')->count())->toBe(0);
+    expect($bravo->exists)->toBeTrue();
+});
+
+it('does not pin a record the user cannot edit', function (): void {
+    // Bug caught: a forged togglePin call could store a pin for a record the user has no right to open.
+    RecordSwitcherFixtures::createRecordsTable();
+    $current = RecordSwitcherTestRecord::query()->create(['name' => 'Current', 'code' => 'current']);
+    $denied = RecordSwitcherTestRecord::query()->create(['name' => 'Denied', 'code' => 'denied']);
+
+    Livewire::test(RecordSwitcher::class, [
+        'resourceClass' => RecordSwitcherScopedResource::class,
+        'pageClass' => RecordSwitcherDisabledEditPage::class,
+        'recordKey' => RecordSwitcherFixtures::routeKey($current),
+        'label' => 'Current',
+    ])->call('togglePin', RecordSwitcherFixtures::routeKey($denied))->assertReturned(false);
+
+    expect(RecordSwitcherEntry::query()->where('record_key', RecordSwitcherFixtures::routeKey($denied))->count())->toBe(0);
 });

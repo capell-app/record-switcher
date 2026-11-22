@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 return [
     'switch_record' => 'Switch record',
+    'pinned' => 'Pinned',
+    'pin_record' => 'Pin :record',
+    'unpin_record' => 'Unpin :record',
+    'pinned_status' => ':record pinned.',
+    'unpinned_status' => ':record unpinned.',
+    'recent' => 'Recent',
     'related' => 'Related',
     'this_site' => 'This site',
     'other_sites' => 'Other sites',

@@ -9,10 +9,14 @@ export default function selectChangerComponent({
     unavailableMessage,
     noSearchResultsMessage,
     optionsLimit,
-    placeholder,
+    pinLabel,
+    pinnedMessage,
     searchPrompt,
     searchingMessage,
     state,
+    togglePin,
+    unpinLabel,
+    unpinnedMessage,
     updateSelected,
 }) {
     return {
@@ -26,6 +30,9 @@ export default function selectChangerComponent({
         _loadingTimer: null,
         destroyed: false,
         suppressRefresh: false,
+        pinnable: new Map(),
+        lastSearch: undefined,
+        statusElement: null,
 
         async init() {
             this.select = new Choices(this.$refs.input, {
@@ -37,7 +44,7 @@ export default function selectChangerComponent({
                 maxItemCount: -1,
                 noChoicesText: searchPrompt,
                 noResultsText: noSearchResultsMessage,
-                placeholderValue: placeholder,
+                placeholderValue: label,
                 removeItemButton: false,
                 renderChoiceLimit: optionsLimit,
                 searchEnabled: true,
@@ -112,7 +119,24 @@ export default function selectChangerComponent({
                       this.isSearching = false
                   }
             this._handlers.keydown = (event) => {
-                if (event.key === 'Escape' && this.select?.dropdown?.isActive) {
+                if (
+                    togglePin &&
+                    event.altKey &&
+                    event.code === 'KeyP' &&
+                    this.select?.dropdown?.isActive
+                ) {
+                    event.preventDefault()
+                    const key = this.select.dropdown.element.querySelector(
+                        '.choices__item.is-highlighted',
+                    )?.dataset.value
+
+                    if (key) {
+                        this.togglePinned(key)
+                    }
+                } else if (
+                    event.key === 'Escape' &&
+                    this.select?.dropdown?.isActive
+                ) {
                     event.preventDefault()
                     event.stopPropagation()
                     this.select.hideDropdown()
@@ -133,6 +157,29 @@ export default function selectChangerComponent({
                 this._handlers.debouncedSearch,
             )
             this.$el.addEventListener('keydown', this._handlers.keydown)
+
+            // The pin button sits inside a selectable row, so stop the row from being chosen.
+            this._handlers.pinPointer = (event) => {
+                const button = event.target?.closest?.('[data-pin-toggle]')
+
+                if (!button) {
+                    return
+                }
+
+                event.preventDefault()
+                event.stopPropagation()
+
+                if (event.type === 'click') {
+                    this.togglePinned(button.dataset.recordKey)
+                }
+            }
+            ;['mousedown', 'click'].forEach((type) =>
+                this.select.dropdown.element.addEventListener(
+                    type,
+                    this._handlers.pinPointer,
+                    true,
+                ),
+            )
 
             this._handlers.wireRefresh = () => {
                 this.select.clearChoices()
@@ -155,6 +202,13 @@ export default function selectChangerComponent({
             window.clearTimeout(this._loadingTimer)
 
             if (this.select) {
+                ;['mousedown', 'click'].forEach((type) =>
+                    this.select.dropdown.element.removeEventListener(
+                        type,
+                        this._handlers.pinPointer,
+                        true,
+                    ),
+                )
                 this.select.destroy()
                 this.select = null
             }
@@ -182,6 +236,8 @@ export default function selectChangerComponent({
                 this.$el.removeEventListener('keydown', this._handlers.keydown)
             }
 
+            this.statusElement?.remove?.()
+
             if (this.$wire?.off && this._handlers.wireRefresh) {
                 this.$wire.off(
                     'record-switcher:refresh',
@@ -195,6 +251,7 @@ export default function selectChangerComponent({
             let choices
             const request = ++this.searchRequest
 
+            this.lastSearch = options.search
             this.scheduleLoadingChoice(options.search)
 
             try {
@@ -274,6 +331,103 @@ export default function selectChangerComponent({
 
         setChoices(choices) {
             this.select.setChoices(choices, 'value', 'label', true)
+            this.decoratePinButtons()
+        },
+
+        decoratePinButtons() {
+            if (!togglePin) {
+                return
+            }
+
+            this.select.dropdown.element
+                .querySelectorAll?.('.choices__item[data-choice-selectable]')
+                ?.forEach((item) => {
+                    const choice = this.pinnable.get(item.dataset.value)
+
+                    if (!choice) {
+                        return
+                    }
+
+                    const pinned = choice.pinned === true
+                    const doc = item.ownerDocument
+                    let button = item.querySelector('[data-pin-toggle]')
+
+                    if (!button) {
+                        button = doc.createElement('button')
+                        button.type = 'button'
+                        button.tabIndex = -1
+                        button.className = 'filament-record-switcher__pin'
+                        button.setAttribute('data-pin-toggle', '')
+                        button.setAttribute('aria-keyshortcuts', 'Alt+P')
+                        button.append(this.pinIcon(doc))
+                        item.classList.add('has-pin')
+                        item.append(button)
+                    }
+
+                    button.dataset.recordKey = item.dataset.value
+                    button.setAttribute('aria-pressed', String(pinned))
+                    button.setAttribute(
+                        'aria-label',
+                        (pinned ? unpinLabel : pinLabel).replace(
+                            ':record',
+                            choice.label,
+                        ),
+                    )
+                    button.classList.toggle('is-pinned', pinned)
+                })
+        },
+
+        pinIcon(doc) {
+            const ns = 'http://www.w3.org/2000/svg'
+            const svg = doc.createElementNS(ns, 'svg')
+            const path = doc.createElementNS(ns, 'path')
+
+            svg.setAttribute('viewBox', '0 0 24 24')
+            svg.setAttribute('aria-hidden', 'true')
+            svg.setAttribute('focusable', 'false')
+            path.setAttribute(
+                'd',
+                'M12 17v5M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z',
+            )
+            svg.append(path)
+
+            return svg
+        },
+
+        async togglePinned(key) {
+            const choice = this.pinnable.get(key)
+
+            if (!choice || this.destroyed) {
+                return
+            }
+
+            try {
+                const pinned = await togglePin(key)
+
+                this.announce(
+                    (pinned ? pinnedMessage : unpinnedMessage).replace(
+                        ':record',
+                        choice.label,
+                    ),
+                )
+                await this.refreshChoices({ search: this.lastSearch })
+            } catch {
+                this.showMessage(errorMessage)
+            }
+        },
+
+        announce(message) {
+            if (!this.statusElement) {
+                const doc = this.$el.ownerDocument
+
+                this.statusElement = doc.createElement('span')
+                this.statusElement.setAttribute('role', 'status')
+                this.statusElement.className =
+                    'filament-record-switcher__status'
+                this.$el.append(this.statusElement)
+            }
+
+            this.statusElement.textContent = message
         },
 
         showMessage(message) {
@@ -286,6 +440,14 @@ export default function selectChangerComponent({
 
         async getChoices({ search }) {
             const results = await getResultsUsing(search)
+
+            this.pinnable = new Map(
+                results.map((choice) => [
+                    String(choice.recordKey),
+                    { label: choice.label, pinned: choice.pinned === true },
+                ]),
+            )
+
             const choices = results.map((choice) => ({
                 ...choice,
                 value: choice.recordKey,
@@ -333,7 +495,7 @@ export default function selectChangerComponent({
             )
 
             if (selectedItems) {
-                selectedItems.textContent = label ?? placeholder ?? ''
+                selectedItems.textContent = label ?? ''
             }
         },
     }

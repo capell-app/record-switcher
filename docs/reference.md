@@ -19,7 +19,16 @@ Record Switcher is an **Available** Capell package in the **Capell Essentials** 
 
 ### Service providers
 
+- `Capell\RecordSwitcher\Providers\MigrationMetadataServiceProvider`
 - `Capell\RecordSwitcher\Providers\RecordSwitcherServiceProvider`
+
+### Migrations
+
+- `packages/record-switcher/database/migrations/2026_11_20_000001_create_record_switcher_entries_table.php`
+
+### Models
+
+- `RecordSwitcherEntry`
 
 ### Filament classes
 
@@ -33,6 +42,8 @@ Record Switcher is an **Available** Capell package in the **Capell Essentials** 
 
 - `BuildRecordSwitcherOptionsAction`
 - `PrepareRecordSwitcherScreenshotAction`
+- `RecordRecordSwitcherVisitAction`
+- `ToggleRecordSwitcherPinAction`
 
 ### Data objects
 
@@ -54,6 +65,11 @@ Record Switcher is an **Available** Capell package in the **Capell Essentials** 
 
 ## Data Model
 
-This package has no schema impact. It extends Capell through `asset` contributions and `health-check` contributions instead of declaring package-owned tables.
+- Required tables: `record_switcher_entries`.
+- Models: `RecordSwitcherEntry`.
+- Core record references in migrations: `users via user_id`.
+- Migration files: `2026_11_20_000001_create_record_switcher_entries_table.php`.
+- Migration impact: run host migrations through the package install flow before opening package surfaces.
+- Deletion/retention behaviour: Docs gap: migrations and manifest contributions do not prove a cascade, pruning command, or timed retention policy.
 
 <!-- prettier-ignore-end -->

@@ -1,7 +1,8 @@
 {
     "package": "record-switcher",
     "composerName": "capell-app/record-switcher",
-    "generatedFor": "deployment-screenshot-runner",
+    "generatedFor": "shared-capell-screenshot-runner",
+    "provenancePolicy": "runner-only-v1",
     "requiresInstalledPackage": true,
     "composerRequires": ["capell-app/record-switcher"],
     "outputDirectory": "packages/record-switcher/docs/screenshots",

@@ -9,9 +9,12 @@ use Capell\Core\Models\PageUrl;
 use Capell\Core\Models\Site;
 use Capell\Core\Support\Creator\PageCreator;
 use Capell\RecordSwitcher\Actions\BuildRecordSwitcherOptionsAction;
+use Capell\RecordSwitcher\Actions\RecordRecordSwitcherVisitAction;
+use Capell\RecordSwitcher\Actions\ToggleRecordSwitcherPinAction;
 use Capell\RecordSwitcher\Data\RecordSwitcherOptionData;
 use Capell\RecordSwitcher\Filament\RecordSwitcherHeadingExtender;
 use Capell\RecordSwitcher\Livewire\RecordSwitcher;
+use Capell\RecordSwitcher\Models\RecordSwitcherEntry;
 use Capell\RecordSwitcher\Tests\Fixtures\RecordSwitcherDisabledEditPage;
 use Capell\RecordSwitcher\Tests\Fixtures\RecordSwitcherDisabledResource;
 use Capell\RecordSwitcher\Tests\Fixtures\RecordSwitcherEmptySearchResource;
@@ -348,4 +351,49 @@ it('includes an explicitly created system page among the site record options', f
 
     expect($options)->toHaveCount(1)
         ->and($options[0]['label'])->toBe($systemPage->name);
+});
+
+it('lists pinned then recently opened records first and drops ones the user can no longer edit', function (): void {
+    // Bug caught: switching records always starts from the same alphabetical list, so the few records an editor
+    // keeps returning to are never one click away, and a stored entry could surface a record the policy now denies.
+    RecordSwitcherFixtures::createRecordsTable();
+
+    $current = RecordSwitcherTestRecord::query()->create(['name' => 'Current', 'code' => 'current']);
+    $alpha = RecordSwitcherTestRecord::query()->create(['name' => 'Alpha', 'code' => 'alpha']);
+    $bravo = RecordSwitcherTestRecord::query()->create(['name' => 'Bravo', 'code' => 'bravo']);
+    $charlie = RecordSwitcherTestRecord::query()->create(['name' => 'Charlie', 'code' => 'charlie']);
+    $user = auth()->user();
+
+    RecordRecordSwitcherVisitAction::run(RecordSwitcherTestRecordResource::class, RecordSwitcherFixtures::routeKey($bravo), $user);
+    RecordRecordSwitcherVisitAction::run(RecordSwitcherTestRecordResource::class, RecordSwitcherFixtures::routeKey($charlie), $user);
+    expect(ToggleRecordSwitcherPinAction::run(RecordSwitcherTestRecordResource::class, RecordSwitcherFixtures::routeKey($alpha), $user))->toBeTrue();
+
+    $options = BuildRecordSwitcherOptionsAction::run(RecordSwitcherTestRecordResource::class, RecordSwitcherFixtures::routeKey($current));
+
+    expect(array_column($options, 'label'))->toBe(['Alpha', 'Charlie', 'Bravo'])
+        ->and(array_column($options, 'group'))->toBe(['Pinned', 'Recent', 'Recent']);
+
+    // A stored entry for a record that no longer exists must not break or leak into the list.
+    $bravo->delete();
+
+    expect(array_column(BuildRecordSwitcherOptionsAction::run(RecordSwitcherTestRecordResource::class, RecordSwitcherFixtures::routeKey($current)), 'label'))
+        ->toBe(['Alpha', 'Charlie']);
+
+    // Searching ignores the shortcuts and uses the normal results.
+    expect(array_column(BuildRecordSwitcherOptionsAction::run(RecordSwitcherTestRecordResource::class, RecordSwitcherFixtures::routeKey($current), search: 'char'), 'group'))->toBe([]);
+});
+
+it('keeps only the latest recent records per resource and unpins on a second toggle', function (): void {
+    // Bug caught: the recents table growing without bound, and a pin that cannot be removed.
+    $user = auth()->user();
+
+    foreach (range(1, RecordRecordSwitcherVisitAction::KEEP + 3) as $key) {
+        RecordRecordSwitcherVisitAction::run(RecordSwitcherTestRecordResource::class, (string) $key, $user);
+    }
+
+    expect(RecordSwitcherEntry::query()->count())->toBe(RecordRecordSwitcherVisitAction::KEEP);
+
+    expect(ToggleRecordSwitcherPinAction::run(RecordSwitcherTestRecordResource::class, '999', $user))->toBeTrue()
+        ->and(ToggleRecordSwitcherPinAction::run(RecordSwitcherTestRecordResource::class, '999', $user))->toBeFalse()
+        ->and(RecordSwitcherEntry::query()->where('record_key', '999')->exists())->toBeFalse();
 });

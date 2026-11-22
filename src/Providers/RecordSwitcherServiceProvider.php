@@ -26,7 +26,8 @@ final class RecordSwitcherServiceProvider extends AbstractPackageServiceProvider
         $package
             ->name(self::$name)
             ->hasViews()
-            ->hasTranslations();
+            ->hasTranslations()
+            ->hasMigrations(['2026_11_20_000001_create_record_switcher_entries_table']);
     }
 
     #[Override]

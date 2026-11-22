@@ -5,9 +5,10 @@
         "default": {
             "source": {
                 "ref": "HEAD",
-                "commit": "adac26b4ce1e9e1de545f68a1ff272ff73111696",
+                "commit": "6a0d6d60a6a92711f7854f1f5cc3ad098d0582c1",
                 "providers": {
-                    "Providers/RecordSwitcherServiceProvider.php": "b3545c90bdfe1ac24310e929109e4b920b354c52f64f05ecce4fb64cbf7e6b14"
+                    "Providers/MigrationMetadataServiceProvider.php": "e0937ef7dafc440b732221945b2b9a6257dbd194560127fabc1f627980e36297",
+                    "Providers/RecordSwitcherServiceProvider.php": "d4154eb455eb87681162c9fc7b867ecea73af16b59222b7008066979335618ce"
                 },
                 "configure": null
             },
@@ -29,7 +30,8 @@
                 ],
                 "config-values": {
                     "app.providers": [
-                        "Capell\\RecordSwitcher\\Providers\\RecordSwitcherServiceProvider"
+                        "Capell\\RecordSwitcher\\Providers\\RecordSwitcherServiceProvider",
+                        "Capell\\RecordSwitcher\\Providers\\MigrationMetadataServiceProvider"
                     ]
                 },
                 "livewire": {
@@ -47,6 +49,22 @@
                         "Capell\\RecordSwitcher\\Health\\RecordSwitcherHealthCheck"
                     ]
                 ],
+                "registries": {
+                    "Capell\\Core\\Support\\Migration\\MigrationRootRegistry": {
+                        "roots": {
+                            "capell-app/record-switcher": [
+                                {
+                                    "root": "<package>/src/Providers/../../database/migrations",
+                                    "tables": {
+                                        "2026_11_20_000001_create_record_switcher_entries_table": [
+                                            "record_switcher_entries"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
                 "tagged-consumers": {
                     "capell-admin:edit-record-heading": [
                         "Capell\\RecordSwitcher\\Filament\\RecordSwitcherHeadingExtender"
@@ -78,7 +96,8 @@
                 ],
                 "config-values": {
                     "app.providers": [
-                        "Capell\\RecordSwitcher\\Providers\\RecordSwitcherServiceProvider"
+                        "Capell\\RecordSwitcher\\Providers\\RecordSwitcherServiceProvider",
+                        "Capell\\RecordSwitcher\\Providers\\MigrationMetadataServiceProvider"
                     ]
                 },
                 "livewire": {
@@ -87,6 +106,22 @@
                             "classNamespace": "Capell\\RecordSwitcher\\Livewire",
                             "classPath": null,
                             "classViewPath": null
+                        }
+                    }
+                },
+                "registries": {
+                    "Capell\\Core\\Support\\Migration\\MigrationRootRegistry": {
+                        "roots": {
+                            "capell-app/record-switcher": [
+                                {
+                                    "root": "<package>/src/Providers/../../database/migrations",
+                                    "tables": {
+                                        "2026_11_20_000001_create_record_switcher_entries_table": [
+                                            "record_switcher_entries"
+                                        ]
+                                    }
+                                }
+                            ]
                         }
                     }
                 },

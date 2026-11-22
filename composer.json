@@ -37,6 +37,9 @@
         "pestphp/pest": "^3.8|^4.3 || ^5.0",
         "pestphp/pest-plugin-laravel": "^3.0|^4.0 || ^5.0"
     },
+    "conflict": {
+        "howdu/filament-record-switcher": "*"
+    },
     "config": {
         "sort-packages": true,
         "allow-plugins": {

@@ -8,8 +8,8 @@ For pages, suggestions come in three groups. Related pages that share a site and
 
 Save before you switch, because the menu doesn't save the item you're leaving. Once you save, the title above the menu updates to the new name. You only see items you're allowed to edit, and the menu stays hidden when there's nothing else to switch to. Pick a result and its edit screen opens, ready for your next change.
 
-- **Price and availability:** Check current availability and price on the [Capell Marketplace listing](https://capell.app/extensions/record-switcher).
-- **Licence:** Check the licence terms on the [Capell Marketplace listing](https://capell.app/extensions/record-switcher).
+- **Price and availability:** Check current availability and price on the [Capell Marketplace listing](https://capell.app/marketplace/extensions/record-switcher).
+- **Licence:** Check the licence terms on the [Capell Marketplace listing](https://capell.app/marketplace/extensions/record-switcher).
 - **Requires:** `PHP ^8.4`, `capell-app/admin ^1.0.66`, `capell-app/core ^1.0.75`, `filament/filament ^5.7.6`, `laravel/framework ^12.61.1|^13.12.0`, `livewire/livewire ^3.0|^4.0`, `spatie/laravel-package-tools ^1.15`.
 - **Install:** `composer require capell-app/record-switcher`.
 
@@ -29,6 +29,7 @@ This extension works without configuration. There is nothing to set after instal
 ## Limits And Pitfalls
 
 - Install the required Capell packages at the versions in `composer.json`: `capell-app/admin ^1.0.66`, `capell-app/core ^1.0.75`.
+- Run migrations before opening package resources or public routes.
 
 ## Screens And Workflow
 
@@ -47,7 +48,7 @@ This extension works without configuration. There is nothing to set after instal
 - Admin/editor extensions: none declared.
 - Permissions: no package permission declarations or Shield gates detected; host access rules still apply.
 - Public routes: none declared.
-- Database changes: no package migrations declared.
+- Database changes: package migrations are declared.
 - Config: no package config files.
 - Settings: no package settings declared.
 - Queues or schedules: none declared.
@@ -59,10 +60,13 @@ This extension works without configuration. There is nothing to set after instal
 | Symptom | Likely cause | Check | Fix |
 | --- | --- | --- | --- |
 | Package surface is missing after install | Provider or manifest is not loaded | Confirm `capell.json`, package `composer.json`, and provider registration | Reinstall the package, refresh Composer autoload, and clear host caches |
+| Admin screen or command fails on missing table | Package migrations have not run | Check the tables listed in `Data Model` | Run host migrations and rerun the focused package test |
 
 ## Upgrading
 
 No manual steps between minor versions.
+
+Read [CHANGELOG.md](CHANGELOG.md) before upgrading.
 
 ## Next Steps
 

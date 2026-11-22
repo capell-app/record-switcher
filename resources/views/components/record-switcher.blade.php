@@ -30,7 +30,11 @@
                 noSearchResultsMessage:
                     '{{ __('filament-forms::components.select.no_search_results_message') }}',
                 optionsLimit: @js($limit_results),
-                placeholder: '{{ __('filament-forms::components.select.placeholder') }}',
+                pinLabel: @js(__('capell-record-switcher::switcher.pin_record')),
+                unpinLabel: @js(__('capell-record-switcher::switcher.unpin_record')),
+                pinnedMessage: @js(__('capell-record-switcher::switcher.pinned_status')),
+                unpinnedMessage: @js(__('capell-record-switcher::switcher.unpinned_status')),
+                togglePin: async (key) => await $wire.togglePin(key),
                 searchPrompt:
                     '{{ __('filament-forms::components.select.search_prompt') }}',
                 searchingMessage:

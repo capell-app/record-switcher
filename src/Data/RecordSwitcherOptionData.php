@@ -19,6 +19,11 @@ final readonly class RecordSwitcherOptionData
         public string $recordKey = '',
     ) {}
 
+    public function withGroup(string $group): self
+    {
+        return new self($this->value, $this->label, $group, $this->site, $this->ancestors, $this->path, $this->recordKey);
+    }
+
     public function matches(string $search): bool
     {
         $context = Str::lower(implode(' ', [$this->label, ...$this->ancestors, $this->path ?? '']));
