@@ -6,6 +6,7 @@
     "kind": "package",
     "capellApiVersion": "^1.0",
     "version": "1.0.0",
+    "launchStatus": "shipped",
     "description": "A Switch record menu under the title of Capell admin edit screens for pages, layouts, sites, sections, widgets and menus.",
     "product": {
         "group": "Capell Essentials",
